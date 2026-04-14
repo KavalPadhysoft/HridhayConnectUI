@@ -11,75 +11,7 @@ import { withTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
 const Navbar = props => {
-  const [ui, setui] = useState(false)
-  const [email, setemail] = useState(false)
-  const [form, setform] = useState(false)
-  const [table, settable] = useState(false)
-  const [chart, setchart] = useState(false)
-  const [icon, seticon] = useState(false)
-  const [map, setmap] = useState(false)
-  const [extra, setextra] = useState(false)
-  const [moreItem, setMoreItem] = useState(false);
-
-  useEffect(() => {
-    const pathName = process.env.PUBLIC_URL + props.router.location.pathname;
-
-    var matchingMenuItem = null;
-    var ul = document.getElementById("navigation");
-    var items = ul.getElementsByTagName("a");
-    removeActivation(items);
-    for (var i = 0; i < items.length; ++i) {
-      if (pathName === items[i].pathname) {
-        matchingMenuItem = items[i];
-        break;
-      }
-    }
-    if (matchingMenuItem) {
-      activateParentDropdown(matchingMenuItem);
-    }
-  });
-
-  const removeActivation = (items) => {
-    for (var i = 0; i < items.length; ++i) {
-      var item = items[i];
-      const parent = items[i].parentElement;
-      if (item && item.classList.contains("active")) {
-        item.classList.remove("active");
-      }
-      if (parent) {
-        if (parent.classList.contains("active")) {
-          parent.classList.remove("active");
-        }
-      }
-    }
-  };
-
-  function activateParentDropdown(item) {
-    item.classList.add("active");
-    const parent = item.parentElement;
-    if (parent) {
-      parent.classList.add("active"); // li
-      const parent2 = parent.parentElement;
-      parent2.classList.add("active"); // li
-      const parent3 = parent2.parentElement;
-      if (parent3) {
-        parent3.classList.add("active"); // li
-        const parent4 = parent3.parentElement;
-        if (parent4) {
-          parent4.classList.add("active"); // li
-          const parent5 = parent4.parentElement;
-          if (parent5) {
-            parent5.classList.add("active"); // li
-            const parent6 = parent5.parentElement;
-            if (parent6) {
-              parent6.classList.add("active"); // li
-            }
-          }
-        }
-      }
-    }
-    return false;
-  }
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   return (
     <React.Fragment>
@@ -95,343 +27,112 @@ const Navbar = props => {
               id="topnav-menu-content"
             >
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/dashboard">
-                    <i className="ti-dashboard">
-                    </i>{props.t("Dashboard")} {props.menuOpen}
-                  </Link>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <Link
-                    to="/#"
-                    onClick={e => {
-                      e.preventDefault()
-                      setemail(!email)
-                    }}
-                    className="nav-link dropdown-toggle arrow-none"
-                  >
-                    <i className="ti-email"></i>{props.t("Email")}
-                  </Link>
-                  <div
-                    className={classname("dropdown-menu dropdown-menu-left", 
-                    { show: email }
-                    )}
-                  >
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Inbox")}
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Read Email")}
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Email Compose")}
-                    </Link>
-                  </div>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <Link
-                    to="/#"
-                    onClick={e => {
-                      e.preventDefault()
-                      setui(!ui)
-                    }}
-                    className="nav-link dropdown-toggle arrow-none"
-                  >
-                    <i className="ti-support"></i>
-                    {props.t("UI Elements")}
-                  </Link>
-                  <div
-                    className={classname(
-                      "dropdown-menu mega-dropdown-menu px-2 dropdown-mega-menu-xl",
-                      { show: ui }
-                    )}
-                  >
-                    <Row>
-                      <Col lg={4}>
-                        <div>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Alerts")}
+                {/* Dynamic menu rendering, same as vertical */}
+                {(() => {
+                  try {
+                    const menuRaw = localStorage.getItem("menuPages");
+                    const menuList = menuRaw ? JSON.parse(menuRaw) : [];
+                    if (!Array.isArray(menuList) || !menuList.length) {
+                      return (
+                        <li className="nav-item">
+                          <Link className="nav-link" to="/dashboard">
+                            <i className="mdi mdi-view-dashboard"></i>
+                            <span>{props.t("Dashboard")}</span>
                           </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Buttons")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Badge")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Cards")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Carousel")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Dropdowns")}
-                          </Link>
-                        </div>
-                      </Col>
-                      <Col lg={4}>
-                        <div>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Grid")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Images")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Lightbox")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Modals")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Pagination")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Popover & Tooltips")}
-                          </Link>
-                        </div>
-                      </Col>
-                      <Col lg={4}>
-                        <div>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Progress Bars")}
-                          </Link>
+                        </li>
+                      );
+                    }
+                    const activeItems = menuList
+                      .filter(item => item && item.isActive && !item.isDeleted)
+                      .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+                    const menuById = new Map(activeItems.map(item => [Number(item.id), item]));
+                    const rootParents = activeItems.filter(item => Number(item.parentId) === 0);
+                    const parentWithChildren = rootParents.map(parent => ({
+                      ...parent,
+                      children: activeItems.filter(
+                        child => Number(child.parentId) === Number(parent.id)
+                      ),
+                    }));
+                    const orphanChildrenAsTopLevel = activeItems
+                      .filter(item => Number(item.parentId) !== 0 && !menuById.has(Number(item.parentId)))
+                      .map(item => ({
+                        ...item,
+                        parentId: 0,
+                        children: [],
+                      }));
+                    const dynamicMenu = [...parentWithChildren, ...orphanChildrenAsTopLevel];
+                    const getDynamicMenuLink = child => {
+                      const controller = (child?.controller || "").toLowerCase();
+                      if (child?.url && child.url !== "string") {
+                        return child.url.startsWith("/") ? child.url : `/${child.url}`;
+                      }
+                      if (controller) {
+                        return controller.endsWith("s") ? `/${controller}` : `/${controller}s`;
+                      }
+                      return "/#";
+                    };
+                    const getDynamicMenuIconClass = menuItem => {
+                      const iconValue = String(menuItem?.icon || "").trim();
+                      if (!iconValue) {
+                        return "mdi mdi-folder-outline";
+                      }
+                      if (iconValue.startsWith("mdi ")) {
+                        return iconValue;
+                      }
+                      if (iconValue.startsWith("mdi-")) {
+                        return `mdi ${iconValue}`;
+                      }
+                      return iconValue;
+                    };
+                    return dynamicMenu.map(parent => {
+                      const isOpen = openDropdown === parent.id;
+                      return (
+                        <li
+                          className={parent.children.length ? "nav-item dropdown" : "nav-item"}
+                          key={`dynamic-parent-${parent.id}`}
+                          onMouseEnter={() => parent.children.length && setOpenDropdown(parent.id)}
+                          onMouseLeave={() => parent.children.length && setOpenDropdown(null)}
+                        >
                           <Link
-                            to="#"
-                            className="dropdown-item"
+                            to={parent.children.length ? "/#" : getDynamicMenuLink(parent)}
+                            className={parent.children.length ? "nav-link dropdown-toggle arrow-none" : "nav-link"}
+                            onClick={e => {
+                              if (parent.children.length) {
+                                e.preventDefault();
+                                setOpenDropdown(isOpen ? null : parent.id);
+                              }
+                            }}
                           >
-                            {props.t("Tabs & Accordions")}
+                            <i className={getDynamicMenuIconClass(parent)}></i>
+                            <span>{parent.name}</span>
                           </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Typography")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Video")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Utilities")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Colors")}
-                          </Link>
-                          <Link to="#" className="dropdown-item">
-                            {props.t("Offcanvas")}
-                          </Link>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <Link
-                    to="/#"
-                    className="nav-link dropdown-toggle arrow-none"
-                    onClick={e => {
-                      e.preventDefault()
-                      setform(!form)
-                    }}
-                  >
-                    <i className="ti-receipt"></i> {props.t("Forms")}
-                  </Link>
-                  <div
-                    className={classname("dropdown-menu dropdown-menu-left", { show: form })}
-                  >
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Form Elements")}
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Form Validation")}
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Form Advanced")}
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Form Editors")}
-                    </Link>
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Form File Upload")}{" "}
-                    </Link>
-                  </div>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <Link
-                    to="/#"
-                    className="nav-link dropdown-toggle arrow-none"
-                    onClick={e => {
-                      e.preventDefault()
-                      setMoreItem(!moreItem)
-                    }}
-                  >
-                    <i className="ti-menu-alt"></i>More
-                  </Link>
-                  <div className={classname("dropdown-menu dropdown-menu-left", { show: moreItem })}>
-                    <Link to="#" className="dropdown-item">{props.t("Calendar")}</Link>
-                    <Link to="#" className="dropdown-item">{props.t("Chat")}</Link>
-                    <Link to="#" className="dropdown-item">{props.t("Kanban")}</Link>
-                    <div className="dropdown">
-                      <Link
-                        to="/#"
-                        className="dropdown-item dropdown-toggle arrow-none"
-                        onClick={e => {
-                          e.preventDefault()
-                          seticon(!icon)
-                        }}
-                      >
-                        {props.t("Icons")} <div className="arrow-down"></div>
-                      </Link>
-                      <div
-                        className={classname("dropdown-menu", { show: icon })}
-                      >
-
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Material Design")}
-                        </Link>
-
-                        <Link to="#" className="dropdown-item">{props.t("Ion Icons")}</Link>
-
-                        <Link to="#" className="dropdown-item">{props.t("Font Awesome")}</Link>
-
-                        <Link to="#" className="dropdown-item">{props.t("Themify Icons")}</Link>
-
-                        <Link to="#" className="dropdown-item">{props.t("Dripicons")}</Link>
-
-                        <Link to="#" className="dropdown-item">{props.t("Typicons Icons")}</Link>
-
-                      </div>
-                    </div>
-                    <div className="dropdown">
-                      <Link
-                        to="/#"
-                        className="dropdown-item dropdown-toggle arrow-none"
-                        onClick={e => {
-                          e.preventDefault()
-                          settable(!table)
-                        }}
-                      >
-                        {props.t("Tables")} <div className="arrow-down"></div>
-                      </Link>
-                      <div
-                        className={classname("dropdown-menu", { show: table })}
-                      >
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Basic Tables")}
-                        </Link>
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Data Tables")}
-                        </Link>
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Responsive Table")}
-                        </Link>
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Editable Table")}
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="dropdown">
-                      <Link
-                        to="/#"
-                        className="dropdown-item dropdown-toggle arrow-none"
-                        onClick={e => {
-                          e.preventDefault()
-                          setmap(!map)
-                        }}
-                      >
-                        {props.t("Maps")} <div className="arrow-down"></div>
-                      </Link>
-                      <div
-                        className={classname("dropdown-menu", { show: map })}
-                      >
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Google Maps")}{" "}
-                        </Link>
-                        <Link to="#" className="dropdown-item">
-                          {props.t("Vector Maps")}{" "}
-                        </Link>
-                       
-                      </div>
-                    </div>
-                    <Link to="#" className="dropdown-item">{props.t("Range Slider")}</Link>
-                    <Link to="#" className="dropdown-item">{props.t("Session Timeout")}</Link>
-                  </div>
-                </li>
-                <li className="nav-item dropdown">
-                  <Link
-                    to="/#"
-                    className="nav-link dropdown-toggle arrow-none"
-                    onClick={e => {
-                      e.preventDefault()
-                      setchart(!chart)
-                    }}
-                  >
-                    <i className="ti-pie-chart"></i> {props.t("Charts")}
-                  </Link>
-                  <div
-                    className={classname("dropdown-menu", { show: chart })}
-                  >
-
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Apex charts")}
-                    </Link>
-
-                    
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Chartjs Chart")}
-                    </Link>
-
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Sparkline Chart")}
-                    </Link>
-
-                    <Link to="#" className="dropdown-item">
-                      {props.t("Jquery Knob Chart")}
-                    </Link>
-
-                  </div>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <Link className="nav-link dropdown-toggle arrow-none" to="#" id="topnav-pages"
-                    onClick={e => {
-                      e.preventDefault()
-                      setextra(!extra)
-                    }}
-                  >
-                    <i className="ti-support"></i>Pages
-                  </Link>
-                  <div className={classname("dropdown-menu mega-dropdown-menu px-2 dropdown-mega-menu-lg dropdown-menu-right", { show: extra })}>
-                    <Row>
-                      <Col lg={6}>
-                        <div>
-                          <Link to="#" className="dropdown-item">Timeline</Link>
-                          <Link to="#" className="dropdown-item">Invoice</Link>
-                          <Link to="#" className="dropdown-item">Directory</Link>
-                          <Link to="/pages-login" className="dropdown-item">Login</Link>
-                          <Link to="/pages-register" className="dropdown-item">Register</Link>
-                        </div>
-                      </Col>
-                      <Col lg={6}>
-                        <div>
-                          <Link to="/page-recoverpw" className="dropdown-item">Recover Password</Link>
-                          <Link to="/auth-lock-screen" className="dropdown-item">Lock Screen</Link>
-                          <Link to="/pages-blank" className="dropdown-item">Blank Page</Link>
-                          <Link to="/pages-404" className="dropdown-item">Error 404</Link>
-                          <Link to="/pages-500" className="dropdown-item">Error 500</Link>
-
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </li></ul>
+                          {parent.children.length > 0 && (
+                            <div className={
+                              isOpen
+                                ? "dropdown-menu dropdown-menu-left show"
+                                : "dropdown-menu dropdown-menu-left"
+                            }>
+                              {parent.children.map(child => (
+                                <Link to={getDynamicMenuLink(child)} className="dropdown-item" key={`dynamic-child-${child.id}`}>
+                                  <i className={getDynamicMenuIconClass(child)}></i> {child.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </li>
+                      );
+                    });
+                  } catch (error) {
+                    return null;
+                  }
+                })()}
+              </ul>
             </Collapse>
           </nav>
         </div>
       </div>
     </React.Fragment>
-  )
+  );
 }
 
 Navbar.propTypes = {
