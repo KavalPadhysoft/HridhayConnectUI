@@ -203,7 +203,7 @@ const Header = props => {
                 type="button"
                 className="btn header-item noti-icon right-bar-toggle waves-effect"
               >
-                <i className="mdi mdi-spin mdi-cog"></i>
+                {/* <i className="mdi mdi-spin mdi-cog"></i> */}
               </button>
             </div>
           </div>

@@ -380,14 +380,14 @@ const handleExportPdf = async () => {
                   <Button color="primary" type="button" onClick={() => navigate("/users/manage")}>
                      <i className="mdi mdi-plus me-1" />Add User
                   </Button>
-                  <Button color="success" className="me-2" onClick={handleExport}>
+                  {/* <Button color="success" className="me-2" onClick={handleExport}>
   <i className="mdi mdi-file-excel me-1" />
   Export Excel
 </Button>
 <Button color="danger" className="me-2" onClick={handleExportPdf}>
   <i className="mdi mdi-file-pdf me-1" />
   Export PDF
-</Button>
+</Button> */}
                 </div>
                 {error ? <Alert color="danger">{error}</Alert> : null}
                 {loading ? (

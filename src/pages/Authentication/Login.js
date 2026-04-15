@@ -142,13 +142,7 @@ const Login = props => {
                                                 >
                                                   Log In
                                                 </button>
-                                                <Link
-                                                  to="/register"
-                                                  className="btn btn-outline-primary waves-effect"
-                                                  style={{ minWidth: "140px", height: "46px", borderRadius: "8px", display: "inline-flex", alignItems: "center", justifyContent: "center" }}
-                                                >
-                                                  Signup
-                                                </Link>
+                                                
                                             </div>
                                         </Row>
                                         <Row className="form-group mb-0">
