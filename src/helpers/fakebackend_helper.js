@@ -33,6 +33,62 @@ export async function saveUserDemo(formData) {
   return response.data;
 }
 
+const getClientsPages = async (params = {}) => {
+  try {
+    return await get("/Client/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Clients API call failed"
+    )
+  }
+}
+
+const getClientById = async id => {
+  try {
+    return await get("/Client/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Client fetch by id failed"
+    )
+  }
+}
+
+const saveClient = async payload => {
+  try {
+    return await post("/Client/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Client save failed"
+    )
+  }
+}
+
+const deleteClientById = async id => {
+  try {
+    return await del("/Client/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Client delete failed"
+    )
+  }
+}
+
+
+
 // Reset Password API
 const resetPassword = async (username) => {
   try {
@@ -542,6 +598,10 @@ export {
   saveMenu,
   saveLovMaster,
   saveLovDetail,
+  getClientsPages,
+  getClientById,
+  saveClient,
+  deleteClientById,
   deleteUserById,
   deleteRoleById,
   deleteMenuById,

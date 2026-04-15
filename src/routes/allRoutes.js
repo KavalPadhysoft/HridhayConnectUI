@@ -28,6 +28,8 @@ import Menus from "../pages/Menu"
 import Lov from "../pages/Lov"
 import Property from "../pages/Property"
 
+import Client from "../pages/Client"
+
 
 //Extra Pages
 import PagesBlank from "../pages/Extra Pages/pages-blank";
@@ -76,6 +78,11 @@ const userRoutes = [
   { path: "/property/manage", component: <Property /> },
   { path: "/property/manage/:id", component: <Property /> },
   { path: "/propertys", component: <Property /> },
+
+  // Client routes
+  { path: "/clients", component: <Client /> },
+  { path: "/clients/manage", component: <Client /> },
+  { path: "/clients/manage/:id", component: <Client /> },
 
   // this route should be at the end of all other routes
   {
