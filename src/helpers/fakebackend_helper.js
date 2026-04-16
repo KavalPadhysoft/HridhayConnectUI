@@ -33,6 +33,8 @@ export async function saveUserDemo(formData) {
   return response.data;
 }
 
+
+//client API helpers
 const getClientsPages = async (params = {}) => {
   try {
     return await get("/Client/GetAllpage", {
@@ -87,6 +89,60 @@ const deleteClientById = async id => {
   }
 }
 
+//Services API helpers
+const getServicesPages = async (params = {}) => {
+  try {
+    return await get("/Service/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Services API call failed"
+    )
+  }
+}
+
+const getServiceById = async id => {
+  try {
+    return await get("/Service/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Service fetch by id failed"
+    )
+  }
+}
+
+const saveService = async payload => {
+  try {
+    return await post("/Service/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Service save failed"
+    )
+  }
+}
+
+const deleteServiceById = async id => {
+  try {
+    return await del("/Service/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Service delete failed"
+    )
+  }
+}
 
 
 // Reset Password API
@@ -608,4 +664,8 @@ export {
   changePassword,
   buildPageParams,
   resetPassword,
+  getServicesPages,
+  getServiceById,
+  saveService,
+  deleteServiceById,
 }

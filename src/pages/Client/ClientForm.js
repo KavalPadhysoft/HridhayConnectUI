@@ -68,11 +68,11 @@ const ClientForm = ({
                 }}
               />
             </Col>
-            <Col md={6} className="display-non"> 
+            <Col md={6} className="d-none">
               <Label>GST Number</Label>
               <Input
                 name="gstNumber"
-                value={formData.gstNumber}
+                value="854GJH8545"
                 onChange={onChange}
                 placeholder="Enter GST number"
               />

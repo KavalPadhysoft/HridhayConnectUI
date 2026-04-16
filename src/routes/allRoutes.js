@@ -29,6 +29,7 @@ import Lov from "../pages/Lov"
 import Property from "../pages/Property"
 
 import Client from "../pages/Client"
+import Service from "../pages/Service"
 
 
 //Extra Pages
@@ -83,6 +84,11 @@ const userRoutes = [
   { path: "/clients", component: <Client /> },
   { path: "/clients/manage", component: <Client /> },
   { path: "/clients/manage/:id", component: <Client /> },
+
+    // Services routes
+  { path: "/Services", component: <Service /> },
+  { path: "/Services/manage", component: <Service /> },
+  { path: "/Services/manage/:id", component: <Service /> },
 
   // this route should be at the end of all other routes
   {

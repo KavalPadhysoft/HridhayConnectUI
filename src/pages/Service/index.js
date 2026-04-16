@@ -3,51 +3,48 @@ import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
 import { useNavigate, useLocation, useParams } from "react-router-dom"
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common"
-import { getClientsPages, deleteClientById, getClientById, saveClient } from "../../helpers/fakebackend_helper"
+import { getServicesPages, deleteServiceById, getServiceById, saveService } from "../../helpers/fakebackend_helper"
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService"
-import ClientForm from "./ClientForm"
+import ServiceForm from "./ServiceForm"
 
-const CLIENT_LIST_SORT_COLUMN = "clientName"
-const CLIENT_LIST_SORT_DIR = "asc"
+const Service_LIST_SORT_COLUMN = "ServiceName"
+const Service_LIST_SORT_DIR = "asc"
 
-const Client = () => {
-  document.title = "Clients | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+const Service = () => {
+  document.title = "Service | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
-  const clientId = Number(params.id || 0);
-  const isFormPage = location.pathname.startsWith("/clients/manage");
-  const isEditMode = isFormPage && clientId > 0;
+  const ServiceId = Number(params.id || 0);
+  const isFormPage = location.pathname.startsWith("/Services/manage");
+  const isEditMode = isFormPage && ServiceId > 0;
 
   // List state
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(0);
   const [error, setError] = useState("");
   const [rows, setRows] = useState([]);
-  const [sortColumn, setSortColumn] = useState(CLIENT_LIST_SORT_COLUMN);
-  const [sortColumnDir, setSortColumnDir] = useState(CLIENT_LIST_SORT_DIR);
+  const [sortColumn, setSortColumn] = useState(Service_LIST_SORT_COLUMN);
+  const [sortColumnDir, setSortColumnDir] = useState(Service_LIST_SORT_DIR);
 
   // Form state
   const [formLoading, setFormLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
-  const [formTitle, setFormTitle] = useState(isEditMode ? "Edit Client" : "Create Client");
+  const [formTitle, setFormTitle] = useState(isEditMode ? "Edit Service" : "Create Service");
   const [formData, setFormData] = useState({
-    clientId: 0,
-    clientName: "",
-    companyName: "",
-    email: "",
-    phone: "",
-    gstNumber: "",
-    address: "",
+        serviceId: 0,
+        serviceName: "",
+        defaultPrice: 0,
+        description: "",
   });
 
   // List logic
-  const loadClients = async () => {
+  const loadServices = async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await getClientsPages({
+      const response = await getServicesPages({
         start: 0,
         length: 10,
         sortColumnDir,
@@ -56,17 +53,17 @@ const Client = () => {
         setRows(response.data.data);
       } else {
         setRows([]);
-        setError(response.message || "Failed to load clients.");
+        setError(response.message || "Failed to load Services.");
       }
     } catch (err) {
-      setError("Error loading clients.");
+      setError("Error loading Services.");
     }
     setLoading(false);
   };
 
   useEffect(() => {
     if (!isFormPage) {
-      loadClients();
+      loadServices();
     }
   }, [isFormPage, sortColumn, sortColumnDir]);
 
@@ -77,44 +74,41 @@ const Client = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/clients/manage/${id}`);
+    navigate(`/Services/manage/${id}`);
   };
 
   const handleDelete = async (id) => {
-    if (await showConfirm("Are you sure you want to delete this client?")) {
+    if (await showConfirm("Are you sure you want to delete this Service?")) {
       setDeletingId(id);
       try {
-        const response = await deleteClientById(id);
+        const response = await deleteServiceById(id);
         if (response.isSuccess) {
-          showSuccess("Client deleted successfully.");
-          loadClients();
+          await showSuccess(response.message || "Service deleted successfully.");
+          setTimeout(() => loadServices(), 600);
         } else {
-          showError(response.message || "Failed to delete client.");
+          await showError(response.message || "Failed to delete Service.");
         }
       } catch (err) {
-        showError("Error deleting client.");
+        await showError("Error deleting Service.");
       }
       setDeletingId(0);
     }
   };
 
   const handleAdd = () => {
-    navigate("/clients/manage");
+    navigate("/Services/manage");
   };
 
   // Form logic
   useEffect(() => {
     if (!isFormPage) return;
     if (!isEditMode) {
-      setFormTitle("Create Client");
+      setFormTitle("Create Service");
       setFormData({
-        clientId: 0,
-        clientName: "",
-        companyName: "",
-        email: "",
-        phone: "",
-        gstNumber: "",
-        address: "",
+        serviceId: 0,
+        serviceName: "",
+        defaultPrice: 0,
+        description: "",
       });
       setFormError("");
       setFormLoading(false);
@@ -122,18 +116,18 @@ const Client = () => {
     }
     setFormLoading(true);
     setFormError("");
-    getClientById(clientId)
+    getServiceById(ServiceId)
       .then((response) => {
         if (response?.isSuccess && response?.data) {
-          setFormTitle("Edit Client");
+          setFormTitle("Edit Service");
           setFormData(response.data);
         } else {
-          setFormError(response?.message || "Failed to load client");
+          setFormError(response?.message || "Failed to load Service");
         }
       })
-      .catch((err) => setFormError(err?.message || err || "Failed to load client"))
+      .catch((err) => setFormError(err?.message || err || "Failed to load Service"))
       .finally(() => setFormLoading(false));
-  }, [isFormPage, isEditMode, clientId]);
+  }, [isFormPage, isEditMode, ServiceId]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -144,15 +138,21 @@ const Client = () => {
     setFormError("");
     setSaving(true);
     try {
-      const response = await saveClient(formData);
-      if (response?.isSuccess) {
+      // Ensure defaultPrice is a number, not a string or empty string
+      const payload = {
+        ...formData,
+        defaultPrice: formData.defaultPrice === "" || formData.defaultPrice === null ? 0 : Number(formData.defaultPrice)
+      };
+      const response = await saveService(payload);
+      console.log("Service save response:", response);
+      if (response?.statusCode === 1 || response?.isSuccess) {
         await showSuccess(response?.message || "Saved successfully");
-        navigate("/clients");
+        setTimeout(() => navigate("/Services"), 600);
         return;
       }
-      throw new Error(response?.message || "Failed to save client");
+      throw new Error(response?.message || "Failed to save Service");
     } catch (err) {
-      const errorMessage = err?.message || err || "Failed to save client";
+      const errorMessage = err?.message || err || "Failed to save Service";
       await showError(errorMessage);
       setFormError(errorMessage);
     } finally {
@@ -161,16 +161,14 @@ const Client = () => {
   };
 
   // Table data
+  //Filed alwasy small case
   const data = useMemo(() => {
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
-          { label: "Client Name", field: "clientName", sort: "asc" },
-          { label: "Company Name", field: "companyName", sort: "asc" },
-          { label: "Email", field: "email", sort: "asc" },
-          { label: "Phone", field: "phone", sort: "asc" },
-     //     { label: "GST Number", field: "gstNumber", sort: "asc" },
-          { label: "Address", field: "address", sort: "asc" },
+          { label: "Service Name", field: "serviceName", sort: "asc" },
+          { label: "Default Price", field: "defaultPrice", sort: "asc" },
+          { label: "Description", field: "description", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
         ],
         onSort: handleSortChange,
@@ -178,13 +176,10 @@ const Client = () => {
         sortColumnDir,
       }),
       rows: rows.map(item => ({
-        clientId: item.clientId,
-        clientName: item.clientName || "",
-        companyName: item.companyName || "",
-        email: item.email || "",
-        phone: item.phone || "",
-        gstNumber: item.gstNumber || "",
-        address: item.address || "",
+  serviceId: item.serviceId,
+  serviceName: item.serviceName || "",
+  defaultPrice: item.defaultPrice ?? 0,
+  description: item.description || "",
         action: (
           <div className="d-flex gap-2 justify-content-center">
             <Button
@@ -192,7 +187,7 @@ const Client = () => {
               className="p-0 text-primary"
               title="Edit"
               type="button"
-              onClick={() => handleEdit(item.clientId)}
+              onClick={() => handleEdit(item.serviceId)}
             >
               <i className="mdi mdi-pencil font-size-18" />
             </Button>
@@ -201,10 +196,10 @@ const Client = () => {
               className="p-0 text-danger"
               title="Delete"
               type="button"
-              disabled={deletingId === item.clientId}
-              onClick={() => handleDelete(item.clientId)}
+              disabled={deletingId === item.serviceId}
+              onClick={() => handleDelete(item.serviceId)}
             >
-              {deletingId === item.clientId ? (
+              {deletingId === item.serviceId ? (
                 <Spinner size="sm" />
               ) : (
                 <i className="mdi mdi-trash-can-outline font-size-18" />
@@ -231,7 +226,7 @@ const Client = () => {
                 </CardBody>
               </Card>
             ) : (
-              <ClientForm
+              <ServiceForm
                 title={formTitle}
                 formError={formError}
                 formData={formData}
@@ -239,15 +234,15 @@ const Client = () => {
                 saving={saving}
                 onChange={handleFormChange}
                 onSubmit={handleFormSubmit}
-                onClose={() => navigate("/clients")}
+                onClose={() => navigate("/Services")}
               />
             )
           ) : (
             <Card>
               <CardBody>
                 <div className="d-flex justify-content-end mb-3">
-                  <Button color="primary" type="button" onClick={() => navigate("/clients/manage")}> 
-                    <i className="mdi mdi-plus me-1" />Add Client
+                  <Button color="primary" type="button" onClick={() => navigate("/Services/manage")}> 
+                    <i className="mdi mdi-plus me-1" />Add Service
                   </Button>
                 </div>
                 {error ? <Alert color="danger">{error}</Alert> : null}
@@ -267,4 +262,4 @@ const Client = () => {
   );
 }
 
-export default Client
+export default Service
