@@ -3,56 +3,55 @@ import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
-import { getInvoicesPages, deleteInvoiceById, getInvoiceById, saveInvoice } from "../../helpers/fakebackend_helper";
+import { getPaymentsPages, deletePaymentById, getPaymentById, savePayment } from "../../helpers/fakebackend_helper";
+import { getClientDropdownList } from "../../helpers/api_helper";
+import axios from "axios";
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
-import InvoiceForm from "./InvoiceForm";
-import { getClientDropdownList, getInvoiceStatusDropdownList } from "../../helpers/api_helper";
+import PaymentForm from "./PaymentForm";
 
-const INVOICE_LIST_SORT_COLUMN = "invoiceNumber";
-const INVOICE_LIST_SORT_DIR = "asc";
+const PAYMENT_LIST_SORT_COLUMN = "paymentId";
+const PAYMENT_LIST_SORT_DIR = "asc";
 
-const Invoice = () => {
-  document.title = "Invoice | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+const Payment = () => {
+  document.title = "Payment | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
-  const InvoiceId = Number(params.id || 0);
-  const isFormPage = location.pathname.startsWith("/Invoice/manage");
-  const isEditMode = isFormPage && InvoiceId > 0;
+  const paymentId = Number(params.id || 0);
+  const isFormPage = location.pathname.startsWith("/Payment/manage");
+  const isEditMode = isFormPage && paymentId > 0;
 
   // List state
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(0);
   const [error, setError] = useState("");
   const [rows, setRows] = useState([]);
-  const [sortColumn, setSortColumn] = useState(INVOICE_LIST_SORT_COLUMN);
-  const [sortColumnDir, setSortColumnDir] = useState(INVOICE_LIST_SORT_DIR);
+  const [sortColumn, setSortColumn] = useState(PAYMENT_LIST_SORT_COLUMN);
+  const [sortColumnDir, setSortColumnDir] = useState(PAYMENT_LIST_SORT_DIR);
 
   // Form state
   const [formLoading, setFormLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
-  const [formTitle, setFormTitle] = useState(isEditMode ? "Edit Invoice" : "Create Invoice");
+  const [formTitle, setFormTitle] = useState(isEditMode ? "Edit Payment" : "Create Payment");
   const [formData, setFormData] = useState({
-    invoiceId: 0,
+    paymentId: 0,
     clientId: 0,
-    invoiceNumber: "",
-    invoiceDate: "",
-    dueDate: "",
-    subTotal: 0,
-    discount: 0,
-    finalAmount: 0,
-    status: "",
+    invoiceId: 0,
+    paymentDate: "",
+    amount: 0,
+    paymentMode: "",
+    referenceNo: "",
     notes: ""
   });
 
-  // Client dropdown state
+  // Dropdown states
   const [clientList, setClientList] = useState([]);
   const [clientListLoading, setClientListLoading] = useState(false);
-
-  // Status dropdown state
-  const [statusList, setStatusList] = useState([]);
-  const [statusListLoading, setStatusListLoading] = useState(false);
+  const [invoiceList, setInvoiceList] = useState([]);
+  const [invoiceListLoading, setInvoiceListLoading] = useState(false);
+  const [paymentModeList, setPaymentModeList] = useState([]);
+  const [paymentModeListLoading, setPaymentModeListLoading] = useState(false);
 
   useEffect(() => {
     if (isFormPage) {
@@ -68,26 +67,38 @@ const Invoice = () => {
         .catch(() => setClientList([]))
         .finally(() => setClientListLoading(false));
 
-      setStatusListLoading(true);
-      getInvoiceStatusDropdownList()
+      setInvoiceListLoading(true);
+      axios.get("/Dropdown/InvoiceList")
         .then((res) => {
-          if (res.isSuccess && Array.isArray(res.data)) {
-            setStatusList(res.data);
+          if (res.data && res.data.isSuccess && Array.isArray(res.data.data)) {
+            setInvoiceList(res.data.data);
           } else {
-            setStatusList([]);
+            setInvoiceList([]);
           }
         })
-        .catch(() => setStatusList([]))
-        .finally(() => setStatusListLoading(false));
+        .catch(() => setInvoiceList([]))
+        .finally(() => setInvoiceListLoading(false));
+
+      setPaymentModeListLoading(true);
+      axios.get("/Dropdown/LovMaster", { params: { Lov_column: "PaymentMode" } })
+        .then((res) => {
+          if (res.data && res.data.isSuccess && Array.isArray(res.data.data)) {
+            setPaymentModeList(res.data.data);
+          } else {
+            setPaymentModeList([]);
+          }
+        })
+        .catch(() => setPaymentModeList([]))
+        .finally(() => setPaymentModeListLoading(false));
     }
   }, [isFormPage]);
 
   // List logic
-  const loadInvoices = async () => {
+  const loadPayments = async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await getInvoicesPages({
+      const response = await getPaymentsPages({
         start: 0,
         length: 10,
         sortColumnDir,
@@ -96,17 +107,17 @@ const Invoice = () => {
         setRows(response.data.data);
       } else {
         setRows([]);
-        setError(response.message || "Failed to load Invoices.");
+        setError(response.message || "Failed to load Payments.");
       }
     } catch (err) {
-      setError("Error loading Invoices.");
+      setError("Error loading Payments.");
     }
     setLoading(false);
   };
 
   useEffect(() => {
     if (!isFormPage) {
-      loadInvoices();
+      loadPayments();
     }
   }, [isFormPage, sortColumn, sortColumnDir]);
 
@@ -117,46 +128,44 @@ const Invoice = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/Invoice/manage/${id}`);
+    navigate(`/Payment/manage/${id}`);
   };
 
   const handleDelete = async (id) => {
-    if (await showConfirm("Are you sure you want to delete this Invoice?")) {
+    if (await showConfirm("Are you sure you want to delete this Payment?")) {
       setDeletingId(id);
       try {
-        const response = await deleteInvoiceById(id);
+        const response = await deletePaymentById(id);
         if (response.isSuccess) {
-          await showSuccess(response.message || "Invoice deleted successfully.");
-          setTimeout(() => loadInvoices(), 600);
+          await showSuccess(response.message || "Payment deleted successfully.");
+          setTimeout(() => loadPayments(), 600);
         } else {
-          await showError(response.message || "Failed to delete Invoice.");
+          await showError(response.message || "Failed to delete Payment.");
         }
       } catch (err) {
-        await showError("Error deleting Invoice.");
+        await showError("Error deleting Payment.");
       }
       setDeletingId(0);
     }
   };
 
   const handleAdd = () => {
-    navigate("/Invoice/manage");
+    navigate("/Payment/manage");
   };
 
   // Form logic
   useEffect(() => {
     if (!isFormPage) return;
     if (!isEditMode) {
-      setFormTitle("Create Invoice");
+      setFormTitle("Create Payment");
       setFormData({
-        invoiceId: 0,
+        paymentId: 0,
         clientId: 0,
-        invoiceNumber: "",
-        invoiceDate: "",
-        dueDate: "",
-        subTotal: 0,
-        discount: 0,
-        finalAmount: 0,
-        status: "",
+        invoiceId: 0,
+        paymentDate: "",
+        amount: 0,
+        paymentMode: "",
+        referenceNo: "",
         notes: ""
       });
       setFormError("");
@@ -165,22 +174,18 @@ const Invoice = () => {
     }
     setFormLoading(true);
     setFormError("");
-    getInvoiceById(InvoiceId)
+    getPaymentById(paymentId)
       .then((response) => {
         if (response?.isSuccess && response?.data) {
-          setFormTitle("Edit Invoice");
-          setFormData({
-            ...response.data,
-            invoiceDate: response.data.invoiceDate ? response.data.invoiceDate.substring(0, 10) : "",
-            dueDate: response.data.dueDate ? response.data.dueDate.substring(0, 10) : "",
-          });
+          setFormTitle("Edit Payment");
+          setFormData({ ...response.data });
         } else {
-          setFormError(response?.message || "Failed to load Invoice");
+          setFormError(response?.message || "Failed to load Payment");
         }
       })
-      .catch((err) => setFormError(err?.message || err || "Failed to load Invoice"))
+      .catch((err) => setFormError(err?.message || err || "Failed to load Payment"))
       .finally(() => setFormLoading(false));
-  }, [isFormPage, isEditMode, InvoiceId]);
+  }, [isFormPage, isEditMode, paymentId]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -191,21 +196,16 @@ const Invoice = () => {
     setFormError("");
     setSaving(true);
     try {
-      const payload = {
-        ...formData,
-        subTotal: formData.subTotal === "" || formData.subTotal === null ? 0 : Number(formData.subTotal),
-        discount: formData.discount === "" || formData.discount === null ? 0 : Number(formData.discount),
-        finalAmount: formData.finalAmount === "" || formData.finalAmount === null ? 0 : Number(formData.finalAmount)
-      };
-      const response = await saveInvoice(payload);
+      const payload = { ...formData };
+      const response = await savePayment(payload);
       if (response?.statusCode === 1 || response?.isSuccess) {
         await showSuccess(response?.message || "Saved successfully");
-        setTimeout(() => navigate("/Invoice"), 600);
+        setTimeout(() => navigate("/Payment"), 600);
         return;
       }
-      throw new Error(response?.message || "Failed to save Invoice");
+      throw new Error(response?.message || "Failed to save Payment");
     } catch (err) {
-      const errorMessage = err?.message || err || "Failed to save Invoice";
+      const errorMessage = err?.message || err || "Failed to save Payment";
       await showError(errorMessage);
       setFormError(errorMessage);
     } finally {
@@ -213,7 +213,6 @@ const Invoice = () => {
     }
   };
 
-  // Handler for react-select client dropdown
   const handleClientChange = (option) => {
     setFormData(prev => ({
       ...prev,
@@ -221,25 +220,29 @@ const Invoice = () => {
     }));
   };
 
-  // Handler for react-select status dropdown
-  const handleStatusChange = (option) => {
+  const handleInvoiceChange = (option) => {
     setFormData(prev => ({
       ...prev,
-      status: option ? option.value : "",
+      invoiceId: option ? option.value : "",
     }));
   };
 
-  // Table data
+  const handlePaymentModeChange = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      paymentMode: option ? option.value : "",
+    }));
+  };
+
   const data = useMemo(() => {
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
-          { label: "Invoice Number", field: "invoiceNumber", sort: "asc" },
           { label: "Client Name", field: "clientName", sort: "asc" },
-          { label: "Invoice Date", field: "invoiceDate", sort: "asc" },
-          { label: "Due Date", field: "dueDate", sort: "asc" },
-          { label: "Final Amount", field: "finalAmount", sort: "asc" },
-          { label: "Status", field: "statusName", sort: "asc" },
+          { label: "Invoice Number", field: "invoiceNumber", sort: "asc" },
+          { label: "Payment Date", field: "paymentDate", sort: "asc" },
+          { label: "Amount", field: "amount", sort: "asc" },
+          { label: "Payment Mode", field: "paymentMode", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
         ],
         onSort: handleSortChange,
@@ -247,13 +250,12 @@ const Invoice = () => {
         sortColumnDir,
       }),
       rows: rows.map(item => ({
-        invoiceId: item.invoiceId,
-        invoiceNumber: item.invoiceNumber || "",
+        paymentId: item.paymentId,
         clientName: item.clientName || "",
-        invoiceDate: item.invoiceDate ? new Date(item.invoiceDate).toLocaleDateString() : "",
-        dueDate: item.dueDate ? new Date(item.dueDate).toLocaleDateString() : "",
-        finalAmount: item.finalAmount ?? 0,
-        statusName: item.statusName || "",
+        invoiceNumber: item.invoiceNumber || "",
+        paymentDate: item.paymentDate ? new Date(item.paymentDate).toLocaleDateString() : "",
+        amount: item.amount ?? 0,
+        paymentMode: item.paymentMode || "",
         action: (
           <div className="d-flex gap-2 justify-content-center">
             <Button
@@ -261,7 +263,7 @@ const Invoice = () => {
               className="p-0 text-primary"
               title="Edit"
               type="button"
-              onClick={() => handleEdit(item.invoiceId)}
+              onClick={() => handleEdit(item.paymentId)}
             >
               <i className="mdi mdi-pencil font-size-18" />
             </Button>
@@ -270,10 +272,10 @@ const Invoice = () => {
               className="p-0 text-danger"
               title="Delete"
               type="button"
-              disabled={deletingId === item.invoiceId}
-              onClick={() => handleDelete(item.invoiceId)}
+              disabled={deletingId === item.paymentId}
+              onClick={() => handleDelete(item.paymentId)}
             >
-              {deletingId === item.invoiceId ? (
+              {deletingId === item.paymentId ? (
                 <Spinner size="sm" />
               ) : (
                 <i className="mdi mdi-trash-can-outline font-size-18" />
@@ -290,7 +292,7 @@ const Invoice = () => {
       <Row>
         <Col lg={12}>
           {isFormPage ? (
-            formLoading || clientListLoading ? (
+            formLoading || clientListLoading || invoiceListLoading || paymentModeListLoading ? (
               <Card>
                 <CardBody>
                   <div className="text-center py-5">
@@ -299,7 +301,7 @@ const Invoice = () => {
                 </CardBody>
               </Card>
             ) : (
-              <InvoiceForm
+              <PaymentForm
                 title={formTitle}
                 formError={formError}
                 formData={formData}
@@ -307,19 +309,21 @@ const Invoice = () => {
                 saving={saving}
                 onChange={handleFormChange}
                 onSubmit={handleFormSubmit}
-                onClose={() => navigate("/Invoice")}
+                onClose={() => navigate("/Payment")}
                 clientList={clientList}
                 onClientChange={handleClientChange}
-                statusList={statusList}
-                onStatusChange={handleStatusChange}
+                invoiceList={invoiceList}
+                onInvoiceChange={handleInvoiceChange}
+                paymentModeList={paymentModeList}
+                onPaymentModeChange={handlePaymentModeChange}
               />
             )
           ) : (
             <Card>
               <CardBody>
                 <div className="d-flex justify-content-end mb-3">
-                  <Button color="primary" type="button" onClick={() => navigate("/Invoice/manage")}> 
-                    <i className="mdi mdi-plus me-1" />Add Invoice
+                  <Button color="primary" type="button" onClick={handleAdd}>
+                    <i className="mdi mdi-plus me-1" />Add Payment
                   </Button>
                 </div>
                 {error ? <Alert color="danger">{error}</Alert> : null}
@@ -339,4 +343,4 @@ const Invoice = () => {
   );
 };
 
-export default Invoice;
+export default Payment;

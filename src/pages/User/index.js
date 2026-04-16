@@ -22,7 +22,7 @@ const Users = props => {
   const location = useLocation()
   const params = useParams()
   const userId = Number(params.id || 0)
-  const isFormPage = location.pathname.startsWith("/users/manage")
+  const isFormPage = location.pathname.startsWith("/User/manage")
   const isEditMode = isFormPage && userId > 0
 
   const [loading, setLoading] = useState(false)
@@ -246,7 +246,7 @@ const handleExportPdf = async () => {
               className="p-0 text-primary"
               title="Edit"
               type="button"
-              onClick={() => navigate(`/users/manage/${item.id}`)}
+              onClick={() => navigate(`/User/manage/${item.id}`)}
             >
               <i className="mdi mdi-pencil font-size-18" />
             </Button>
@@ -332,7 +332,7 @@ const handleExportPdf = async () => {
       const response = await saveUser(payload)
       if (response?.statusCode === 1) {
         await showSuccess(response?.message || "Saved successfully")
-        navigate("/users")
+        navigate("/User")
         return
       }
 
@@ -370,14 +370,14 @@ const handleExportPdf = async () => {
                 onChange={handleChange}
                 onRoleChange={handleRoleChange}
                 onSubmit={handleSubmit}
-                onClose={() => navigate("/users")}
+                onClose={() => navigate("/User")}
               />
             )
           ) : (
             <Card>
               <CardBody>
                 <div className="d-flex justify-content-end mb-3">
-                  <Button color="primary" type="button" onClick={() => navigate("/users/manage")}>
+                  <Button color="primary" type="button" onClick={() => navigate("/User/manage")}> 
                      <i className="mdi mdi-plus me-1" />Add User
                   </Button>
                   {/* <Button color="success" className="me-2" onClick={handleExport}>

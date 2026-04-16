@@ -166,3 +166,8 @@ export async function getClientDropdownList() {
 export async function getInvoiceStatusDropdownList() {
   return await get("/Dropdown/LovMaster?Lov_column=InvoiceStatus");
 }
+
+export async function getAdvancePaymentStatusDropdownList() {
+  return await get("/Dropdown/LovMaster?Lov_column=AdvancePaymentStatus");
+}
+

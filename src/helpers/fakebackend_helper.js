@@ -89,6 +89,120 @@ const deleteClientById = async id => {
 }
 
 
+//AdvancePayment API helpers
+const getAdvancePaymentsPages = async (params = {}) => {
+  try {
+    return await get("/AdvancePayment/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "AdvancePayments API call failed"
+    )
+  }
+}
+
+const getAdvancePaymentById = async id => {
+  try {
+    return await get("/AdvancePayment/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "AdvancePayment fetch by id failed"
+    )
+  }
+}
+
+const saveAdvancePayment = async payload => {
+  try {
+    return await post("/AdvancePayment/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "AdvancePayment save failed"
+    )
+  }
+}
+
+const deleteAdvancePaymentById = async id => {
+  try {
+    return await del("/AdvancePayment/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "AdvancePayment delete failed"
+    )
+  }
+}
+
+// Payment API helpers
+const getPaymentsPages = async (params = {}) => {
+  try {
+    return await get("/Payment/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payments API call failed"
+    )
+  }
+}
+
+const getPaymentById = async id => {
+  try {
+    return await get("/Payment/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payment fetch by id failed"
+    )
+  }
+}
+
+const savePayment = async payload => {
+  try {
+    return await post("/Payment/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payment save failed"
+    )
+  }
+}
+
+const deletePaymentById = async id => {
+  try {
+    return await del("/Payment/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payment delete failed"
+    )
+  }
+}
+
+
+
+
+
 //client API helpers
 const getInvoicesPages = async (params = {}) => {
   try {
@@ -729,4 +843,9 @@ export {
   getInvoiceById,
   saveInvoice,
   deleteInvoiceById,
+  getAdvancePaymentsPages,getAdvancePaymentById,saveAdvancePayment, deleteAdvancePaymentById,
+  getPaymentsPages,
+  getPaymentById,
+  savePayment,
+  deletePaymentById,
 }

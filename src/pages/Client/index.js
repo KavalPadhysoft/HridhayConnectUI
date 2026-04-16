@@ -16,7 +16,7 @@ const Client = () => {
   const location = useLocation();
   const params = useParams();
   const clientId = Number(params.id || 0);
-  const isFormPage = location.pathname.startsWith("/clients/manage");
+  const isFormPage = location.pathname.startsWith("/Client/manage");
   const isEditMode = isFormPage && clientId > 0;
 
   // List state
@@ -77,7 +77,7 @@ const Client = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/clients/manage/${id}`);
+    navigate(`/Client/manage/${id}`);
   };
 
   const handleDelete = async (id) => {
@@ -99,7 +99,7 @@ const Client = () => {
   };
 
   const handleAdd = () => {
-    navigate("/clients/manage");
+    navigate("/Client/manage");
   };
 
   // Form logic
@@ -147,7 +147,7 @@ const Client = () => {
       const response = await saveClient(formData);
       if (response?.isSuccess) {
         await showSuccess(response?.message || "Saved successfully");
-        navigate("/clients");
+        navigate("/Client");
         return;
       }
       throw new Error(response?.message || "Failed to save client");
@@ -239,14 +239,14 @@ const Client = () => {
                 saving={saving}
                 onChange={handleFormChange}
                 onSubmit={handleFormSubmit}
-                onClose={() => navigate("/clients")}
+                onClose={() => navigate("/Client")}
               />
             )
           ) : (
             <Card>
               <CardBody>
                 <div className="d-flex justify-content-end mb-3">
-                  <Button color="primary" type="button" onClick={() => navigate("/clients/manage")}> 
+                  <Button color="primary" type="button" onClick={() => navigate("/Client/manage")}> 
                     <i className="mdi mdi-plus me-1" />Add Client
                   </Button>
                 </div>

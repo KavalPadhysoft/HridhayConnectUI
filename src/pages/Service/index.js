@@ -16,7 +16,7 @@ const Service = () => {
   const location = useLocation();
   const params = useParams();
   const ServiceId = Number(params.id || 0);
-  const isFormPage = location.pathname.startsWith("/Services/manage");
+  const isFormPage = location.pathname.startsWith("/Service/manage");
   const isEditMode = isFormPage && ServiceId > 0;
 
   // List state
@@ -74,7 +74,7 @@ const Service = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/Services/manage/${id}`);
+    navigate(`/Service/manage/${id}`);
   };
 
   const handleDelete = async (id) => {
@@ -96,7 +96,7 @@ const Service = () => {
   };
 
   const handleAdd = () => {
-    navigate("/Services/manage");
+    navigate("/Service/manage");
   };
 
   // Form logic
@@ -147,7 +147,7 @@ const Service = () => {
       console.log("Service save response:", response);
       if (response?.statusCode === 1 || response?.isSuccess) {
         await showSuccess(response?.message || "Saved successfully");
-        setTimeout(() => navigate("/Services"), 600);
+        setTimeout(() => navigate("/Service"), 600);
         return;
       }
       throw new Error(response?.message || "Failed to save Service");
@@ -234,14 +234,14 @@ const Service = () => {
                 saving={saving}
                 onChange={handleFormChange}
                 onSubmit={handleFormSubmit}
-                onClose={() => navigate("/Services")}
+                onClose={() => navigate("/Service")}
               />
             )
           ) : (
             <Card>
               <CardBody>
                 <div className="d-flex justify-content-end mb-3">
-                  <Button color="primary" type="button" onClick={() => navigate("/Services/manage")}> 
+                  <Button color="primary" type="button" onClick={() => navigate("/Service/manage")}> 
                     <i className="mdi mdi-plus me-1" />Add Service
                   </Button>
                 </div>

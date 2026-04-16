@@ -31,6 +31,8 @@ import Property from "../pages/Property"
 import Client from "../pages/Client"
 import Service from "../pages/Service"
 import Invoice from "../pages/Invoice"
+import AdvancePayment from "../pages/AdvancePayment"
+import Payment from "../pages/Payment"
 
 
 //Extra Pages
@@ -46,31 +48,25 @@ const userRoutes = [
   // // //profile
   { path: "/profile", component: <MyProfile /> },
 
-  { path: "/users", component: <Users /> },
-  { path: "/users/manage", component: <Users /> },
-  { path: "/users/manage/:id", component: <Users /> },
+  { path: "/User", component: <Users /> },
+  { path: "/User/manage", component: <Users /> },
+  { path: "/User/manage/:id", component: <Users /> },
 
-  { path: "/roles", component: <Roles /> },
-  { path: "/roles/manage", component: <Roles /> },
-  { path: "/roles/manage/:id", component: <Roles /> },
+  { path: "/Role", component: <Roles /> },
+  { path: "/Role/manage", component: <Roles /> },
+  { path: "/Role/manage/:id", component: <Roles /> },
 
   { path: "/menu", component: <Menus /> },
   { path: "/menus", component: <Menus /> },
   { path: "/menus/manage", component: <Menus /> },
   { path: "/menus/manage/:id", component: <Menus /> },
 
-  { path: "/lov", component: <Lov /> },
-  { path: "/lovs", component: <Lov /> },
-  { path: "/lov/manage", component: <Lov /> },
-  { path: "/lovs/manage", component: <Lov /> },
-  { path: "/lov/manage/:lovColumn", component: <Lov /> },
-  { path: "/lovs/manage/:lovColumn", component: <Lov /> },
-  { path: "/lov/details/:lovColumn", component: <Lov /> },
-  { path: "/lovs/details/:lovColumn", component: <Lov /> },
-  { path: "/lov/details/:lovColumn/manage", component: <Lov /> },
-  { path: "/lovs/details/:lovColumn/manage", component: <Lov /> },
-  { path: "/lov/details/:lovColumn/manage/:lovCode", component: <Lov /> },
-  { path: "/lovs/details/:lovColumn/manage/:lovCode", component: <Lov /> },
+    { path: "/Lov", component: <Lov /> },
+    { path: "/Lov/manage", component: <Lov /> },
+    { path: "/Lov/manage/:lovColumn", component: <Lov /> },
+    { path: "/Lov/details/:lovColumn", component: <Lov /> },
+    { path: "/Lov/details/:lovColumn/manage", component: <Lov /> },
+    { path: "/Lov/details/:lovColumn/manage/:lovCode", component: <Lov /> },
   { path: "/pages-blank", component: <PagesBlank /> },
   { path: "/userdemo", component: <UserDemo /> },
   { path: "/userdemo/manage", component: <UserDemo /> },
@@ -82,19 +78,30 @@ const userRoutes = [
   { path: "/propertys", component: <Property /> },
 
   // Client routes
-  { path: "/clients", component: <Client /> },
-  { path: "/clients/manage", component: <Client /> },
-  { path: "/clients/manage/:id", component: <Client /> },
+  { path: "/Client", component: <Client /> },
+  { path: "/Client/manage", component: <Client /> },
+  { path: "/Client/manage/:id", component: <Client /> },
 
-    // Services routes
-  { path: "/Services", component: <Service /> },
-  { path: "/Services/manage", component: <Service /> },
-  { path: "/Services/manage/:id", component: <Service /> },
+    // Service routes
+    { path: "/Service", component: <Service /> },
+    { path: "/Service/manage", component: <Service /> },
+    { path: "/Service/manage/:id", component: <Service /> },
 
   // Invoice routes
-  { path: "/Invoices", component: <Invoice /> },
-  { path: "/Invoices/manage", component: <Invoice /> },
-  { path: "/Invoices/manage/:id", component: <Invoice /> },
+  { path: "/Invoice", component: <Invoice /> },
+  { path: "/Invoice/manage", component: <Invoice /> },
+  { path: "/Invoice/manage/:id", component: <Invoice /> },
+
+  // AdvancePayment routes
+  { path: "/AdvancePayment", component: <AdvancePayment /> },
+  { path: "/AdvancePayment/manage", component: <AdvancePayment /> },
+  { path: "/AdvancePayment/manage/:id", component: <AdvancePayment /> },
+
+
+  // Payment routes (singular and plural, both supported)
+  { path: "/Payment", component: <Payment /> },
+  { path: "/Payment/manage", component: <Payment /> },
+  { path: "/Payment/manage/:id", component: <Payment /> },
 
   // this route should be at the end of all other routes
   {
