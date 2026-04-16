@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { del, get, post } from "./api_helper";
 import * as url from "./url_helper";
@@ -88,6 +87,64 @@ const deleteClientById = async id => {
     )
   }
 }
+
+
+//client API helpers
+const getInvoicesPages = async (params = {}) => {
+  try {
+    return await get("/Invoice/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Invoice API call failed"
+    )
+  }
+}
+
+const getInvoiceById = async id => {
+  try {
+    return await get("/Invoice/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Invoice fetch by id failed"
+    )
+  }
+}
+
+const saveInvoice = async payload => {
+  try {
+    return await post("/Invoice/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Invoice save failed"
+    )
+  }
+}
+
+const deleteInvoiceById = async id => {
+  try {
+    return await del("/Invoice/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Invoice delete failed"
+    )
+  }
+}
+
+
 
 //Services API helpers
 const getServicesPages = async (params = {}) => {
@@ -668,4 +725,8 @@ export {
   getServiceById,
   saveService,
   deleteServiceById,
+  getInvoicesPages,
+  getInvoiceById,
+  saveInvoice,
+  deleteInvoiceById,
 }

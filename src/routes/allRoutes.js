@@ -30,6 +30,7 @@ import Property from "../pages/Property"
 
 import Client from "../pages/Client"
 import Service from "../pages/Service"
+import Invoice from "../pages/Invoice"
 
 
 //Extra Pages
@@ -89,6 +90,11 @@ const userRoutes = [
   { path: "/Services", component: <Service /> },
   { path: "/Services/manage", component: <Service /> },
   { path: "/Services/manage/:id", component: <Service /> },
+
+  // Invoice routes
+  { path: "/Invoices", component: <Invoice /> },
+  { path: "/Invoices/manage", component: <Invoice /> },
+  { path: "/Invoices/manage/:id", component: <Invoice /> },
 
   // this route should be at the end of all other routes
   {

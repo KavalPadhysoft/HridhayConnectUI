@@ -157,3 +157,12 @@ export async function saveOrUpdateProperty(formData) {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then(res => res.data);
 }
+
+// Dropdown API helpers
+export async function getClientDropdownList() {
+  return await get("/Dropdown/ClientList");
+}
+
+export async function getInvoiceStatusDropdownList() {
+  return await get("/Dropdown/LovMaster?Lov_column=InvoiceStatus");
+}
