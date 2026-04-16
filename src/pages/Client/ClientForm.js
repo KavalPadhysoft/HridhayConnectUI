@@ -42,7 +42,7 @@ const ClientForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Email</Label>
+              <Label>Email<span style={{ color: "red" }}>*</span></Label>
               <Input
                 name="email"
                 value={formData.email}
@@ -57,6 +57,15 @@ const ClientForm = ({
                 value={formData.phone}
                 onChange={onChange}
                 placeholder="Enter phone"
+                maxLength={10}
+                inputMode="numeric"
+                pattern="^[0-9]{10}$"
+                title="Phone number must be exactly 10 digits."
+                onKeyPress={e => {
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </Col>
             <Col md={6} className="display-non"> 
