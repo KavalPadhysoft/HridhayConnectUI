@@ -7,7 +7,7 @@ import { getAdvancePaymentsPages, deleteAdvancePaymentById, getAdvancePaymentByI
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 import AdvancePaymentForm from "./AdvancePaymentForm";
 import axios from "axios";
-import { getClientDropdownList, getAdvancePaymentStatusDropdownList } from "../../helpers/api_helper";
+import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_helper";
 
 const ADVANCE_PAYMENT_LIST_SORT_COLUMN = "id";
 const ADVANCE_PAYMENT_LIST_SORT_DIR = "asc";
@@ -65,7 +65,7 @@ const AdvancePayment = () => {
         .finally(() => setClientListLoading(false));
 
       setStatusListLoading(true);
-      getAdvancePaymentStatusDropdownList()
+      getLovDropdownList("AdvancePaymentStatus")
         .then((res) => {
           if (res.isSuccess && Array.isArray(res.data)) {
             setStatusList(res.data);

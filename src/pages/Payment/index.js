@@ -5,7 +5,7 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import { getPaymentsPages, deletePaymentById, getPaymentById, savePayment } from "../../helpers/fakebackend_helper";
 import { getClientDropdownList } from "../../helpers/api_helper";
-import axios from "axios";
+import { getLovDropdownList } from "../../helpers/api_helper";
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 import PaymentForm from "./PaymentForm";
 
@@ -68,7 +68,7 @@ const Payment = () => {
         .finally(() => setClientListLoading(false));
 
       setInvoiceListLoading(true);
-      axios.get("/Dropdown/InvoiceList")
+      getClientDropdownList("/Dropdown/InvoiceList")
         .then((res) => {
           if (res.data && res.data.isSuccess && Array.isArray(res.data.data)) {
             setInvoiceList(res.data.data);
@@ -80,10 +80,10 @@ const Payment = () => {
         .finally(() => setInvoiceListLoading(false));
 
       setPaymentModeListLoading(true);
-      axios.get("/Dropdown/LovMaster", { params: { Lov_column: "PaymentMode" } })
+      getLovDropdownList("PaymentMode")
         .then((res) => {
-          if (res.data && res.data.isSuccess && Array.isArray(res.data.data)) {
-            setPaymentModeList(res.data.data);
+          if (res.isSuccess && Array.isArray(res.data)) {
+            setPaymentModeList(res.data);
           } else {
             setPaymentModeList([]);
           }

@@ -6,7 +6,7 @@ import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../.
 import { getInvoicesPages, deleteInvoiceById, getInvoiceById, saveInvoice } from "../../helpers/fakebackend_helper";
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 import InvoiceForm from "./InvoiceForm";
-import { getClientDropdownList, getInvoiceStatusDropdownList } from "../../helpers/api_helper";
+import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_helper";
 
 const INVOICE_LIST_SORT_COLUMN = "invoiceNumber";
 const INVOICE_LIST_SORT_DIR = "asc";
@@ -69,7 +69,7 @@ const Invoice = () => {
         .finally(() => setClientListLoading(false));
 
       setStatusListLoading(true);
-      getInvoiceStatusDropdownList()
+      getLovDropdownList("InvoiceStatus")
         .then((res) => {
           if (res.isSuccess && Array.isArray(res.data)) {
             setStatusList(res.data);

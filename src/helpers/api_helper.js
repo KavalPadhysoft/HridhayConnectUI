@@ -163,11 +163,8 @@ export async function getClientDropdownList() {
   return await get("/Dropdown/ClientList");
 }
 
-export async function getInvoiceStatusDropdownList() {
-  return await get("/Dropdown/LovMaster?Lov_column=InvoiceStatus");
-}
-
-export async function getAdvancePaymentStatusDropdownList() {
-  return await get("/Dropdown/LovMaster?Lov_column=AdvancePaymentStatus");
+// Generic Lov dropdown helper
+export async function getLovDropdownList(lovColumn) {
+  return await get(`/Dropdown/LovMaster?Lov_column=${encodeURIComponent(lovColumn)}`);
 }
 
