@@ -1,11 +1,8 @@
+
 import React , {useEffect} from "react"
-
 import { connect } from "react-redux";
-
-
-
-//Import Action to copy breadcrumb items from local state to redux state
 import { setBreadcrumbItems } from "../../store/actions";
+import PendingInvoicePaymentTable from "./PendingInvoicePaymentTable";
 
 const Dashboard = (props) => {
 
@@ -25,8 +22,15 @@ const Dashboard = (props) => {
 
   return (
     <React.Fragment>
-
-      
+      <div className="container-fluid">
+        {/* Pending Invoice Payment Table */}
+        <div className="row">
+          <div className="col-12">
+            <PendingInvoicePaymentTable />
+            
+          </div>
+        </div>
+      </div>
     </React.Fragment>
   )
 }

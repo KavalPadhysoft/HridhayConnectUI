@@ -210,6 +210,13 @@ const SidebarContent = props => {
       <SimpleBar style={{ maxHeight: "100%" }} ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
+            {/* Dashboard static menu item */}
+            <li>
+              <Link to="/dashboard" className="waves-effect">
+                <i className="mdi mdi-view-dashboard"></i>
+                <span>{props.t("Dashboard")}</span>
+              </Link>
+            </li>
             {/* <li className="menu-title">{props.t("Main")} </li> */}
 
             {dynamicMenu.length > 0 && (

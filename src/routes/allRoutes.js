@@ -33,6 +33,7 @@ import Service from "../pages/Service"
 import Invoice from "../pages/Invoice"
 import AdvancePayment from "../pages/AdvancePayment"
 import Payment from "../pages/Payment"
+import PaymentFollowUp from "../pages/PaymentFollowUp"
 
 
 //Extra Pages
@@ -102,6 +103,10 @@ const userRoutes = [
   { path: "/Payment", component: <Payment /> },
   { path: "/Payment/manage", component: <Payment /> },
   { path: "/Payment/manage/:id", component: <Payment /> },
+
+  // PaymentFollowUp routes
+  { path: "/PaymentFollowUp", component: <PaymentFollowUp /> },
+  { path: "/PaymentFollowUp/manage/:id", component: <PaymentFollowUp /> },
 
   // this route should be at the end of all other routes
   {
