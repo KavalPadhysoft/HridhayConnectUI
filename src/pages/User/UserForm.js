@@ -84,14 +84,12 @@ const UserForm = ({
                 inputMode="numeric"
                 value={formData.mobileNumber}
                 onChange={e => {
-                  // Only allow numbers
                   const value = e.target.value.replace(/[^0-9]/g, "");
                   onChange({
-                    ...e,
                     target: {
-                      ...e.target,
+                      name: "mobileNumber",
                       value,
-                    },
+                    }
                   });
                 }}
                 placeholder="Enter mobile number"
