@@ -18,7 +18,7 @@ const Dashboard = (props) => {
   ]
 
   useEffect(() => {
-    props.setBreadcrumbItems('Dashboard' , breadcrumbItems)
+    props.setBreadcrumbItems('Dashboard')
   },)
 
  

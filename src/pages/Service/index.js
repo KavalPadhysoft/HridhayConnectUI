@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
+
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
+
+
+
 import { useNavigate, useLocation, useParams } from "react-router-dom"
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common"
 import { getServicesPages, deleteServiceById, getServiceById, saveService } from "../../helpers/fakebackend_helper"
@@ -10,7 +16,7 @@ import ServiceForm from "./ServiceForm"
 const Service_LIST_SORT_COLUMN = "ServiceName"
 const Service_LIST_SORT_DIR = "asc"
 
-const Service = () => {
+const Service = props => {
   document.title = "Service | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,6 +66,10 @@ const Service = () => {
     }
     setLoading(false);
   };
+
+ useEffect(() => {
+    props.setBreadcrumbItems("Service")
+  }, [])
 
   useEffect(() => {
     if (!isFormPage) {
@@ -262,4 +272,6 @@ const Service = () => {
   );
 }
 
-export default Service
+
+export default connect(null, { setBreadcrumbItems })(Service);
+

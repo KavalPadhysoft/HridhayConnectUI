@@ -8,10 +8,16 @@ import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService
 import InvoiceForm from "./InvoiceForm";
 import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_helper";
 
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
+
+
+import { getServiceDropdownList } from "../../helpers/api_helper";
+
 const INVOICE_LIST_SORT_COLUMN = "invoiceNumber";
 const INVOICE_LIST_SORT_DIR = "asc";
 
-const Invoice = () => {
+const Invoice = props => {
   document.title = "Invoice | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,6 +60,13 @@ const Invoice = () => {
   const [statusList, setStatusList] = useState([]);
   const [statusListLoading, setStatusListLoading] = useState(false);
 
+  // Service dropdown state
+  const [serviceList, setServiceList] = useState([]);
+  const [serviceListLoading, setServiceListLoading] = useState(false);
+
+  // Invoice items state (moved from InvoiceForm)
+  const [invoiceItems, setInvoiceItems] = useState([]);
+
   useEffect(() => {
     if (isFormPage) {
       setClientListLoading(true);
@@ -79,6 +92,25 @@ const Invoice = () => {
         })
         .catch(() => setStatusList([]))
         .finally(() => setStatusListLoading(false));
+
+      // Fetch service list for dropdown (new API)
+      setServiceListLoading(true);
+      getServiceDropdownList()
+        .then((res) => {
+          if (res.isSuccess && Array.isArray(res.data)) {
+            // Map API data to expected format for InvoiceForm
+            setServiceList(res.data.map(item => ({
+              serviceId: item.id,
+              ServiceName: item.name,
+              Rate: item.defaultPrice,
+              Description: item.name,
+            })));
+          } else {
+            setServiceList([]);
+          }
+        })
+        .catch(() => setServiceList([]))
+        .finally(() => setServiceListLoading(false));
     }
   }, [isFormPage]);
 
@@ -103,6 +135,11 @@ const Invoice = () => {
     }
     setLoading(false);
   };
+
+   useEffect(() => {
+      props.setBreadcrumbItems("Invoice")
+    }, [])
+
 
   useEffect(() => {
     if (!isFormPage) {
@@ -161,6 +198,21 @@ const Invoice = () => {
       });
       setFormError("");
       setFormLoading(false);
+      // Auto-add one invoice item with first service if available
+      if (serviceList && serviceList.length > 0) {
+        const firstService = serviceList[0];
+        setInvoiceItems([{
+          serviceId: firstService.serviceId,
+          ServiceName: firstService.ServiceName,
+          ItemType: "Service",
+          Description: firstService.Description || "",
+          Quantity: 1,
+          Rate: firstService.Rate,
+          Amount: firstService.Rate || 0,
+        }]);
+      } else {
+        setInvoiceItems([]);
+      }
       return;
     }
     setFormLoading(true);
@@ -169,18 +221,37 @@ const Invoice = () => {
       .then((response) => {
         if (response?.isSuccess && response?.data) {
           setFormTitle("Edit Invoice");
-          setFormData({
-            ...response.data,
-            invoiceDate: response.data.invoiceDate ? response.data.invoiceDate.substring(0, 10) : "",
-            dueDate: response.data.dueDate ? response.data.dueDate.substring(0, 10) : "",
-          });
+          // If API returns { invoice, items }
+          if (response.data.invoice && response.data.items) {
+            setFormData({
+              ...response.data.invoice,
+              invoiceDate: response.data.invoice.invoiceDate ? response.data.invoice.invoiceDate.substring(0, 10) : "",
+              dueDate: response.data.invoice.dueDate ? response.data.invoice.dueDate.substring(0, 10) : "",
+            });
+            setInvoiceItems(response.data.items.map(item => ({
+              ...item,
+              ItemType: item.itemType,
+              Description: item.description,
+              Quantity: item.quantity,
+              Rate: item.rate,
+              Amount: item.amount,
+              serviceId: item.serviceId,
+            })));
+          } else {
+            setFormData({
+              ...response.data,
+              invoiceDate: response.data.invoiceDate ? response.data.invoiceDate.substring(0, 10) : "",
+              dueDate: response.data.dueDate ? response.data.dueDate.substring(0, 10) : "",
+            });
+            setInvoiceItems([]);
+          }
         } else {
           setFormError(response?.message || "Failed to load Invoice");
         }
       })
       .catch((err) => setFormError(err?.message || err || "Failed to load Invoice"))
       .finally(() => setFormLoading(false));
-  }, [isFormPage, isEditMode, InvoiceId]);
+  }, [isFormPage, isEditMode, InvoiceId, serviceList]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -191,11 +262,34 @@ const Invoice = () => {
     setFormError("");
     setSaving(true);
     try {
-      const payload = {
+      // Build payload as per API spec
+      // Calculate subTotal and finalAmount from items and discount
+      const subTotal = invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0);
+      const discountRaw = formData.discount === undefined || formData.discount === null ? "" : formData.discount;
+      const discountPercent = Math.min(Number(discountRaw) || 0, 100);
+      const finalAmount = subTotal - (subTotal * discountPercent / 100);
+      const invoicePayload = {
         ...formData,
-        subTotal: formData.subTotal === "" || formData.subTotal === null ? 0 : Number(formData.subTotal),
-        discount: formData.discount === "" || formData.discount === null ? 0 : Number(formData.discount),
-        finalAmount: formData.finalAmount === "" || formData.finalAmount === null ? 0 : Number(formData.finalAmount)
+        subTotal,
+        discount: discountRaw,
+        finalAmount
+      };
+      // Map invoiceItems to API expected fields
+      const itemsPayload = invoiceItems.map(item => ({
+        ...item,
+        itemType: item.ItemType,
+        description: item.Description,
+        quantity: item.Quantity,
+        rate: item.Rate,
+        amount: item.Amount,
+        serviceId: item.serviceId || 0,
+        isTaxable: true,
+        isActive: true,
+        isDeleted: false,
+      }));
+      const payload = {
+        invoice: invoicePayload,
+        items: itemsPayload
       };
       const response = await saveInvoice(payload);
       if (response?.statusCode === 1 || response?.isSuccess) {
@@ -246,42 +340,53 @@ const Invoice = () => {
         activeSortColumn: sortColumn,
         sortColumnDir,
       }),
-      rows: rows.map(item => ({
-        invoiceId: item.invoiceId,
-        invoiceNumber: item.invoiceNumber || "",
-        clientName: item.clientName || "",
-        invoiceDate: item.invoiceDate ? new Date(item.invoiceDate).toLocaleDateString() : "",
-        dueDate: item.dueDate ? new Date(item.dueDate).toLocaleDateString() : "",
-        finalAmount: item.finalAmount ?? 0,
-        statusName: item.statusName || "",
-        action: (
-          <div className="d-flex gap-2 justify-content-center">
-            <Button
-              color="link"
-              className="p-0 text-primary"
-              title="Edit"
-              type="button"
-              onClick={() => handleEdit(item.invoiceId)}
-            >
-              <i className="mdi mdi-pencil font-size-18" />
-            </Button>
-            <Button
-              color="link"
-              className="p-0 text-danger"
-              title="Delete"
-              type="button"
-              disabled={deletingId === item.invoiceId}
-              onClick={() => handleDelete(item.invoiceId)}
-            >
-              {deletingId === item.invoiceId ? (
-                <Spinner size="sm" />
-              ) : (
-                <i className="mdi mdi-trash-can-outline font-size-18" />
-              )}
-            </Button>
-          </div>
-        ),
-      })),
+      rows: rows.map(item => {
+        // Format date as dd/mm/yyyy
+        const formatDate = (dateStr) => {
+          if (!dateStr) return "";
+          const d = new Date(dateStr);
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = d.getFullYear();
+          return `${day}/${month}/${year}`;
+        };
+        return {
+          invoiceId: item.invoiceId,
+          invoiceNumber: item.invoiceNumber || "",
+          clientName: item.clientName || "",
+          invoiceDate: formatDate(item.invoiceDate),
+          dueDate: formatDate(item.dueDate),
+          finalAmount: item.finalAmount ?? 0,
+          statusName: item.statusName || "",
+          action: (
+            <div className="d-flex gap-2 justify-content-center">
+              <Button
+                color="link"
+                className="p-0 text-primary"
+                title="Edit"
+                type="button"
+                onClick={() => handleEdit(item.invoiceId)}
+              >
+                <i className="mdi mdi-pencil font-size-18" />
+              </Button>
+              <Button
+                color="link"
+                className="p-0 text-danger"
+                title="Delete"
+                type="button"
+                disabled={deletingId === item.invoiceId}
+                onClick={() => handleDelete(item.invoiceId)}
+              >
+                {deletingId === item.invoiceId ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <i className="mdi mdi-trash-can-outline font-size-18" />
+                )}
+              </Button>
+            </div>
+          ),
+        };
+      }),
     });
   }, [rows, sortColumn, sortColumnDir, deletingId]);
 
@@ -312,6 +417,9 @@ const Invoice = () => {
                 onClientChange={handleClientChange}
                 statusList={statusList}
                 onStatusChange={handleStatusChange}
+                serviceList={serviceList}
+                invoiceItems={invoiceItems}
+                setInvoiceItems={setInvoiceItems}
               />
             )
           ) : (
@@ -339,4 +447,5 @@ const Invoice = () => {
   );
 };
 
-export default Invoice;
+export default connect(null, { setBreadcrumbItems })(Invoice);
+

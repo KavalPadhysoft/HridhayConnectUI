@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
+
+//Bradcrum
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
+
+
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import { getPaymentsPages, deletePaymentById, getPaymentById, savePayment } from "../../helpers/fakebackend_helper";
@@ -11,8 +17,8 @@ import PaymentForm from "./PaymentForm";
 
 const PAYMENT_LIST_SORT_COLUMN = "paymentId";
 const PAYMENT_LIST_SORT_DIR = "asc";
-
-const Payment = () => {
+// Bradcrum
+const Payment = props => {
   document.title = "Payment | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
@@ -114,6 +120,12 @@ const Payment = () => {
     }
     setLoading(false);
   };
+
+  // Bradcrum
+   useEffect(() => {
+    props.setBreadcrumbItems("Payment")
+  }, [])
+
 
   useEffect(() => {
     if (!isFormPage) {
@@ -343,4 +355,6 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+
+export default connect(null, { setBreadcrumbItems })(Payment);
+

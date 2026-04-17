@@ -14,9 +14,7 @@ import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDr
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu"
 
 // import megamenuImg from "../../assets/images/megamenu-img.png"
-import logo from "../../assets/images/logo-sm.png"
-import logoLightPng from "../../assets/images/logo-light.png"
-import logoDark from "../../assets/images/logo-dark.png"
+import amLogo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png"
 
 //i18n
 import { withTranslation } from "react-i18next"
@@ -74,19 +72,19 @@ const Header = props => {
             <div className="navbar-brand-box">
               <Link to="/" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={logo} alt="" height="22" />
+                  <img src={amLogo} alt="Logo" height="32" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoDark} alt="" height="17" />
+                  <img src={amLogo} alt="Logo" height="32" />
                 </span>
               </Link>
 
               <Link to="/" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logo} alt="" height="22" />
+                  <img src={amLogo} alt="Logo" height="32" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoLightPng} alt="" height="19" />
+                  <img src={amLogo} alt="Logo" height="32" />
                 </span>
               </Link>
             </div>
@@ -203,6 +201,7 @@ const Header = props => {
                 type="button"
                 className="btn header-item noti-icon right-bar-toggle waves-effect"
               >
+                {/* Settings */}
                 {/* <i className="mdi mdi-spin mdi-cog"></i> */}
               </button>
             </div>

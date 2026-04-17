@@ -128,7 +128,7 @@ const handleExportPdf = async () => {
 
 
   useEffect(() => {
-    props.setBreadcrumbItems("Users", breadcrumbItems)
+    props.setBreadcrumbItems("Users")
   }, [])
 
   useEffect(() => {

@@ -220,7 +220,7 @@ const getInvoicesPages = async (params = {}) => {
 
 const getInvoiceById = async id => {
   try {
-    return await get("/Invoice/GetById", {
+    return await get("/Invoice/GetById2", {
       params: { id },
     })
   } catch (error) {
@@ -234,7 +234,7 @@ const getInvoiceById = async id => {
 
 const saveInvoice = async payload => {
   try {
-    return await post("/Invoice/Add", payload)
+    return await post("/Invoice/SaveWithItems", payload)
   } catch (error) {
     throw (
       error?.response?.data?.message ||

@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
+
 import { useNavigate, useLocation, useParams } from "react-router-dom"
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common"
 import { getClientsPages, deleteClientById, getClientById, saveClient } from "../../helpers/fakebackend_helper"
@@ -10,7 +13,7 @@ import ClientForm from "./ClientForm"
 const CLIENT_LIST_SORT_COLUMN = "clientName"
 const CLIENT_LIST_SORT_DIR = "asc"
 
-const Client = () => {
+const Client = props => {
   document.title = "Clients | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,6 +66,11 @@ const Client = () => {
     }
     setLoading(false);
   };
+
+ useEffect(() => {
+    props.setBreadcrumbItems("Client")
+  }, [])
+
 
   useEffect(() => {
     if (!isFormPage) {
@@ -267,4 +275,4 @@ const Client = () => {
   );
 }
 
-export default Client
+export default connect(null, { setBreadcrumbItems })(Client);

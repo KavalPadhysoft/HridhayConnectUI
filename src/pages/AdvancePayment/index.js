@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
+
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
+
+
+
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import { getAdvancePaymentsPages, deleteAdvancePaymentById, getAdvancePaymentById, saveAdvancePayment, getClientsPages } from "../../helpers/fakebackend_helper";
@@ -12,7 +18,7 @@ import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_hel
 const ADVANCE_PAYMENT_LIST_SORT_COLUMN = "id";
 const ADVANCE_PAYMENT_LIST_SORT_DIR = "asc";
 
-const AdvancePayment = () => {
+const AdvancePayment = props => {
   document.title = "Advance Payment | Lexa - Responsive Bootstrap 5 Admin Dashboard";
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,6 +105,10 @@ const AdvancePayment = () => {
     }
     setLoading(false);
   };
+
+ useEffect(() => {
+    props.setBreadcrumbItems("Advance Payment")
+  }, [])
 
   useEffect(() => {
     if (!isFormPage) {
@@ -318,4 +328,5 @@ const AdvancePayment = () => {
   );
 };
 
-export default AdvancePayment;
+export default connect(null, { setBreadcrumbItems })(AdvancePayment);
+

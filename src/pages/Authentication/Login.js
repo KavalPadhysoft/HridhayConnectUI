@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { Container, Row,Col, Card, CardBody, Label, Form, Alert, Input, FormFeedback } from 'reactstrap';
-import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/logo-dark.png";
+import amLogo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import PropTypes from "prop-types";
@@ -80,10 +79,9 @@ const Login = props => {
                             <CardBody className="pt-0">
 
                                 <h3 className="text-center mt-5 mb-4">
-                                    <Link to="/" className="d-block auth-logo">
-                                        <img src={logoDark} alt="" height="30" className="auth-logo-dark" />
-                                        <img src={logoLight} alt="" height="30" className="auth-logo-light" />
-                                    </Link>
+                                  <Link to="/" className="d-block auth-logo">
+                                    <img src={amLogo} alt="Logo" height="40" />
+                                  </Link>
                                 </h3>
 
                                 <div className="p-3">
@@ -147,8 +145,8 @@ const Login = props => {
                                         </Row>
                                         <Row className="form-group mb-0">
                                           <div className="col-12 mt-4 d-flex flex-column align-items-start gap-2">
-                                            <Link to="/forgot-password" className="text-muted"><i className="mdi mdi-lock"></i> Forgot your password?</Link>
-                                            <Link to="/forgot-password2" className="text-muted"><i className="mdi mdi-lock"></i> Forgot your password2?</Link>
+                                            {/* <Link to="/forgot-password" className="text-muted"><i className="mdi mdi-lock"></i> Forgot your password?</Link> */}
+                                            <Link to="/forgot-password2" className="text-muted"><i className="mdi mdi-lock"></i> Forgot your password</Link>
                                           </div>
                                         </Row>
                                     </Form>
