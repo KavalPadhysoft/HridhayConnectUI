@@ -25,8 +25,8 @@ const PaymentForm = ({
   const selectedClient = clientSelectOptions.find(option => Number(option.value) === Number(formData.clientId)) || null;
 
   const invoiceSelectOptions = (invoiceList || []).map(inv => ({
-    value: inv.invoiceId,
-    label: inv.invoiceNumber,
+    value: inv.id,
+    label: inv.name,
   }));
   const selectedInvoice = invoiceSelectOptions.find(option => Number(option.value) === Number(formData.invoiceId)) || null;
 

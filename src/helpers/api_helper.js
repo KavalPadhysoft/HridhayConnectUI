@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 // Download a file (e.g., Excel) from the backend and trigger browser download
@@ -166,7 +167,10 @@ export async function getClientDropdownList() {
 export async function getServiceDropdownList() {
   return await get("/Dropdown/ServiceList");
 }
-
+// Invoice Dropdown API helper
+export async function getInvoiceDropdownList() {
+  return await get("/Dropdown/InvoiceList");
+}
 // Generic Lov dropdown helper
 export async function getLovDropdownList(lovColumn) {
   return await get(`/Dropdown/LovMaster?Lov_column=${encodeURIComponent(lovColumn)}`);

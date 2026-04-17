@@ -10,7 +10,7 @@ import { setBreadcrumbItems } from "../../store/actions";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import { getPaymentsPages, deletePaymentById, getPaymentById, savePayment } from "../../helpers/fakebackend_helper";
-import { getClientDropdownList } from "../../helpers/api_helper";
+import { getClientDropdownList, getInvoiceDropdownList } from "../../helpers/api_helper";
 import { getLovDropdownList } from "../../helpers/api_helper";
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 import PaymentForm from "./PaymentForm";
@@ -74,10 +74,10 @@ const Payment = props => {
         .finally(() => setClientListLoading(false));
 
       setInvoiceListLoading(true);
-      getClientDropdownList("/Dropdown/InvoiceList")
+      getInvoiceDropdownList()
         .then((res) => {
-          if (res.data && res.data.isSuccess && Array.isArray(res.data.data)) {
-            setInvoiceList(res.data.data);
+          if (res.isSuccess && Array.isArray(res.data)) {
+            setInvoiceList(res.data);
           } else {
             setInvoiceList([]);
           }
