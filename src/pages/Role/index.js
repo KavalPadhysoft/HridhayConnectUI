@@ -197,7 +197,7 @@ const Roles = props => {
               className="p-0 text-primary"
               title="Edit"
               type="button"
-              onClick={() => navigate(`/roles/manage/${item.id}`)}
+              onClick={() => navigate(`/Role/manage/${item.id}`)}
             >
               <i className="mdi mdi-pencil font-size-18" />
             </Button>
@@ -326,7 +326,7 @@ const Roles = props => {
                 onIsAdminToggle={handleIsAdminToggle}
                 onSelectedMenuChange={handleSelectedMenuChange}
                 onSubmit={handleSubmit}
-                onClose={() => navigate("/roles")}
+                onClose={() => navigate("/Role")}
               />
             )
           ) : (

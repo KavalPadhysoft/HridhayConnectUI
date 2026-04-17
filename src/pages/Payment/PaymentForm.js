@@ -131,7 +131,12 @@ const PaymentForm = ({
             <Button color="light" type="button" onClick={onClose}>
               Cancel
             </Button>
-            <Button color="success" type="submit" disabled={saving}>
+            <Button 
+              color="success" 
+              type="submit" 
+              disabled={saving}
+              style={saving ? { pointerEvents: "none", opacity: 0.7 } : {}}
+            >
               {saving ? <Spinner size="sm" className="me-2" /> : null}
               Save
             </Button>

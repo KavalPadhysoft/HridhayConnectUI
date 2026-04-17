@@ -31,7 +31,19 @@ const Payment = props => {
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(0);
   const [error, setError] = useState("");
+  const handleClientChange = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      clientId: option ? Number(option.value) : 0,
+    }));
+  };
   const [rows, setRows] = useState([]);
+  const handleInvoiceChange = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      invoiceId: option ? Number(option.value) : 0,
+    }));
+  };
   const [sortColumn, setSortColumn] = useState(PAYMENT_LIST_SORT_COLUMN);
   const [sortColumnDir, setSortColumnDir] = useState(PAYMENT_LIST_SORT_DIR);
 
@@ -205,19 +217,40 @@ const Payment = props => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    if (saving) return; // Prevent multiple submissions
     setFormError("");
     setSaving(true);
     try {
-      const payload = { ...formData };
+      // Ensure clientId, invoiceId, amount are integers (0 if empty)
+      const payload = {
+        ...formData,
+        clientId: formData.clientId === "" ? 0 : Number(formData.clientId),
+        invoiceId: formData.invoiceId === "" ? 0 : Number(formData.invoiceId),
+        amount: formData.amount === "" ? 0 : Number(formData.amount),
+        paymentMode: formData.paymentMode ? formData.paymentMode : ""
+      };
+      // Remove paymentDate if empty
+      if (!formData.paymentDate || formData.paymentDate.trim() === "") {
+        delete payload.paymentDate;
+      }
       const response = await savePayment(payload);
       if (response?.statusCode === 1 || response?.isSuccess) {
-        await showSuccess(response?.message || "Saved successfully");
-        setTimeout(() => navigate("/Payment"), 600);
+        setTimeout(async () => {
+          navigate("/Payment");
+          await showSuccess(response?.message || "Saved successfully");
+        }, 0);
         return;
       }
       throw new Error(response?.message || "Failed to save Payment");
     } catch (err) {
-      const errorMessage = err?.message || err || "Failed to save Payment";
+      let errorMessage = "Failed to save Payment";
+      if (err?.response && err.response.status === 400) {
+        errorMessage = err.response.data?.message || "Bad request (400): Please check your input.";
+      } else if (err?.message) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
       await showError(errorMessage);
       setFormError(errorMessage);
     } finally {
@@ -225,19 +258,7 @@ const Payment = props => {
     }
   };
 
-  const handleClientChange = (option) => {
-    setFormData(prev => ({
-      ...prev,
-      clientId: option ? option.value : "",
-    }));
-  };
-
-  const handleInvoiceChange = (option) => {
-    setFormData(prev => ({
-      ...prev,
-      invoiceId: option ? option.value : "",
-    }));
-  };
+  // Removed duplicate handleClientChange and handleInvoiceChange
 
   const handlePaymentModeChange = (option) => {
     setFormData(prev => ({

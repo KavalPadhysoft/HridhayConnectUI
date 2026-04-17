@@ -274,6 +274,13 @@ const Invoice = props => {
         discount: discountRaw,
         finalAmount
       };
+      // Remove invoiceDate and dueDate if empty
+      if (!formData.invoiceDate || formData.invoiceDate.trim() === "") {
+        delete invoicePayload.invoiceDate;
+      }
+      if (!formData.dueDate || formData.dueDate.trim() === "") {
+        delete invoicePayload.dueDate;
+      }
       // Map invoiceItems to API expected fields
       const itemsPayload = invoiceItems.map(item => ({
         ...item,
