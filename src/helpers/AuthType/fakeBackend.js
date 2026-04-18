@@ -13,9 +13,114 @@ let users = [
   },
 ]
 
+// In-memory Terms data
+let termsList = [
+  {
+    id: 1,
+    terms: "Sample Terms",
+    displaySeqNo: 1,
+    isActive: true,
+    isDeleted: false,
+    createdBy: 1,
+    createdDate: new Date().toISOString(),
+    lastModifiedBy: null,
+    lastModifiedDate: null,
+  },
+];
+let termsIdCounter = 2;
+
 const fakeBackend = () => {
   // This sets the mock adapter on the default instance
   const mock = new MockAdapter(axios, { onNoMatch: "passthrough" })
+
+  // Terms: GetAllpage
+  mock.onGet(/\/Terms\/GetAllpage.*/).reply(config => {
+    const urlParams = new URLSearchParams(config.url.split('?')[1]);
+    const start = parseInt(urlParams.get('start') || '0', 10);
+    const length = parseInt(urlParams.get('length') || '10', 10);
+    const sortColumn = urlParams.get('sortColumn') || 'terms';
+    const sortColumnDir = urlParams.get('sortColumnDir') || 'asc';
+    let data = [...termsList];
+    data.sort((a, b) => {
+      if (a[sortColumn] < b[sortColumn]) return sortColumnDir === 'asc' ? -1 : 1;
+      if (a[sortColumn] > b[sortColumn]) return sortColumnDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+    const paged = data.slice(start, start + length);
+    return [200, {
+      isSuccess: true,
+      isConfirm: false,
+      statusCode: 1,
+      message: null,
+      data: {
+        startIndex: start,
+        length,
+        recordsFiltered: data.length,
+        recordsTotal: data.length,
+        data: paged,
+      },
+    }];
+  });
+
+  // Terms: GetById
+  mock.onGet(/\/Terms\/GetById.*/).reply(config => {
+    const urlParams = new URLSearchParams(config.url.split('?')[1]);
+    const id = parseInt(urlParams.get('id'), 10);
+    const found = termsList.find(t => t.id === id);
+    if (!found) {
+      return [404, { isSuccess: false, statusCode: 0, message: 'Not found', data: null }];
+    }
+    return [200, {
+      isSuccess: true,
+      isConfirm: false,
+      statusCode: 1,
+      message: null,
+      data: found,
+    }];
+  });
+
+  // Terms: Add (create or update)
+  mock.onPost("/Terms/Add").reply(config => {
+    const data = typeof config.data === 'string' ? JSON.parse(config.data) : config.data;
+    let result;
+    if (data.id && data.id > 0) {
+      // Update
+      const idx = termsList.findIndex(t => t.id === data.id);
+      if (idx === -1) {
+        return [404, { isSuccess: false, statusCode: 0, message: 'Not found', data: null }];
+      }
+      termsList[idx] = { ...termsList[idx], ...data, lastModifiedDate: new Date().toISOString() };
+      result = termsList[idx];
+    } else {
+      // Create
+      const newTerm = {
+        ...data,
+        id: termsIdCounter++,
+        isActive: data.isActive !== undefined ? data.isActive : true,
+        isDeleted: false,
+        createdBy: 1,
+        createdDate: new Date().toISOString(),
+        lastModifiedBy: null,
+        lastModifiedDate: null,
+      };
+      termsList.push(newTerm);
+      result = newTerm;
+    }
+    return [200, { isSuccess: true, statusCode: 1, message: null, data: result }];
+  });
+
+  // Terms: Delete
+  mock.onDelete(/\/Terms\/Delete.*/).reply(config => {
+    const urlParams = new URLSearchParams(config.url.split('?')[1]);
+    const id = parseInt(urlParams.get('id'), 10);
+    const idx = termsList.findIndex(t => t.id === id);
+    if (idx === -1) {
+      return [404, { isSuccess: false, statusCode: 0, message: 'Not found', data: null }];
+    }
+    termsList[idx].isDeleted = true;
+    termsList = termsList.filter(t => t.id !== id);
+    return [200, { isSuccess: true, statusCode: 1, message: null, data: null }];
+  });
 
   mock.onPost(url.POST_FAKE_REGISTER).reply(config => {
     const user = JSON.parse(config["data"])
