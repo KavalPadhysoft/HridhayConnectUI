@@ -46,6 +46,9 @@ import Pages500 from "../pages/Extra Pages/pages-500";
 
 import UserDemo from "../pages/UserDemo";
 
+import CompanyMasterTable from "../pages/CompanyMaster";
+import CompanyMasterForm from "../pages/CompanyMaster/CompanyMasterForm";
+
 const userRoutes = [
     { path: "/Terms", component: <Terms /> },
     { path: "/Terms/manage", component: <Terms /> },
@@ -120,6 +123,16 @@ const userRoutes = [
 
   // PendingPaymentHistory route
   { path: "/PendingPaymentHistory", component: <PendingPaymentHistory /> },
+
+    // Company Master routes
+    { path: "/company-master", component: <CompanyMasterTable /> },
+    { path: "/company-master/add", component: <CompanyMasterForm /> },
+    { path: "/company-master/edit/:id", component: <CompanyMasterForm /> },
+
+      // Company Master routes (CamelCase for compatibility)
+      { path: "/CompanyMaster", component: <CompanyMasterTable /> },
+      { path: "/CompanyMaster/add", component: <CompanyMasterForm /> },
+      { path: "/CompanyMaster/edit/:id", component: <CompanyMasterForm /> },
 
   // this route should be at the end of all other routes
   {

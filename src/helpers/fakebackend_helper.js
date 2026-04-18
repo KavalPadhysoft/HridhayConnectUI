@@ -93,6 +93,77 @@ const deleteTermsById = async id => {
   }
 };
 
+
+
+
+// CompanyMaster API helpers
+const getCompanyMastersList = async (params = {}) => {
+  try {
+    return await get("/CompanyMaster/GetAllpage", {
+      params: buildPageParams({
+        ...params,
+        sortColumn: params.sortColumn || "CompanyMasters",
+        sortColumnDir: params.sortColumnDir || "asc",
+      }),
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "CompanyMasters API call failed"
+    );
+  }
+};
+
+const getCompanyMasterById = async id => {
+  try {
+    return await get("/CompanyMaster/GetById", {
+      params: { id },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "CompanyMasters fetch by id failed"
+    );
+  }
+};
+
+const saveCompanyMaster = async payload => {
+  try {
+    // If payload is FormData, use axios directly for multipart/form-data
+    if (payload instanceof FormData) {
+      const response = await axios.post("https://localhost:7281/api/CompanyMaster/Add", payload, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
+    } else {
+      // Fallback to JSON for non-FormData payloads
+      return await post("/CompanyMaster/Add", payload);
+    }
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "CompanyMasters save failed"
+    );
+  }
+};
+
+const deleteCompanyMasterById = async id => {
+  try {
+    return await del("/CompanyMaster/Delete", {
+      params: { id },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "CompanyMasters delete failed"
+    );
+  }
+};
+
 //client API helpers
 const getClientsPages = async (params = {}) => {
   try {
@@ -107,6 +178,10 @@ const getClientsPages = async (params = {}) => {
     )
   }
 }
+
+
+
+
 
 const getClientById = async id => {
   try {
@@ -993,5 +1068,5 @@ export {
   savePayment,
   deletePaymentById,
   deletePendingPaymentFollowUpById,savePendingPaymentFollowUp,getPendingPaymentFollowUps,getPendingPaymentFollowUpById,getPaymentHistory,
-  
+  getCompanyMastersList,getCompanyMasterById,saveCompanyMaster,deleteCompanyMasterById,
 }
