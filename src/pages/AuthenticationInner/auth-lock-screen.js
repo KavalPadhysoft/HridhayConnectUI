@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from 'react';
 import { Container, Row, Col, Card, CardBody, Button, Input, Form } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -9,7 +10,7 @@ import logoLightPng from "../../assets/images/logo-light.png"
 import logoDark from "../../assets/images/logo-dark.png"
 
 const LockScreen = () => {
-  document.title = "Lockscreen | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+    document.title = `Lockscreen | ${DASHBOARD_NAME}`;
 
   return (
     <React.Fragment>              

@@ -1,10 +1,11 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from 'react';
 import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 
 const Pages404 = () => {
-    document.title = "Error 404 | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+    document.title = `Error 404 | ${DASHBOARD_NAME}`;
 
   return (
     <React.Fragment>

@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 
 import React , {useEffect} from "react"
 import { connect } from "react-redux";
@@ -7,7 +8,7 @@ import PendingPaymentFollowUp from "./PendingPaymentFollowUp";
 
 const Dashboard = (props) => {
 
-  document.title = "Dashboard | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Dashboard | ${DASHBOARD_NAME}`;
 
 
   const breadcrumbItems = [

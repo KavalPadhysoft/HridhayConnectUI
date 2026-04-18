@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
@@ -8,7 +9,7 @@ import UserDemoForm from "./UserDemoForm";
 const USER_DEMO_LIST_SORT_DIR = "asc";
 
 const UserDemo = () => {
-  document.title = "UserDemo | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `UserDemo | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();

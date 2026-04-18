@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from "react"
 import { Row, Col, CardBody, Card, Container, Alert, Form, Input } from "reactstrap"
 
@@ -9,7 +10,7 @@ import logoDark from "../../assets/images/logo-dark.png"
 
 const Recoverpw = (props) => {
 
-  document.title = "Recover Password | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Recover Password | ${DASHBOARD_NAME}`;
   return (
     <React.Fragment>
       

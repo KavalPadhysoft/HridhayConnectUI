@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardBody, Col, Container, FormFeedback, Input, Label, Row } from 'reactstrap';
@@ -10,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { post } from "../../helpers/api_helper";
 
 const ResetPasswordPage = () => {
-  document.title = "Reset Password | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Reset Password | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   // Remove local error/success state, use toast instead
   const email = localStorage.getItem("reset_email") || "";

@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useMemo, useState } from "react"
 import { Alert, Button, Card, CardBody, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
@@ -63,7 +64,7 @@ const LOV_DETAIL_SORT_COLUMN = "displayOrder"
 const LOV_DETAIL_SORT_DIR = "asc"
 
 const Lov = props => {
-  document.title = "LOV | Lexa - Responsive Bootstrap 5 Admin Dashboard"
+  document.title = `LOV | ${DASHBOARD_NAME}`
   const { setBreadcrumbItems } = props
 
   const navigate = useNavigate()

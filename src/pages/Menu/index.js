@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useMemo, useState } from "react"
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
@@ -24,7 +25,7 @@ const toBoolean = value => {
 }
 
 const Menus = props => {
-  document.title = "Menus | Lexa - Responsive Bootstrap 5 Admin Dashboard"
+  document.title = `Menus | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()

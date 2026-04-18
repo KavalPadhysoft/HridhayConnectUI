@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from 'react'
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
@@ -15,7 +16,7 @@ import { useFormik } from "formik";
 import { userForgetPassword } from "../../store/actions";
 
 const ForgetPasswordPage = props => {
-  document.title = "Forget Password | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Forget Password | ${DASHBOARD_NAME}`;
 
   const dispatch = useDispatch();
 

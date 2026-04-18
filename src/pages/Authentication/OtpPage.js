@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardBody, Col, Container, FormFeedback, Input, Label, Row, Alert } from 'reactstrap';
@@ -9,7 +10,7 @@ import { post } from "../../helpers/api_helper";
 
 
 const OtpPage = () => {
-  document.title = "Enter OTP | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Enter OTP | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState("");

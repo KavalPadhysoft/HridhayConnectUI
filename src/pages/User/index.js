@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react"
+import { DASHBOARD_NAME } from "../../config";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
 import { connect } from "react-redux"
@@ -17,7 +18,7 @@ const USER_LIST_SORT_COLUMN = "userName"
 const USER_LIST_SORT_DIR = "asc"
 
 const Users = props => {
-  document.title = "Users | Lexa - Responsive Bootstrap 5 Admin Dashboard"
+  document.title = `Users | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()

@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React from 'react';
 import PropTypes from "prop-types";
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,7 +12,7 @@ import { post } from "../../helpers/api_helper";
 
 
 const ForgetPassword2Page = () => {
-  document.title = "Forget Password2 | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Forget Password2 | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState("");

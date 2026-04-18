@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,7 +28,7 @@ import { changePassword, getUserById, resetPassword } from "../../helpers/fakeba
 import { editProfile, resetProfileFlag } from "../../store/actions";
 
 const MyProfile = () => {
-  document.title = "My Profile | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `My Profile | ${DASHBOARD_NAME}`;
 
   const dispatch = useDispatch();
 

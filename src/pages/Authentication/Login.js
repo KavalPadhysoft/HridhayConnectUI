@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { Container, Row,Col, Card, CardBody, Label, Form, Alert, Input, FormFeedback } from 'reactstrap';
@@ -18,7 +19,7 @@ import { showError } from "../../Pop_show/alertService";
 import { apiError, loginUser, socialLogin } from "../../store/actions";
 
 const Login = props => {
-  document.title = "Login | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Login | ${DASHBOARD_NAME}`;
 
   const dispatch = useDispatch();
 

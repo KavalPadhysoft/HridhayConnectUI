@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useMemo, useState } from "react"
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact"
@@ -14,7 +15,7 @@ const CLIENT_LIST_SORT_COLUMN = "clientName"
 const CLIENT_LIST_SORT_DIR = "asc"
 
 const Client = props => {
-  document.title = "Clients | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Clients | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();

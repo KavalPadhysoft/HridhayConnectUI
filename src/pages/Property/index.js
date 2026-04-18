@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
@@ -8,7 +9,7 @@ import PropertyForm from "./PropertyForm";
 const PROPERTY_LIST_SORT_DIR = "asc";
 
 const Property = () => {
-  document.title = "Property | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Property | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();

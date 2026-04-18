@@ -1,3 +1,4 @@
+import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
@@ -18,7 +19,7 @@ const INVOICE_LIST_SORT_COLUMN = "invoiceNumber";
 const INVOICE_LIST_SORT_DIR = "asc";
 
 const Invoice = props => {
-  document.title = "Invoice | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+  document.title = `Invoice | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
