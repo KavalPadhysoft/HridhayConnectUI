@@ -3,6 +3,7 @@ import React , {useEffect} from "react"
 import { connect } from "react-redux";
 import { setBreadcrumbItems } from "../../store/actions";
 import PendingInvoicePaymentTable from "./PendingInvoicePaymentTable";
+import PendingPaymentFollowUp from "./PendingPaymentFollowUp";
 
 const Dashboard = (props) => {
 
@@ -26,8 +27,8 @@ const Dashboard = (props) => {
         {/* Pending Invoice Payment Table */}
         <div className="row">
           <div className="col-12">
-            <PendingInvoicePaymentTable />
-            
+            {/* <PendingInvoicePaymentTable /> */}
+            <PendingPaymentFollowUp />
           </div>
         </div>
       </div>

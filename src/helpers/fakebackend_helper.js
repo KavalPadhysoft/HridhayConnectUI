@@ -1,7 +1,9 @@
+
 import axios from "axios";
 import { del, get, post } from "./api_helper";
 import * as url from "./url_helper";
 import { getBlob, exportToExcel } from "./api_helper";
+import { Delete } from "react-feather";
 
 // UserDemo API helpers
 const USER_DEMO_BASE_URL = "https://localhost:7281/api/UserDemo";
@@ -87,7 +89,87 @@ const deleteClientById = async id => {
     )
   }
 }
+//pending payment follow up API helpers
+// PendingPaymentFollowUp API helpers
+const getPendingPaymentFollowUps = async (params = {}) => {
+  try {
+    return await get("/PaymentFollowUp/GetAll2", {
+      params: {
+        start: params.start || 0,
+        length: params.length || 10,
+        sortColumn: params.sortColumn || "statusName",
+        sortColumnDir: params.sortColumnDir || "asc",
+        searchValue: params.searchValue || "",
+        invoiceId: params.invoiceId || 0,
+      },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "PendingPaymentFollowUp API call failed"
+    );
+  }
+};
 
+const getPendingPaymentFollowUpById = async id => {
+  try {
+    return await get("/PaymentFollowUp/GetById2", {
+      params: { id },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "PendingPaymentFollowUp fetch by id failed"
+    );
+  }
+};
+
+const savePendingPaymentFollowUp = async payload => {
+  try {
+    return await post("/PaymentFollowUp/Add2", payload);
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "PendingPaymentFollowUp save failed"
+    );
+  }
+};
+
+const deletePendingPaymentFollowUpById = async id => {
+  try {
+    return await del (`/PaymentFollowUp/Delete2?id=${id}`);
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "PendingPaymentFollowUp delete failed"
+    );
+  }
+};
+
+const getPaymentHistory = async (params = {}) => {
+  try {
+    return await get("/PaymentFollowUp/GetAllPaymentHistory", {
+      params: {
+        start: params.start || 0,
+        length: params.length || 10,
+        sortColumn: params.sortColumn || "statusName",
+        sortColumnDir: params.sortColumnDir || "asc",
+        searchValue: params.searchValue || "",
+        FollowupId: params.FollowupId || 0,
+      },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "PendingPaymentFollowUp API call failed"
+    );
+  }
+};
 
 //AdvancePayment API helpers
 const getAdvancePaymentsPages = async (params = {}) => {
@@ -848,4 +930,6 @@ export {
   getPaymentById,
   savePayment,
   deletePaymentById,
+  deletePendingPaymentFollowUpById,savePendingPaymentFollowUp,getPendingPaymentFollowUps,getPendingPaymentFollowUpById,getPaymentHistory,
+  
 }
