@@ -34,6 +34,64 @@ export async function saveUserDemo(formData) {
   return response.data;
 }
 
+// Terms API helpers
+const getTermsList = async (params = {}) => {
+  try {
+    return await get("/Terms/GetAllpage", {
+      params: buildPageParams({
+        ...params,
+        sortColumn: params.sortColumn || "terms",
+        sortColumnDir: params.sortColumnDir || "asc",
+      }),
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Terms API call failed"
+    );
+  }
+};
+
+const getTermsById = async id => {
+  try {
+    return await get("/Terms/GetById", {
+      params: { id },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Terms fetch by id failed"
+    );
+  }
+};
+
+const saveTerms = async payload => {
+  try {
+    return await post("/Terms/Add", payload);
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Terms save failed"
+    );
+  }
+};
+
+const deleteTermsById = async id => {
+  try {
+    return await del("/Terms/Delete", {
+      params: { id },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Terms delete failed"
+    );
+  }
+};
 
 //client API helpers
 const getClientsPages = async (params = {}) => {
@@ -878,6 +936,10 @@ export const postSocialLogin = data => post(url.SOCIAL_LOGIN, data);
 // export const getUserProfile = () => get(url.GET_USER_PROFILE)
 
 export {
+  getTermsList,
+  getTermsById,
+  saveTerms,
+  deleteTermsById,
   getLoggedInUser,
   isUserAuthenticated,
   postFakeRegister,

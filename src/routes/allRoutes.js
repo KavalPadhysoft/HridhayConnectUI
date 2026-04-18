@@ -1,5 +1,6 @@
-import React from "react"
-import { Navigate } from "react-router-dom"
+import React from "react";
+import { Navigate } from "react-router-dom";
+import Terms from "../pages/Terms";
 
 // Profile
 import MyProfile from "../pages/Authentication/my-profile"
@@ -46,6 +47,9 @@ import Pages500 from "../pages/Extra Pages/pages-500";
 import UserDemo from "../pages/UserDemo";
 
 const userRoutes = [
+    { path: "/Terms", component: <Terms /> },
+    { path: "/Terms/manage", component: <Terms /> },
+    { path: "/Terms/manage/:id", component: <Terms /> },
   { path: "/dashboard", component: <Dashboard /> },
 
   // // //profile
