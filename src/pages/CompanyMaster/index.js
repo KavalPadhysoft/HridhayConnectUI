@@ -3,6 +3,7 @@ import { Button, Card, CardBody, Alert, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
 import { useNavigate } from "react-router-dom";
 import { getCompanyMastersList, deleteCompanyMasterById } from "../../helpers/fakebackend_helper";
+import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 
 const CompanyMasterTable = () => {
 	const [rows, setRows] = useState([]);
@@ -42,13 +43,19 @@ const CompanyMasterTable = () => {
 	}, []);
 
 	const handleDelete = async id => {
-		if (!window.confirm("Are you sure you want to delete this company?")) return;
+		const isConfirmed = await showConfirm("Are you sure you want to delete this company?", "Delete", "Cancel");
+		if (!isConfirmed) return;
 		setDeletingId(id);
 		try {
-			await deleteCompanyMasterById(id);
-			fetchData();
+			const response = await deleteCompanyMasterById(id);
+			if (response?.isSuccess || response?.statusCode === 1) {
+				await showSuccess(response?.message || "Company deleted successfully.");
+				fetchData();
+			} else {
+				await showError(response?.message || "Failed to delete company");
+			}
 		} catch (err) {
-			setError("Failed to delete company");
+			await showError(err?.message || "Failed to delete company");
 		} finally {
 			setDeletingId(0);
 		}

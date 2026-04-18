@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardBody, CardHeader, Button, Form, Row, Col, Label, Input, Spinner, Alert } from "reactstrap";
 import { getCompanyMasterById, saveCompanyMaster } from "../../helpers/fakebackend_helper";
+import { showSuccess, showError } from "../../Pop_show/alertService";
 
 const initialState = {
   id: 0,
@@ -55,7 +56,14 @@ const CompanyMasterForm = () => {
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "mobile") {
+      // Only allow digits and max 10 characters
+      const digits = value.replace(/\D/g, "").slice(0, 10);
+      setForm({ ...form, [name]: digits });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -72,10 +80,17 @@ const CompanyMasterForm = () => {
         formData.append(key, form[key]);
       });
       if (file) formData.append("file", file);
-      await saveCompanyMaster(formData);
-      navigate("/company-master");
+      const response = await saveCompanyMaster(formData);
+      if (response?.isSuccess || response?.statusCode === 1) {
+        await showSuccess(response?.message || "Saved successfully");
+        navigate("/company-master");
+        return;
+      }
+      throw new Error(response?.message || "Failed to save company master");
     } catch (err) {
-      setFormError("Failed to save company master");
+      const errorMessage = err?.message || err || "Failed to save company master";
+      await showError(errorMessage);
+      setFormError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -93,35 +108,44 @@ const CompanyMasterForm = () => {
           <Row className="g-3">
             <Col md={6}>
               <Label>Account No<span style={{ color: "red" }}>*</span></Label>
-              <Input name="accountNo" value={form.accountNo} onChange={handleChange} placeholder="Enter account no" required />
+              <Input name="accountNo" value={form.accountNo} onChange={handleChange} placeholder="Enter account no" />
             </Col>
             <Col md={6}>
               <Label>Account Name<span style={{ color: "red" }}>*</span></Label>
-              <Input name="accountName" value={form.accountName} onChange={handleChange} placeholder="Enter account name" required />
+              <Input name="accountName" value={form.accountName} onChange={handleChange} placeholder="Enter account name"  />
             </Col>
             <Col md={6}>
               <Label>Bank<span style={{ color: "red" }}>*</span></Label>
-              <Input name="bank" value={form.bank} onChange={handleChange} placeholder="Enter bank" required />
+              <Input name="bank" value={form.bank} onChange={handleChange} placeholder="Enter bank"  />
             </Col>
             <Col md={6}>
               <Label>IFSC Code<span style={{ color: "red" }}>*</span></Label>
-              <Input name="ifscCode" value={form.ifscCode} onChange={handleChange} placeholder="Enter IFSC code" required />
+              <Input name="ifscCode" value={form.ifscCode} onChange={handleChange} placeholder="Enter IFSC code"  />
             </Col>
             <Col md={6}>
               <Label>PAN<span style={{ color: "red" }}>*</span></Label>
-              <Input name="pan" value={form.pan} onChange={handleChange} placeholder="Enter PAN" required />
+              <Input name="pan" value={form.pan} onChange={handleChange} placeholder="Enter PAN"  />
             </Col>
             <Col md={6}>
               <Label>Mobile<span style={{ color: "red" }}>*</span></Label>
-              <Input name="mobile" value={form.mobile} onChange={handleChange} placeholder="Enter mobile" required />
+              <Input
+                name="mobile"
+                value={form.mobile}
+                onChange={handleChange}
+                placeholder="Enter mobile"
+                maxLength={10}
+                inputMode="numeric"
+                pattern="^[0-9]{10}$"
+                title="Mobile number must be exactly 10 digits."
+              />
             </Col>
             <Col md={6}>
               <Label>Email<span style={{ color: "red" }}>*</span></Label>
-              <Input name="email" value={form.email} onChange={handleChange} placeholder="Enter email" required />
+              <Input name="email" value={form.email} onChange={handleChange} placeholder="Enter email"  />
             </Col>
             <Col md={6}>
               <Label>Address<span style={{ color: "red" }}>*</span></Label>
-              <Input name="address" value={form.address} onChange={handleChange} placeholder="Enter address" required />
+              <Input name="address" value={form.address} onChange={handleChange} placeholder="Enter address"  />
             </Col>
             <Col md={6}>
               <Label>Signature File</Label>
