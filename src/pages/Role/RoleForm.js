@@ -176,7 +176,7 @@ const RoleForm = ({
                 onChange={onChange}
                 placeholder="Enter role name"
               />
-              <div className="form-check mt-3">
+              <div className="form-check mt-3 d-none">
                 <input
                   id="isAdmin"
                   name="isAdmin"

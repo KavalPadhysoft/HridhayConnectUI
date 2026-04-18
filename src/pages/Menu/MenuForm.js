@@ -66,7 +66,7 @@ const MenuForm = ({
               />
             </Col>
 
-            <Col md={6}>
+            <Col md={6} className="d-none">
               <Label>Area</Label>
               <Input name="area" value={formData.area} onChange={onChange} placeholder="Enter area" />
             </Col>
@@ -80,9 +80,9 @@ const MenuForm = ({
               />
             </Col>
 
-            <Col md={6}>
+            <Col md={6} className="d-none">
               <Label>URL</Label>
-              <Input name="url" value={formData.url} onChange={onChange} placeholder="Enter url" />
+              <Input className="" name="url" value={formData.url} onChange={onChange} placeholder="Enter url" />
             </Col>
             <Col md={6}>
               <Label>Icon</Label>
@@ -102,7 +102,7 @@ const MenuForm = ({
             </Col>
 
             <Col md={6} className="d-flex align-items-center gap-4 mt-md-4 pt-md-2">
-              <div className="form-check">
+              <div className="form-check d-none">
                 <input
                   id="isSuperAdmin"
                   name="isSuperAdmin"
@@ -117,7 +117,7 @@ const MenuForm = ({
                 </label>
               </div>
 
-              <div className="form-check">
+              <div className="form-check d-none">
                 <input
                   id="isAdmin"
                   name="isAdmin"

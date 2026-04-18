@@ -175,8 +175,8 @@ const Roles = props => {
       columns: buildServerSortColumns({
         columns: [
           { label: "Name", field: "name", sort: "asc" },
-          { label: "Is Admin", field: "isAdmin", sort: "asc" },
-          { label: "Active", field: "isActive", sort: "asc" },
+        //  { label: "Is Admin", field: "isAdmin", sort: "asc" },
+         // { label: "Active", field: "isActive", sort: "asc" },
           { label: "Selected Menu", field: "selectedMenu", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
         ],

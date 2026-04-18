@@ -197,13 +197,13 @@ const Header = props => {
               }}
               className="dropdown d-inline-block"
             >
-              <button
+              {/* <button
                 type="button"
                 className="btn header-item noti-icon right-bar-toggle waves-effect"
-              >
+              > */}
                 {/* Settings */}
-                {/* <i className="mdi mdi-spin mdi-cog"></i> */}
-              </button>
+                {/* <i className="mdi mdi-spin mdi-cog"></i>
+              </button> */}
             </div>
           </div>
         </div>
