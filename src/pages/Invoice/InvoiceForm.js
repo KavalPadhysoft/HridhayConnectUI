@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Alert, Button, Card, CardBody, CardHeader, Col, Form, Input, Label, Row, Spinner } from "reactstrap";
+// If not already in your project, ensure FontAwesome or similar icon library is imported globally
+import { toast } from 'react-toastify';
+import { Alert, Button, Card, CardBody, CardHeader, Col, Form, Input, Label, Row, Spinner, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Select from "react-select";
 
 const InvoiceForm = ({
@@ -21,23 +23,110 @@ const InvoiceForm = ({
 }) => {
   // invoiceItems and setInvoiceItems are now controlled from parent
 
+  // --- Modal state for Add/Edit Item ---
+  const [itemModalOpen, setItemModalOpen] = useState(false);
+  const [itemModalMode, setItemModalMode] = useState('add'); // 'add' or 'edit'
+  const [itemModalIndex, setItemModalIndex] = useState(null); // index for edit
+  const [itemModalData, setItemModalData] = useState({
+    serviceId: "",
+    ServiceName: "",
+    ItemType: "Service",
+    Description: "",
+    Quantity: 1,
+    Rate: 0,
+    Amount: 0,
+  });
+  const [itemModalError, setItemModalError] = useState("");
+
+  const openAddModal = () => {
+    setItemModalData({
+      serviceId: "",
+      ServiceName: "",
+      ItemType: "Service",
+      Description: "",
+      Quantity: 1,
+      Rate: 0,
+      Amount: 0,
+    });
+    setItemModalMode('add');
+    setItemModalIndex(null);
+    setItemModalOpen(true);
+  };
+  const openEditModal = (idx) => {
+    setItemModalData({ ...invoiceItems[idx] });
+    setItemModalMode('edit');
+    setItemModalIndex(idx);
+    setItemModalOpen(true);
+  };
+  const closeItemModal = () => {
+    setItemModalOpen(false);
+    setItemModalError("");
+  };
+
+  // Handle changes in the modal form (add/edit)
+  const handleItemModalChange = (eOrValue, fieldName) => {
+    setItemModalData(prev => {
+      let updated = { ...prev };
+      let name, value;
+      if (typeof eOrValue === 'object' && eOrValue.target) {
+        name = eOrValue.target.name;
+        value = eOrValue.target.type === 'number' ? Number(eOrValue.target.value) : eOrValue.target.value;
+      } else {
+        name = fieldName;
+        value = eOrValue;
+      }
+      if (name === 'serviceId') {
+        const found = serviceList.find(s => String(s.serviceId) === String(value));
+        updated.serviceId = value;
+        updated.ServiceName = found ? found.ServiceName : '';
+        // Only auto-fill Description if in edit mode, not add mode
+        if (itemModalMode === 'edit' && !prev.Description && found && found.Description) {
+          updated.Description = found.Description;
+        }
+        updated.Rate = found ? found.Rate : 0;
+        updated.Amount = updated.Quantity * updated.Rate;
+      } else if (name === 'Quantity') {
+        updated.Quantity = Number(value);
+        updated.Amount = updated.Quantity * updated.Rate;
+      } else if (name === 'ItemType') {
+        updated.ItemType = value;
+      } else if (name === 'Description') {
+        updated.Description = value;
+      }
+      return updated;
+    });
+  };
+
+  // Save new or edited item from modal
+  const handleSaveItemModal = () => {
+    // Validation: require service and description
+    if (!itemModalData.serviceId) {
+      setItemModalError("Please select a service.");
+      toast.error("Please select a service.");
+      return;
+    }
+    if (!itemModalData.Description || itemModalData.Description.trim() === "") {
+      setItemModalError("Please enter a description.");
+      toast.error("Please enter a description.");
+      return;
+    }
+    setItemModalError("");
+    if (itemModalMode === 'add') {
+      setInvoiceItems(items => [...items, itemModalData]);
+      toast.success("Item added successfully!");
+    } else if (itemModalMode === 'edit' && itemModalIndex !== null) {
+      setInvoiceItems(items => items.map((it, idx) => idx === itemModalIndex ? itemModalData : it));
+      toast.success("Item updated successfully!");
+    }
+    setItemModalOpen(false);
+  };
+
   // Use serviceList prop for dropdown
 
   // --- Handlers ---
-  const handleAddService = () => {
-    setInvoiceItems(items => [
-      ...items,
-      {
-        serviceId: "",
-        ServiceName: "",
-        ItemType: "Service",
-        Description: "",
-        Quantity: 1,
-        Rate: 0,
-        Amount: 0,
-      },
-    ]);
-  };
+
+  // Old inline add replaced by modal
+  // const handleAddService = () => { ... };
 
   const handleRemoveItem = (idx) => {
     setInvoiceItems(items => items.filter((_, i) => i !== idx));
@@ -163,10 +252,100 @@ const InvoiceForm = ({
               <div className="mb-3">
                 <label>Invoice Items</label>
                 <div className="d-flex justify-content-end mb-2">
-                  <Button color="success" size="sm" type="button" onClick={handleAddService}>
+                  <Button color="success" size="sm" type="button" onClick={openAddModal}>
                     + Add Item
                   </Button>
                 </div>
+                {/* Add/Edit Item Modal */}
+                <Modal isOpen={itemModalOpen} toggle={closeItemModal}>
+                  <ModalHeader toggle={closeItemModal}>{itemModalMode === 'add' ? 'Add Invoice Item' : 'Edit Invoice Item'}</ModalHeader>
+                  <ModalBody>
+                    {itemModalError && (
+                      <div className="alert alert-danger py-2 mb-2" style={{ fontSize: '0.95rem' }}>{itemModalError}</div>
+                    )}
+                    <Form>
+                      <Row className="g-2">
+                        <Col md={12}>
+                          <Label>Service Name</Label>
+                          <select
+                            className="form-control form-control-sm"
+                            name="serviceId"
+                            value={itemModalData.serviceId}
+                            onChange={e => handleItemModalChange(e)}
+                          >
+                            <option value="">Select Service</option>
+                            {serviceList.map((s, i) => (
+                              <option key={s.serviceId || i} value={s.serviceId}>{s.ServiceName}</option>
+                            ))}
+                          </select>
+                        </Col>
+                        <Col md={12}>
+                          <Label>Item Type</Label>
+                          <div className="d-flex align-items-center gap-2">
+                            <button
+                              type="button"
+                              className={`btn btn-sm ${itemModalData.ItemType === 'Service' ? 'btn-primary' : 'btn-outline-primary'}`}
+                              onClick={() => handleItemModalChange('Service', 'ItemType')}
+                            >
+                              Service
+                            </button>
+                            <button
+                              type="button"
+                              className={`btn btn-sm ${itemModalData.ItemType === 'GovtFee' ? 'btn-primary' : 'btn-outline-primary'}`}
+                              onClick={() => handleItemModalChange('GovtFee', 'ItemType')}
+                            >
+                              GovtFee
+                            </button>
+                          </div>
+                        </Col>
+                        <Col md={12}>
+                          <Label>Description</Label>
+                          <textarea
+                            className="form-control form-control-sm"
+                            name="Description"
+                            value={itemModalData.Description}
+                            onChange={e => handleItemModalChange(e)}
+                            rows={3}
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <Label>Quantity</Label>
+                          <input
+                            className="form-control form-control-sm"
+                            name="Quantity"
+                            type="number"
+                            min="1"
+                            value={itemModalData.Quantity}
+                            onChange={e => handleItemModalChange(e)}
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <Label>Rate</Label>
+                          <input
+                            className="form-control form-control-sm"
+                            name="Rate"
+                            type="number"
+                            value={itemModalData.Rate}
+                            readOnly
+                          />
+                        </Col>
+                        <Col md={12}>
+                          <Label>Amount</Label>
+                          <input
+                            className="form-control form-control-sm"
+                            name="Amount"
+                            value={itemModalData.Amount}
+                            readOnly
+                          />
+                        </Col>
+                      </Row>
+                    </Form>
+                  </ModalBody>
+                  <ModalFooter style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
+                    <Button color="secondary" onClick={closeItemModal} style={{ minWidth: 100, fontWeight: 500 }}>Cancel</Button>
+                    <Button color="success" onClick={handleSaveItemModal} style={{ minWidth: 100, fontWeight: 500 }}>Save</Button>
+                  </ModalFooter>
+                </Modal>
                 <div className="table-responsive">
                   <table className="table table-bordered table-sm mb-0">
                     <thead>
@@ -184,86 +363,36 @@ const InvoiceForm = ({
                       {invoiceItems.map((item, idx) => (
                         <tr key={idx}>
                           {/* Service Name */}
+                          <td>{item.ServiceName || (serviceList.find(s => String(s.serviceId) === String(item.serviceId))?.ServiceName) || ''}</td>
+                          {/* Item Type */}
+                          <td>{item.ItemType === 'Service' ? 'Service' : 'GovtFee'}</td>
+                          {/* Description */}
+                          <td>{item.Description}</td>
+                          {/* Quantity */}
+                          <td>{item.Quantity}</td>
+                          {/* Rate */}
+                          <td>{item.Rate}</td>
+                          {/* Amount */}
+                          <td>{item.Amount}</td>
                           <td>
-                            <select
-                              className="form-control form-control-sm"
-                              name="serviceId"
-                              value={item.serviceId}
-                              onChange={e => handleInvoiceItemChange(idx, e)}
-                            >
-                              <option value="">Select Service</option>
-                              {serviceList.map((s, i) => (
-                                <option key={s.serviceId || i} value={s.serviceId}>{s.ServiceName}</option>
-                              ))}
-                            </select>
-                          </td>
-                          {/* Item Type as buttons */}
-                          <td>
-                            <div className="d-flex align-items-center gap-2">
+                            <div className="d-flex gap-2 align-items-center">
                               <button
                                 type="button"
-                                className={`btn btn-sm ${item.ItemType === 'Service' ? 'btn-primary' : 'btn-outline-primary'}`}
-                                onClick={() => handleInvoiceItemChange(idx, 'Service', 'ItemType')}
+                                title="Edit"
+                                onClick={() => openEditModal(idx)}
+                                style={{ background: 'none', border: 'none', padding: 0, color: '#6f42c1', fontSize: 20, cursor: 'pointer' }}
                               >
-                                Service
+                                   <i className="mdi mdi-pencil font-size-18" />
                               </button>
                               <button
                                 type="button"
-                                className={`btn btn-sm ${item.ItemType === 'GovtFee' ? 'btn-primary' : 'btn-outline-primary'}`}
-                                onClick={() => handleInvoiceItemChange(idx, 'GovtFee', 'ItemType')}
+                                title="Remove"
+                                onClick={() => handleRemoveItem(idx)}
+                                style={{ background: 'none', border: 'none', padding: 0, color: '#e74c3c', fontSize: 20, cursor: 'pointer' }}
                               >
-                                GovtFee
+                                <i className="mdi mdi-trash-can-outline font-size-18" />
                               </button>
                             </div>
-                          </td>
-                          {/* Description */}
-                          <td>
-                            <input
-                              className="form-control form-control-sm"
-                              name="Description"
-                              value={item.Description}
-                              onChange={e => handleInvoiceItemChange(idx, e)}
-                            />
-                          </td>
-                          {/* Quantity */}
-                          <td>
-                            <input
-                              className="form-control form-control-sm"
-                              name="Quantity"
-                              type="number"
-                              min="1"
-                              value={item.Quantity}
-                              onChange={e => handleInvoiceItemChange(idx, e)}
-                            />
-                          </td>
-                          {/* Rate */}
-                          <td>
-                            <input
-                              className="form-control form-control-sm"
-                              name="Rate"
-                              type="number"
-                              step="0.01"
-                              value={item.Rate}
-                              readOnly
-                            />
-                          </td>
-                          {/* Amount */}
-                          <td>
-                            <input
-                              className="form-control form-control-sm"
-                              name="Amount"
-                              value={item.Amount}
-                              readOnly
-                            />
-                          </td>
-                          <td>
-                            <button
-                              className="btn btn-danger btn-sm"
-                              type="button"
-                              onClick={() => handleRemoveItem(idx)}
-                            >
-                              Remove
-                            </button>
                           </td>
                         </tr>
                       ))}
@@ -277,7 +406,6 @@ const InvoiceForm = ({
                           <td style={{ fontWeight: 'bold' }}>
                             {invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0)}
                           </td>
-                          <td></td>
                           <td></td>
                         </tr>
                       )}
