@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { setBreadcrumbItems } from "../../store/actions";
 import { getTermsList, getTermsById, saveTerms, deleteTermsById } from "../../helpers/fakebackend_helper";
+import { showSuccess } from "../../Pop_show/alertService";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import TermsForm from "./TermsForm";
 
@@ -177,6 +178,7 @@ const Terms = (props) => {
     try {
       const res = await saveTerms(formData);
       if (res?.isSuccess) {
+        await showSuccess(res?.message || "Terms saved successfully");
         navigate("/Terms");
       } else {
         setFormError(res?.message || "Save failed");

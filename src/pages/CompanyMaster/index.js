@@ -4,8 +4,10 @@ import { MDBDataTable } from "mdbreact";
 import { useNavigate } from "react-router-dom";
 import { getCompanyMastersList, deleteCompanyMasterById } from "../../helpers/fakebackend_helper";
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
 
-const CompanyMasterTable = () => {
+const CompanyMasterTable = (props) => {
 	const [rows, setRows] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
@@ -39,6 +41,7 @@ const CompanyMasterTable = () => {
 	};
 
 	useEffect(() => {
+		props.setBreadcrumbItems("Company Master");
 		fetchData();
 	}, []);
 
@@ -93,7 +96,9 @@ const CompanyMasterTable = () => {
 		<Card>
 			<CardBody>
 				<div className="d-flex justify-content-end mb-3">
-					<Button color="primary" type="button" onClick={() => navigate("/company-master/add")}> <i className="mdi mdi-plus me-1" />Add Company</Button>
+					{rows.length === 0 && (
+						<Button color="primary" type="button" onClick={() => navigate("/company-master/add")}> <i className="mdi mdi-plus me-1" />Add Company</Button>
+					)}
 				</div>
 				{error ? <Alert color="danger">{error}</Alert> : null}
 				{loading ? (
@@ -108,4 +113,4 @@ const CompanyMasterTable = () => {
 	);
 };
 
-export default CompanyMasterTable;
+export default connect(null, { setBreadcrumbItems })(CompanyMasterTable);

@@ -111,8 +111,9 @@ const CompanyMasterForm = () => {
       });
       if (file) formData.append("file", file);
       const response = await saveCompanyMaster(formData);
+      console.log("Save API response for test", response);
       if (response?.isSuccess || response?.statusCode === 1) {
-        await showSuccess(response?.message || "Saved successfully");
+        await showSuccess(response);
         navigate("/company-master");
         return;
       }
