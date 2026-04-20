@@ -86,8 +86,9 @@ const InvoiceForm = ({
         updated.Rate = found ? found.Rate : 0;
         updated.Amount = updated.Quantity * updated.Rate;
       } else if (name === 'Quantity') {
-        updated.Quantity = Number(value);
-        updated.Amount = updated.Quantity * updated.Rate;
+        let qty = Math.max(1, Number(value));
+        updated.Quantity = qty;
+        updated.Amount = qty * updated.Rate;
       } else if (name === 'ItemType') {
         updated.ItemType = value;
       } else if (name === 'Description') {
@@ -108,6 +109,11 @@ const InvoiceForm = ({
     if (!itemModalData.Description || itemModalData.Description.trim() === "") {
       setItemModalError("Please enter a description.");
       toast.error("Please enter a description.");
+      return;
+    }
+    if (Number(itemModalData.Quantity) < 1) {
+      setItemModalError("Quantity must be at least 1.");
+      toast.error("Quantity must be at least 1.");
       return;
     }
     setItemModalError("");
@@ -206,8 +212,9 @@ const InvoiceForm = ({
               <Input
                 name="invoiceNumber"
                 value={formData.invoiceNumber}
-                onChange={onChange}
                 placeholder="Enter invoice number"
+                readOnly
+                style={{ backgroundColor: '#f0f0f0', fontWeight: 'bold', color: '#888' }}
               />
             </Col>
             <Col md={6}>
@@ -347,9 +354,10 @@ const InvoiceForm = ({
                   </ModalFooter>
                 </Modal>
                 <div className="table-responsive">
-                  <table className="table table-bordered table-sm mb-0">
+                  <table className="table table-bordered table-striped table-sm mb-0">
                     <thead>
                       <tr>
+                        <th>Sr.</th>
                         <th>Service Name</th>
                         <th>Item Type</th>
                         <th>Description</th>
@@ -360,55 +368,60 @@ const InvoiceForm = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {invoiceItems.map((item, idx) => (
-                        <tr key={idx}>
-                          {/* Service Name */}
-                          <td>{item.ServiceName || (serviceList.find(s => String(s.serviceId) === String(item.serviceId))?.ServiceName) || ''}</td>
-                          {/* Item Type */}
-                          <td>{item.ItemType === 'Service' ? 'Service' : 'GovtFee'}</td>
-                          {/* Description */}
-                          <td>{item.Description}</td>
-                          {/* Quantity */}
-                          <td>{item.Quantity}</td>
-                          {/* Rate */}
-                          <td>{item.Rate}</td>
-                          {/* Amount */}
-                          <td>{item.Amount}</td>
-                          <td>
-                            <div className="d-flex gap-2 align-items-center">
-                              <button
-                                type="button"
-                                title="Edit"
-                                onClick={() => openEditModal(idx)}
-                                style={{ background: 'none', border: 'none', padding: 0, color: '#6f42c1', fontSize: 20, cursor: 'pointer' }}
-                              >
-                                   <i className="mdi mdi-pencil font-size-18" />
-                              </button>
-                              <button
-                                type="button"
-                                title="Remove"
-                                onClick={() => handleRemoveItem(idx)}
-                                style={{ background: 'none', border: 'none', padding: 0, color: '#e74c3c', fontSize: 20, cursor: 'pointer' }}
-                              >
-                                <i className="mdi mdi-trash-can-outline font-size-18" />
-                              </button>
-                            </div>
+                      {invoiceItems.length === 0 ? (
+                        <tr style={{ height: 48 }}>
+                          <td colSpan={8} style={{ textAlign: 'center', color: '#888', verticalAlign: 'middle', height: 48 }}>
+                            No items added
                           </td>
                         </tr>
-                      ))}
-                     
-                    {/* Summary row for total amount */}
-                      {/* ...existing code... */}
-                      {/* Total row at the end */}
-                      {invoiceItems.length > 0 && (
-                        <tr>
-                          <td colSpan={5} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
-                          <td style={{ fontWeight: 'bold' }}>
-                            {invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0)}
-                          </td>
-                          <td></td>
-                        </tr>
+                      ) : (
+                        invoiceItems.map((item, idx) => (
+                          <tr key={idx}>
+                            {/* Sr. */}
+                            <td>{idx + 1}</td>
+                            {/* Service Name */}
+                            <td>{item.ServiceName || (serviceList.find(s => String(s.serviceId) === String(item.serviceId))?.ServiceName) || ''}</td>
+                            {/* Item Type */}
+                            <td>{item.ItemType === 'Service' ? 'Service' : 'GovtFee'}</td>
+                            {/* Description */}
+                            <td>{item.Description}</td>
+                            {/* Quantity */}
+                            <td>{item.Quantity}</td>
+                            {/* Rate */}
+                            <td>{item.Rate}</td>
+                            {/* Amount */}
+                            <td>{item.Amount}</td>
+                            <td>
+                              <div className="d-flex gap-2 align-items-center">
+                                <button
+                                  type="button"
+                                  title="Edit"
+                                  onClick={() => openEditModal(idx)}
+                                  style={{ background: 'none', border: 'none', padding: 0, color: '#6f42c1', fontSize: 20, cursor: 'pointer' }}
+                                >
+                                     <i className="mdi mdi-pencil font-size-18" />
+                                </button>
+                                <button
+                                  type="button"
+                                  title="Remove"
+                                  onClick={() => handleRemoveItem(idx)}
+                                  style={{ background: 'none', border: 'none', padding: 0, color: '#e74c3c', fontSize: 20, cursor: 'pointer' }}
+                                >
+                                  <i className="mdi mdi-trash-can-outline font-size-18" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
                       )}
+                      {/* Total row always visible */}
+                      <tr>
+                        <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
+                        <td style={{ fontWeight: 'bold' }}>
+                          {invoiceItems.length > 0 ? invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0) : 0}
+                        </td>
+                        <td></td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -496,18 +509,21 @@ const InvoiceForm = ({
                 tabIndex={-1}
               />
             </Col>
-            <Col md={6}>
-              <Label>Status<span style={{ color: "red" }}>*</span></Label>
-              <Select
-                classNamePrefix="select2-selection"
-                placeholder="Select status"
-                options={statusSelectOptions}
-                value={selectedStatus}
-                onChange={onStatusChange}
-                isSearchable
-                isClearable
-              />
-            </Col>
+            {/* Status input only visible in edit mode */}
+            {isEditMode && (
+              <Col md={6}>
+                <Label>Status<span style={{ color: "red" }}>*</span></Label>
+                <Select
+                  classNamePrefix="select2-selection"
+                  placeholder="Select status"
+                  options={statusSelectOptions}
+                  value={selectedStatus}
+                  onChange={onStatusChange}
+                  isSearchable
+                  isClearable
+                />
+              </Col>
+            )}
             <Col md={6}>
               <Label>Notes</Label>
               <Input

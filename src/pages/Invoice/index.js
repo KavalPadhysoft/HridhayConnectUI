@@ -7,7 +7,9 @@ import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../.
 import { getInvoicesPages, deleteInvoiceById, getInvoiceById, saveInvoice } from "../../helpers/fakebackend_helper";
 import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 import InvoiceForm from "./InvoiceForm";
+
 import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_helper";
+import { getNewInvoiceNumber } from "../../helpers/invoice_helper";
 
 import { connect } from "react-redux";
 import { setBreadcrumbItems } from "../../store/actions";
@@ -185,35 +187,47 @@ const Invoice = props => {
     if (!isFormPage) return;
     if (!isEditMode) {
       setFormTitle("Create Invoice");
-      setFormData({
-        invoiceId: 0,
-        clientId: 0,
-        invoiceNumber: "",
-        invoiceDate: "",
-        dueDate: "",
-        subTotal: 0,
-        discount: 0,
-        finalAmount: 0,
-        status: "",
-        notes: ""
-      });
       setFormError("");
-      setFormLoading(false);
-      // Auto-add one invoice item with first service if available
-      if (serviceList && serviceList.length > 0) {
-        const firstService = serviceList[0];
-        setInvoiceItems([{
-          serviceId: firstService.serviceId,
-          ServiceName: firstService.ServiceName,
-          ItemType: "Service",
-          Description: firstService.Description || "",
-          Quantity: 1,
-          Rate: firstService.Rate,
-          Amount: firstService.Rate || 0,
-        }]);
-      } else {
-        setInvoiceItems([]);
-      }
+      setFormLoading(true);
+      // Fetch new invoice number from API
+      getNewInvoiceNumber()
+        .then((res) => {
+          let invoiceNumber = "";
+          if (res && (res.invoiceNumber || (res.data && res.data.invoiceNumber))) {
+            invoiceNumber = res.invoiceNumber || (res.data && res.data.invoiceNumber) || "";
+          }
+          setFormData({
+            invoiceId: 0,
+            clientId: 0,
+            invoiceNumber: invoiceNumber,
+            invoiceDate: "",
+            dueDate: "",
+            subTotal: 0,
+            discount: 0,
+            finalAmount: 0,
+            status: "4", // Default status value for add
+            notes: ""
+          });
+        })
+        .catch(() => {
+          setFormData({
+            invoiceId: 0,
+            clientId: 0,
+            invoiceNumber: "",
+            invoiceDate: "",
+            dueDate: "",
+            subTotal: 0,
+            discount: 0,
+            finalAmount: 0,
+            status: "",
+            notes: ""
+          });
+        })
+        .finally(() => {
+          setFormLoading(false);
+        });
+      // Do not auto-add any invoice item by default
+      setInvoiceItems([]);
       return;
     }
     setFormLoading(true);
