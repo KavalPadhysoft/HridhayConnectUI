@@ -101,6 +101,10 @@ const userRoutes = [
   { path: "/Invoice", component: <Invoice /> },
   { path: "/Invoice/manage", component: <Invoice /> },
   { path: "/Invoice/manage/:id", component: <Invoice /> },
+  { path: "/Invoice/demo", component: React.createElement(require("../pages/Invoicelyout/InvoiceDemoPage").default) },
+  { path: "/Invoice/view/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceLayout").default) },
+
+  // AnotherBilling routes
 
   // AdvancePayment routes
   { path: "/AdvancePayment", component: <AdvancePayment /> },

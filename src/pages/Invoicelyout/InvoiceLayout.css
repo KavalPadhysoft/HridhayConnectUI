@@ -1,0 +1,271 @@
+/* .invoice {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fff;
+  font-family: "Segoe UI", sans-serif;
+  border: 1px solid #ddd;
+}
+
+
+.invoice__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #1e3a8a;
+  padding-bottom: 10px;
+}
+
+.invoice__logo {
+  height: 60px;
+}
+
+
+.invoice__info {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.invoice__right {
+  text-align: right;
+}
+
+
+.invoice__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice__table th {
+  background: #1e3a8a;
+  color: #fff;
+}
+
+.invoice__table th,
+.invoice__table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.invoice__table td:last-child {
+  text-align: right;
+  font-weight: bold;
+}
+
+
+.invoice__total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.invoice__total h2 {
+  margin: 0;
+  color: #1e3a8a;
+}
+
+
+.invoice__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.invoice__bank h4 {
+  margin-bottom: 8px;
+  color: #1e3a8a;
+}
+
+.invoice__signature {
+  text-align: center;
+}
+
+.invoice__signature img {
+  height: 60px;
+}
+
+
+.invoice__bottom {
+  margin-top: 30px;
+  border-top: 2px solid #eee;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.invoice__terms {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.invoice__terms h4 {
+  margin-bottom: 8px;
+  color: #1e3a8a;
+}
+
+.invoice__terms ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.invoice__terms li {
+  margin-bottom: 5px;
+  line-height: 1.5;
+} */
+
+.invoice-container {
+  width: 800px;
+  margin: auto;
+  padding: 18px 28px;
+  font-family: "Segoe UI", sans-serif;
+  color: #2b1a10;
+  background: #fff;
+  position: relative;
+}
+
+/* WATERMARK (center + subtle) */
+.watermark {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 380px;
+  height: 250px;
+  background: url("../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png") no-repeat center;
+  background-size: contain;
+  opacity: 0.04;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #8b5a2b;
+  padding-bottom: 6px;
+}
+
+.logo {
+  height: 45px;
+}
+
+.header h1 {
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #8b5a2b;
+}
+
+/* INFO */
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.right {
+  text-align: right;
+}
+
+/* TABLE */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 13px;
+  z-index: 1;
+  position: relative;
+}
+
+.table th {
+  background: #2e4a8a;   /* blue like image */
+  color: white;
+  font-weight: 600;
+  padding: 6px;
+  border: 1px solid #cfcfcf;
+}
+
+.table td {
+  border: 1px solid #cfcfcf;
+  padding: 6px;
+  height: 28px;
+}
+
+.table td:first-child {
+  text-align: center;
+  width: 40px;
+}
+
+.table td:last-child {
+  text-align: right;
+  font-weight: 600;
+  width: 120px;
+}
+
+/* TOTAL */
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.total-row h2 {
+  font-size: 20px;
+  color: #8b5a2b;
+}
+
+/* BANK + SIGN */
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.bank h4 {
+  color: #8b5a2b;
+  margin-bottom: 5px;
+}
+
+.bank p {
+  margin: 2px 0;
+}
+
+.sign {
+  text-align: center;
+}
+
+.sign img {
+  height: 40px;
+  margin-bottom: 4px;
+}
+
+/* TERMS */
+.terms {
+  margin-top: 16px;
+  padding-bottom: 8px;
+  font-size: 12px;
+  border-bottom: 1px solid #ccc;   /* clean divider */
+}
+
+.terms h4 {
+  color: #8b5a2b;
+  margin-bottom: 6px;
+}
+
+.terms ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.terms li {
+  margin-bottom: 4px;
+}
+
