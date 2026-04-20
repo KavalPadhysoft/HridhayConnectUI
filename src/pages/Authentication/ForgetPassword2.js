@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Card, CardBody, Col, Container, FormFeedback, Input, Label, Row } from 'reactstrap';
 import logoDark from "../../assets/images/logo-dark.png";
 import logoLight from "../../assets/images/logo-light.png";
-
+import amLogo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { post } from "../../helpers/api_helper";
@@ -60,13 +60,14 @@ const ForgetPassword2Page = () => {
               <Card className="overflow-hidden">
                 <CardBody className="pt-0">
                   <h3 className="text-center mt-5 mb-4">
-                    <Link to="/" className="d-block auth-logo">
-                      <img src={logoDark} alt="" height="30" className="auth-logo-dark" />
-                      <img src={logoLight} alt="" height="30" className="auth-logo-light" />
-                    </Link>
+                    {/* <Link to="/" className="d-block auth-logo"> */}
+                      <img src={amLogo} alt="Logo" height="40" />
+                      {/* <img src={logoDark} alt="" height="30" className="auth-logo-dark" />
+                      <img src={logoLight} alt="" height="30" className="auth-logo-light" /> */}
+                    {/* </Link> */}
                   </h3>
                   <div className="p-3">
-                    <h4 className="text-muted font-size-18 mb-3 text-center">Reset Password 2</h4>
+                    <h4 className="text-muted font-size-18 mb-3 text-center">Reset Password</h4>
                     {error && (
                       <Alert color="danger" style={{ marginTop: "13px" }}>
                         {error}

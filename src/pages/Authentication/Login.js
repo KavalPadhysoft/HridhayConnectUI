@@ -80,9 +80,9 @@ const Login = props => {
                             <CardBody className="pt-0">
 
                                 <h3 className="text-center mt-5 mb-4">
-                                  <Link to="/" className="d-block auth-logo">
+                                  {/* <Link to="/" className="d-block auth-logo"> */}
                                     <img src={amLogo} alt="Logo" height="40" />
-                                  </Link>
+                                  {/* </Link> */}
                                 </h3>
 
                                 <div className="p-3">
