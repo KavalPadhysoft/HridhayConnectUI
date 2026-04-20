@@ -84,6 +84,7 @@ const PaymentForm = ({
                 value={formData.paymentDate ? formData.paymentDate.substring(0, 10) : ""}
                 onChange={onChange}
                 placeholder="YYYY-MM-DD"
+                 max={new Date().toISOString().split("T")[0]}
               />
             </Col>
             <Col md={6}>

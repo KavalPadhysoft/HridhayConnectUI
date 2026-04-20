@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardBody, CardHeader, Button, Form, Row, Col, Label, Input, Spinner, Alert } from "reactstrap";
 import { getCompanyMasterById, saveCompanyMaster } from "../../helpers/fakebackend_helper";
@@ -19,6 +19,10 @@ const initialState = {
 const CompanyMasterForm = () => {
   const [form, setForm] = useState(initialState);
   const [file, setFile] = useState(null);
+  const [signaturePreview, setSignaturePreview] = useState(null);
+  const [tempSignature, setTempSignature] = useState(null);
+  const [showCancel, setShowCancel] = useState(false);
+  const fileInputRef = useRef();
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const { id } = useParams();
@@ -48,6 +52,16 @@ const CompanyMasterForm = () => {
         address: data.address ?? initialState.address,
       };
       setForm(mapped);
+      // Only set signature preview in edit mode
+      if (id && data.signData) {
+        let base64String = data.signData;
+        if (!base64String.startsWith("data:image")) {
+          base64String = `data:image/png;base64,${base64String}`;
+        }
+        setSignaturePreview(base64String);
+      } else {
+        setSignaturePreview(null);
+      }
     } catch (err) {
       setFormError("Failed to load company master");
     } finally {
@@ -67,7 +81,23 @@ const CompanyMasterForm = () => {
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTempSignature(reader.result);
+        setShowCancel(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCancelSignature = () => {
+    setTempSignature(null);
+    setShowCancel(false);
+    setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleSubmit = async (e) => {
@@ -149,7 +179,39 @@ const CompanyMasterForm = () => {
             </Col>
             <Col md={6}>
               <Label>Signature File</Label>
-              <Input type="file" name="file" onChange={handleFileChange} />
+              {isEditMode ? (
+                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  {(tempSignature || signaturePreview) && (
+                    <img
+                      src={tempSignature || signaturePreview}
+                      alt="Signature Preview"
+                      style={{ width: 120, height: 60, objectFit: "contain", border: "1px solid #ccc", marginRight: 16 }}
+                    />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                  />
+                  <Button
+                    type="button"
+                    color="primary"
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                    style={{ marginRight: 8 }}
+                  >
+                    {(tempSignature || signaturePreview) ? "Change Image" : "Choose File"}
+                  </Button>
+                  {showCancel && (
+                    <Button type="button" color="danger" outline onClick={handleCancelSignature}>
+                      Cancel
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Input type="file" name="file" onChange={handleFileChange} />
+              )}
             </Col>
           </Row>
           <div className="app-form-actions mt-4">

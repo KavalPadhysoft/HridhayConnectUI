@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { connect } from "react-redux";
+import { setBreadcrumbItems } from "../../store/actions";
 import { getTermsList, getTermsById, saveTerms, deleteTermsById } from "../../helpers/fakebackend_helper";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import TermsForm from "./TermsForm";
@@ -10,8 +12,12 @@ import TermsForm from "./TermsForm";
 const TERMS_LIST_SORT_COLUMN = "terms";
 const TERMS_LIST_SORT_DIR = "asc";
 
-const Terms = () => {
+const Terms = (props) => {
   document.title = "Terms | Lexa - Responsive Bootstrap 5 Admin Dashboard";
+
+  useEffect(() => {
+    props.setBreadcrumbItems("Terms");
+  }, []);
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
@@ -28,6 +34,11 @@ const Terms = () => {
   const [sortColumn, setSortColumn] = useState(TERMS_LIST_SORT_COLUMN);
   const [sortColumnDir, setSortColumnDir] = useState(TERMS_LIST_SORT_DIR);
   const [formTitle, setFormTitle] = useState(isEditMode ? "Edit Terms" : "Create Terms");
+
+  // Update form title when switching between create/edit
+  useEffect(() => {
+    setFormTitle(isEditMode ? "Edit Terms" : "Create Terms");
+  }, [isEditMode]);
   const [formData, setFormData] = useState({
     id: 0,
     terms: "",
@@ -213,4 +224,4 @@ const Terms = () => {
   );
 };
 
-export default Terms;
+export default connect(null, { setBreadcrumbItems })(Terms);
