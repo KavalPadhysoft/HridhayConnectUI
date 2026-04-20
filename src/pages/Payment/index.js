@@ -275,7 +275,7 @@ const Payment = props => {
           { label: "Invoice Number", field: "invoiceNumber", sort: "asc" },
           { label: "Payment Date", field: "paymentDate", sort: "asc" },
           { label: "Amount", field: "amount", sort: "asc" },
-          { label: "Payment Mode", field: "paymentMode", sort: "asc" },
+          { label: "Payment Mode", field: "paymentModeName", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
         ],
         onSort: handleSortChange,
@@ -288,7 +288,7 @@ const Payment = props => {
         invoiceNumber: item.invoiceNumber || "",
         paymentDate: item.paymentDate ? new Date(item.paymentDate).toLocaleDateString() : "",
         amount: item.amount ?? 0,
-        paymentMode: item.paymentMode || "",
+        paymentModeName: item.paymentModeName || "",
         action: (
           <div className="d-flex gap-2 justify-content-center">
             <Button
