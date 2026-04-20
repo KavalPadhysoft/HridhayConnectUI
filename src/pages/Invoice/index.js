@@ -384,6 +384,15 @@ const Invoice = props => {
             <div className="d-flex gap-2 justify-content-center">
               <Button
                 color="link"
+                className="p-0 text-info"
+                title="View"
+                type="button"
+                onClick={() => navigate(`/Invoice/view/${item.invoiceId}`)}
+              >
+                <i className="mdi mdi-eye font-size-18" />
+              </Button>
+              <Button
+                color="link"
                 className="p-0 text-primary"
                 title="Edit"
                 type="button"
