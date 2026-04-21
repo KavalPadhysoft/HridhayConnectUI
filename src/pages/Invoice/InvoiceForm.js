@@ -273,7 +273,7 @@ const InvoiceForm = ({
                     <Form>
                       <Row className="g-2">
                         <Col md={12}>
-                          <Label>Service Name</Label>
+                          <Label>Service Name<span style={{ color: "red" }}>*</span></Label>
                           <select
                             className="form-control form-control-sm"
                             name="serviceId"
@@ -287,7 +287,7 @@ const InvoiceForm = ({
                           </select>
                         </Col>
                         <Col md={12}>
-                          <Label>Item Type</Label>
+                          <Label>Item Type<span style={{ color: "red" }}>*</span></Label>
                           <div className="d-flex align-items-center gap-2">
                             <button
                               type="button"

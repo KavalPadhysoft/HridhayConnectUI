@@ -80,10 +80,12 @@ const ClientForm = ({
             <Col md={12}>
               <Label>Address</Label>
               <Input
+                type="textarea"
                 name="address"
                 value={formData.address}
                 onChange={onChange}
                 placeholder="Enter address"
+                rows={3}
               />
             </Col>
           </Row>

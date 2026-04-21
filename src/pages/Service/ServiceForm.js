@@ -52,10 +52,12 @@ const ServiceForm = ({
             <Col md={6}>
               <Label>Description</Label>
               <Input
+                type="textarea"
                 name="description"
                 value={formData.description}
                 onChange={onChange}
                 placeholder="Enter description"
+                rows={3}
               />
             </Col>
           </Row>
