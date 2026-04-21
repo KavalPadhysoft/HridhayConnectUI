@@ -37,7 +37,8 @@ import Payment from "../pages/Payment"
 import PaymentFollowUp from "../pages/PaymentFollowUp"
 import PendingPaymentFollowUp from "../pages/PendingPaymentFollowUp"
 import PendingPaymentHistory from "../pages/PendingPaymentFollowUp/PendingPaymentHistory"
-
+import AddPayment from "../pages/PendingPaymentFollowUp/AddPayment"
+import AdjustAdvancePayment from "../pages/PendingPaymentFollowUp/AdjustAdvancePayment"
 
 //Extra Pages
 import PagesBlank from "../pages/Extra Pages/pages-blank";
@@ -124,6 +125,8 @@ const userRoutes = [
   // PendingPaymentFollowUp routes
   { path: "/PendingPaymentFollowUp", component: <PendingPaymentFollowUp /> },
   { path: "/PendingPaymentFollowUp/manage/:id", component: <PendingPaymentFollowUp /> },
+  { path: "/PendingPaymentFollowUp/AddPayment", component: <AddPayment /> },
+  { path: "/PendingPaymentFollowUp/AdjustAdvance", component: <AdjustAdvancePayment /> },
 
   // PendingPaymentHistory route
   { path: "/PendingPaymentHistory", component: <PendingPaymentHistory /> },

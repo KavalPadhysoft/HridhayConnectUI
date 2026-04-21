@@ -360,9 +360,22 @@ const deleteAdvancePaymentById = async id => {
 }
 
 // Payment API helpers
+// const getPaymentsPages = async (params = {}) => {
+//   try {
+//     return await get("/Payment/GetAllpage", {
+//       params: buildPageParams(params),
+//     })
+//   } catch (error) {
+//     throw (
+//       error?.response?.data?.message ||
+//       error?.message ||
+//       "Payments API call failed"
+//     )
+//   }
+// }
 const getPaymentsPages = async (params = {}) => {
   try {
-    return await get("/Payment/GetAllpage", {
+    return await get("/Payment/PendingPayment", {
       params: buildPageParams(params),
     })
   } catch (error) {

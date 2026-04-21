@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact";
-import { Eye } from "react-feather";
+import { Eye, DollarSign, PlusSquare } from "react-feather";
+
 import { get } from "../../helpers/api_helper";
 import { useNavigate } from "react-router-dom";
 import { buildServerSortColumns, withAutoSrColumn } from "../../common/common";
@@ -63,8 +64,11 @@ const PendingPaymentFollowUp = () => {
           { label: "Client", field: "clientName", sort: "asc" },
           { label: "Invoice Date", field: "invoiceDate", sort: "asc" },
           { label: "Due Date", field: "dueDate", sort: "asc" },
-          { label: "Final Amount", field: "finalAmount", sort: "asc" },
-          { label: "Status", field: "statusName", sort: "asc" },
+          { label: "Invoice Amount", field: "finalAmount", sort: "asc" },
+          { label: "Advance Amount", field: "advanceAmount", sort: "asc" },
+          { label: "Remaining Amount", field: "remainingAmount", sort: "asc" },
+          { label: "Pending Amount", field: "pendingAmount", sort: "asc" },
+         // { label: "Status", field: "statusName", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
         ],
         onSort: handleSortChange,
@@ -76,13 +80,32 @@ const PendingPaymentFollowUp = () => {
         invoiceDate: formatDateDMY(row.invoiceDate),
         dueDate: formatDateDMY(row.dueDate),
         action: (
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center gap-2">
             <Eye
               style={{ cursor: 'pointer', color: '#8f6ed5' }}
               size={20}
               title="View"
               onClick={() => navigate(`/PendingPaymentFollowUp?invoiceId=${row.invoiceId}`)}
             />
+            {(!row.remainingAmount || row.remainingAmount === 0) ? (
+              <Button
+                color="primary"
+                size="sm"
+                title="Add Payment"
+                onClick={() => navigate(`/PendingPaymentFollowUp/AddPayment?invoiceId=${row.invoiceId}&clientId=${row.clientId}`)}
+              >
+                <PlusSquare size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Add Payment
+              </Button>
+            ) : (
+              <Button
+                color="warning"
+                size="sm"
+                title="Adjust Advance Payment"
+                onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}`)}
+              >
+                <DollarSign size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Advance
+              </Button>
+            )}
           </div>
         ),
       })),
