@@ -92,7 +92,7 @@ const PendingPaymentFollowUp = () => {
                 color="primary"
                 size="sm"
                 title="Add Payment"
-                onClick={() => navigate(`/PendingPaymentFollowUp/AddPayment?invoiceId=${row.invoiceId}&clientId=${row.clientId}`)}
+                onClick={() => navigate(`/PendingPaymentFollowUp/AddPayment?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}`)}
               >
                 <PlusSquare size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Add Payment
               </Button>
@@ -101,7 +101,7 @@ const PendingPaymentFollowUp = () => {
                 color="warning"
                 size="sm"
                 title="Adjust Advance Payment"
-                onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}`)}
+               onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}&remainingAmount=${row.remainingAmount}`)}
               >
                 <DollarSign size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Advance
               </Button>

@@ -3,6 +3,7 @@ import { Button, Card, CardBody, Col, Form, Input, Label, Row } from "reactstrap
 import { useNavigate, useLocation } from "react-router-dom";
 import { post, get, getLovDropdownList } from "../../helpers/api_helper";
 import { Alert, CardHeader, Spinner } from "reactstrap";
+import { showError, showSuccess } from "../../Pop_show/alertService"
 import Select from "react-select";
 
 const AdjustAdvancePayment = () => {
@@ -11,16 +12,21 @@ const AdjustAdvancePayment = () => {
   const params = new URLSearchParams(location.search);
   const invoiceId = params.get("invoiceId") || 0;
   const clientId = params.get("clientId") || 0;
+  const remainingAmount = params.get("remainingAmount") || 0;
+  const pendingAmount = params.get("pendingAmount") || 0;
 
   const [form, setForm] = useState({
     clientId: Number(clientId),
     invoiceId: Number(invoiceId),
     paymentDate: new Date().toISOString().slice(0, 10),
-    advancePayment: 0,
+    advancePayment: Number(remainingAmount) || 0,
+    originalAdvanceAmount: Number(remainingAmount) || 0,
     paymentMode: "",
     referenceNo: "",
     notes: "",
-     pendingAmount: 0, // ✅ ADD THIS
+         pendingAmount: Number(pendingAmount),
+
+   // ✅ ADD THIS
     iS_Advance: true,
   });
   const [saving, setSaving] = useState(false);
@@ -67,29 +73,71 @@ const AdjustAdvancePayment = () => {
     fetchPaymentModes();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+const handleChange = (e) => {
+  const { name, value } = e.target;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    setError("");
-    try {
-      await savePayment(form);
+  setForm((prev) => ({
+    ...prev,
+    [name]: name === "advancePayment" ? Number(value) : value
+  }));
+};
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setSaving(true);
+  //   setError("");
+  //   try {
+  //     await savePayment(form);
+  //     navigate(-1);
+  //   } catch (err) {
+  //     setError(err?.toString() || "Advance adjustment failed");
+  //   } finally {
+  //     setSaving(false);
+  //   }
+  // };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+
+  // ✅ Validation on SAVE click
+  if (Number(form.advancePayment) > Number(form.pendingAmount)) {
+    const msg = "Advance amount cannot be greater than Invoice Amount";
+    setError(msg);        // show in UI
+    await showError(msg); // popup message
+    return;
+  }
+
+  setSaving(true);
+
+  try {
+    const response = await savePayment(form);
+
+    if (response?.isSuccess) {
+      await showSuccess(response?.message || "Advance saved successfully");
       navigate(-1);
-    } catch (err) {
-      setError(err?.toString() || "Advance adjustment failed");
-    } finally {
-      setSaving(false);
+      return;
     }
-  };
 
+    throw new Error(response?.message || "Advance adjustment failed");
+  } catch (err) {
+    const errorMessage = err?.message || err || "Advance adjustment failed";
+    await showError(errorMessage);
+    setError(errorMessage);
+  } finally {
+    setSaving(false);
+  }
+};
+
+  // end handle submit
   const savePayment = async payload => {
     try {
-      return await post("/Payment/AddAdvance", payload);
-    } catch (error) {
+    return await post("/Payment/Add", {
+      ...payload,
+      amount: payload.advancePayment, // ✅ map सही field
+      iS_Advance: true                // ✅ mark as advance
+    });
+  } 
+    catch (error) {
       throw (
         error?.response?.data?.message ||
         error?.message ||
@@ -190,16 +238,14 @@ const handleInvoiceChange = async (e) => {
                 ))}
               </Input>
             </Col>
-            <Col md={6}>
-              <Label for="paymentDate">Payment Date<span style={{ color: 'red' }}>*</span></Label>
+           
+                        <Col md={6}>
+              <Label>Invoice Amount</Label>
               <Input
-                type="date"
-                name="paymentDate"
-                id="paymentDate"
-                value={form.paymentDate}
-                onChange={handleChange}
-                required
-                disabled={saving}
+                type="text"
+                value={form.pendingAmount || ''}
+                readOnly
+                disabled
               />
             </Col>
             <Col md={6}>
@@ -212,6 +258,20 @@ const handleInvoiceChange = async (e) => {
                 onChange={handleChange}
                 required
                 min={0}
+              />
+              <small style={{ color: "rgb(24, 151, 234)", display: "block", marginTop: 4 }}>
+  Advance Amount: {form.originalAdvanceAmount || 0}
+</small>
+            </Col>
+             <Col md={6}>
+              <Label for="paymentDate">Payment Date<span style={{ color: 'red' }}>*</span></Label>
+              <Input
+                type="date"
+                name="paymentDate"
+                id="paymentDate"
+                value={form.paymentDate}
+                onChange={handleChange}
+                required
                 disabled={saving}
               />
             </Col>
@@ -242,15 +302,7 @@ const handleInvoiceChange = async (e) => {
                 disabled={saving}
               />
             </Col>
-            <Col md={6}>
-              <Label>Invoice Amount</Label>
-              <Input
-                type="text"
-                value={form.pendingAmount || ''}
-                readOnly
-                disabled
-              />
-            </Col>
+
             <Col md={6}>
               <Label for="notes">Notes</Label>
               <Input

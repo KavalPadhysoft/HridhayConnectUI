@@ -3,6 +3,7 @@ import { Button, Card, CardBody, Col, Form, FormGroup, Input, Label, Row } from 
 import { useNavigate, useLocation } from "react-router-dom";
 import { post, get, getLovDropdownList } from "../../helpers/api_helper";
 import { Alert, CardHeader, Spinner } from "reactstrap";
+import { showError, showSuccess } from "../../Pop_show/alertService"
 import Select from "react-select";
 
 const AddPayment = () => {
@@ -12,6 +13,7 @@ const AddPayment = () => {
   const params = new URLSearchParams(location.search);
   const invoiceId = params.get("invoiceId") || 0;
   const clientId = params.get("clientId") || 0;
+  const pendingAmount = params.get("pendingAmount") || 0;
 
   const [form, setForm] = useState({
     clientId: Number(clientId),
@@ -21,6 +23,7 @@ const AddPayment = () => {
     paymentMode: "",
     referenceNo: "",
     notes: "",
+     pendingAmount: Number(pendingAmount),
     // iS_Advance is not shown in the form and always false
     iS_Advance: false,
   });
@@ -75,21 +78,59 @@ const AddPayment = () => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    setError("");
-    try {
-      await savePayment(form);
+  // ✅ Validation
+  if (Number(form.amount) > Number(form.pendingAmount)) {
+    const msg = "Amount should be less than or equal to Invoice Amount";
+    setError(msg);
+    await showError(msg); // 👈 popup like your client form
+    return;
+  }
+
+  setSaving(true);
+
+  try {
+    const response = await savePayment(form);
+
+    if (response?.isSuccess) {
+      await showSuccess(response?.message || "Payment saved successfully");
       navigate(-1);
-    } catch (err) {
-      setError(err?.toString() || "Payment save failed");
-    } finally {
-      setSaving(false);
+      return;
     }
-  };
 
+    throw new Error(response?.message || "Payment save failed");
+  } catch (err) {
+    const errorMessage = err?.message || err || "Payment save failed";
+    await showError(errorMessage); // 👈 popup
+    setError(errorMessage);        // 👈 alert UI
+  } finally {
+    setSaving(false);
+  }
+};
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  // if (Number(form.amount) > Number(form.pendingAmount)) {
+  //   setError("Amount should be less than or equal to Invoice Amount");
+  //   return;
+  // }
+
+  //   setSaving(true);
+  //   setError("");
+  //   try {
+  //     await savePayment(form);
+  //     navigate(-1);
+  //   } catch (err) {
+  //     setError(err?.toString() || "Payment save failed");
+  //   } finally {
+  //     setSaving(false);
+  //   }
+  // };
+
+  //end handleSubmit
   const savePayment = async payload => {
     try {
       return await post("/Payment/Add", payload);
@@ -159,18 +200,16 @@ const AddPayment = () => {
                 ))}
               </Input>
             </Col>
-            <Col md={6}>
-              <Label for="paymentDate">Payment Date<span style={{ color: 'red' }}>*</span></Label>
+                        <Col md={6}>
+              <Label>Invoice Amount</Label>
               <Input
-                type="date"
-                name="paymentDate"
-                id="paymentDate"
-                value={form.paymentDate}
-                onChange={handleChange}
-                required
-                disabled={saving}
+                type="text"
+                value={form.pendingAmount || ''}
+                readOnly
+                disabled
               />
             </Col>
+           
             <Col md={6}>
               <Label for="amount">Amount<span style={{ color: 'red' }}>*</span></Label>
               <Input
@@ -181,6 +220,18 @@ const AddPayment = () => {
                 onChange={handleChange}
                 required
                 min={0}
+                disabled={saving}
+              />
+            </Col>
+             <Col md={6}>
+              <Label for="paymentDate">Payment Date<span style={{ color: 'red' }}>*</span></Label>
+              <Input
+                type="date"
+                name="paymentDate"
+                id="paymentDate"
+                value={form.paymentDate}
+                onChange={handleChange}
+                required
                 disabled={saving}
               />
             </Col>
@@ -211,15 +262,7 @@ const AddPayment = () => {
                 disabled={saving}
               />
             </Col>
-            <Col md={6}>
-              <Label>Invoice Amount</Label>
-              <Input
-                type="text"
-                value={form.pendingAmount || ''}
-                readOnly
-                disabled
-              />
-            </Col>
+
             <Col md={6}>
               <Label for="notes">Notes</Label>
               <Input
