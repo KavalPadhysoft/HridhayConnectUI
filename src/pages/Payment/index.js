@@ -365,7 +365,15 @@ const Payment = props => {
                     <Spinner color="primary" />
                   </div>
                 ) : (
-                  <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
+                  <MDBDataTable
+                    striped
+                    bordered
+                    small
+                    noBottomColumns
+                    data={data}
+                    noRecordsFoundLabel={<span style={{display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888'}}>You don't have any record</span>}
+                    className={rows.length > 0 ? "table-auto-sr" : undefined}
+                  />
                 )}
               </CardBody>
             </Card>
