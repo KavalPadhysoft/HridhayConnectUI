@@ -81,12 +81,18 @@ const PendingPaymentFollowUp = () => {
         dueDate: formatDateDMY(row.dueDate),
         action: (
           <div className="d-flex justify-content-center gap-2">
-            <Eye
+            {/* <Eye
               style={{ cursor: 'pointer', color: '#8f6ed5' }}
               size={20}
               title="View"
               onClick={() => navigate(`/PendingPaymentFollowUp?invoiceId=${row.invoiceId}`)}
-            />
+            /> */}
+             <Eye
+                          style={{ cursor: 'pointer', color: '#8f6ed5' }}
+                          size={20}
+                          title="View"
+                          onClick={() => navigate(`/PaymentFollowUp?invoiceId=${row.invoiceId}`)}
+                        />
             {(!row.remainingAmount || row.remainingAmount === 0) ? (
               <Button
                 color="primary"
@@ -118,7 +124,16 @@ const PendingPaymentFollowUp = () => {
   
             <Card>
               <CardBody>
-                
+                <h5 >
+        Pending Payment
+    </h5>
+                    {/* <h4 style={{ 
+      marginBottom: "15px", 
+      fontWeight: "600",
+      color: "#2f4b6e"
+    }}>
+      Pending Payment
+    </h4> */}
                 {error ? <Alert color="danger">{error}</Alert> : null}
                 {loading ? (
                   <div className="text-center py-5">

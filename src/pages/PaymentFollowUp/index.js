@@ -32,7 +32,7 @@ const PaymentFollowUp = () => {
     invoiceId: invoiceId,
     dueDate: "",
     followUpDate: "",
-    status: "",
+    status: "1",
     remark: "",
   });
 
@@ -84,7 +84,7 @@ const PaymentFollowUp = () => {
        { label: "Due Date", field: "dueDate", sort: "asc" },
       { label: "Follow Up Date", field: "followUpDate", sort: "asc" },
       { label: "Next Follow Up", field: "nextFollowUpDate", sort: "asc" },
-      { label: "Status", field: "statusName", sort: "asc" },
+     // { label: "Status", field: "statusName", sort: "asc" },
       { label: "Remark", field: "remark", sort: "asc" },
       { label: "Action", field: "action", sort: "disabled" },
     ],  
@@ -110,12 +110,15 @@ const PaymentFollowUp = () => {
     <React.Fragment>
       <Row>
         <Col lg={12}>
-          <h4 className="mb-4">Payment Follow Up</h4>
+          {/* <h4 className="mb-4">Payment FollowUp</h4> */}
           {isFormPage ? (
             <PaymentFollowUpForm invoiceId={invoiceId} followUpId={followUpId} />
           ) : (
             <Card>
               <CardBody>
+                    <h5 >
+      Payment FollowUp
+    </h5>
                 <div className="d-flex justify-content-end mb-3 gap-2">
                   <Button color="secondary" type="button" onClick={() => navigate('/dashboard')}>
                     <i className="mdi mdi-arrow-left me-1" />Back

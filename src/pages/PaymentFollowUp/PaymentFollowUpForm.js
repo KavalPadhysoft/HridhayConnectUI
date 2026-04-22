@@ -87,8 +87,9 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId }) => {
               <Col md={6}>
                 <Label>Due Date<span style={{ color: "red" }}>*</span></Label>
                 <Input
-                  type="datetime-local"
+                  type="date"
                   name="dueDate"
+                     min={(() => { const d = new Date(); d.setDate(d.getDate()); return d.toISOString().split('T')[0]; })()}
                   value={formData.dueDate}
                   onChange={handleChange}
                   required
@@ -97,14 +98,15 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId }) => {
               <Col md={6}>
                 <Label>Next FollowUp Date<span style={{ color: "red" }}>*</span></Label>
                 <Input
-                  type="datetime-local"
+                  type="date"
                   name="nextFollowUpDate"
+                   min={(() => { const d = new Date(); d.setDate(d.getDate()); return d.toISOString().split('T')[0]; })()}
                   value={formData.nextFollowUpDate}
                   onChange={handleChange}
                   required
                 />
               </Col>
-              <Col md={6}>
+              {/* <Col md={6}>
                 <Label>Status<span style={{ color: "red" }}>*</span></Label>
                 <Input
                   type="text"
@@ -115,7 +117,7 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId }) => {
                   placeholder="Enter status"
                   style={{ width: "100%" }}
                 />
-              </Col>
+              </Col> */}
               <Col md={6}>
                 <Label>Remark</Label>
                 <Input
