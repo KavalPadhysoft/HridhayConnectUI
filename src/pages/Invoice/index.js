@@ -387,7 +387,8 @@ const Invoice = props => {
                 className="p-0 text-info"
                 title="View"
                 type="button"
-                onClick={() => navigate(`/Invoice/view/${item.invoiceId}`)}
+                // onClick={() => navigate(`/Invoice/view/${item.invoiceId}`)}
+                onClick={() => navigate(`/Invoice/pdf/${item.invoiceId}`)}
               >
                 <i className="mdi mdi-eye font-size-18" />
               </Button>

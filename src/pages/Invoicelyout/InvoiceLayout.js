@@ -45,7 +45,8 @@ const InvoiceLayout = () => {
   if (error) return <div className="invoice-container"><div style={{color:'red'}}>{error}</div></div>;
 
   return (
-   <div className="invoice-wrapper invoice-page">
+  //  <div className="invoice-wrapper invoice-page">
+  <div id="invoice-pdf" className="invoice-wrapper invoice-page">
       <div className="invoice-box">
         {/* HEADER */}
         <div className="header">

@@ -33,11 +33,11 @@
 
 /* ✅ REAL LOGO */
 .company-logo {
-  width: 60px;
-  height: 60px;
+  width: 120px;     /* increase size */
+  height: auto;
   object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  border: none;     /* 🔥 remove box */
+  background: none;
 }
 
 /* COMPANY TEXT */
@@ -204,8 +204,10 @@
 }
 
 .sign-img {
-  height: 45px;
-  margin-bottom: 5px;
+  height: 140px;        /* 🔥 bigger */
+  width: auto;
+  object-fit: contain;
+  margin-bottom: -53px;
 }
 
 /* SIGN LINE */

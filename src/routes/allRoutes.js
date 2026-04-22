@@ -103,6 +103,8 @@ const userRoutes = [
   { path: "/Invoice/manage", component: <Invoice /> },
   { path: "/Invoice/manage/:id", component: <Invoice /> },
   { path: "/Invoice/demo", component: React.createElement(require("../pages/Invoicelyout/InvoiceDemoPage").default) },
+
+  { path: "/Invoice/pdf/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceDemoPage").default) },
   { path: "/Invoice/view/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceLayout").default) },
 
   // AnotherBilling routes
