@@ -319,6 +319,23 @@ const getAdvancePaymentsPages = async (params = {}) => {
   }
 }
 
+const getAdvancePaymentHistoryPages = async (params = {}) => {
+  try {
+    return await get("/AdvancePayment/AdvancePaymentHistory", {
+      params: {
+        ...buildPageParams(params),
+        AdvancePaymentId: params.AdvancePaymentId || 0   // ✅ FIX
+      }
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "AdvancePayments API call failed"
+    )
+  }
+}
+
 const getAdvancePaymentById = async id => {
   try {
     return await get("/AdvancePayment/GetById", {
@@ -1075,7 +1092,7 @@ export {
   getInvoiceById,
   saveInvoice,
   deleteInvoiceById,
-  getAdvancePaymentsPages,getAdvancePaymentById,saveAdvancePayment, deleteAdvancePaymentById,
+  getAdvancePaymentsPages,getAdvancePaymentHistoryPages,getAdvancePaymentById,saveAdvancePayment, deleteAdvancePaymentById,
   getPaymentsPages,
   getPaymentById,
   savePayment,

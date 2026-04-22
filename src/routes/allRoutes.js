@@ -39,7 +39,7 @@ import PendingPaymentFollowUp from "../pages/PendingPaymentFollowUp"
 import PendingPaymentHistory from "../pages/PendingPaymentFollowUp/PendingPaymentHistory"
 import AddPayment from "../pages/PendingPaymentFollowUp/AddPayment"
 import AdjustAdvancePayment from "../pages/PendingPaymentFollowUp/AdjustAdvancePayment"
-
+import AdvancePaymentHistory from "../pages/AdvancePayment/AdvancePaymentHistory";
 //Extra Pages
 import PagesBlank from "../pages/Extra Pages/pages-blank";
 import Pages404 from "../pages/Extra Pages/pages-404";
@@ -111,7 +111,7 @@ const userRoutes = [
   { path: "/AdvancePayment", component: <AdvancePayment /> },
   { path: "/AdvancePayment/manage", component: <AdvancePayment /> },
   { path: "/AdvancePayment/manage/:id", component: <AdvancePayment /> },
-
+{ path: "/AdvancePaymentHistory", component: <AdvancePaymentHistory /> },
 
   // Payment routes (singular and plural, both supported)
   { path: "/Payment", component: <Payment /> },

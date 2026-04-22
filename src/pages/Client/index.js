@@ -124,6 +124,9 @@ const Client = props => {
         phone: "",
         gstNumber: "",
         address: "",
+          city: "",        // ✅ add
+  state: "",       // ✅ add
+  pincode: ""  
       });
       setFormError("");
       setFormLoading(false);
@@ -135,7 +138,12 @@ const Client = props => {
       .then((response) => {
         if (response?.isSuccess && response?.data) {
           setFormTitle("Edit Client");
-          setFormData(response.data);
+        setFormData({
+  ...response.data,
+  city: response.data.city || "",
+  state: response.data.state || "",
+  pincode: response.data.pincode || ""
+});
         } else {
           setFormError(response?.message || "Failed to load client");
         }

@@ -470,6 +470,7 @@ const Invoice = props => {
                   <MDBDataTable
                     striped
                     bordered
+                    
                     small
                     noBottomColumns
                     data={data}

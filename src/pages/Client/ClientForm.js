@@ -77,6 +77,45 @@ const ClientForm = ({
                 placeholder="Enter GST number"
               />
             </Col>
+            {/* CITY */}
+<Col md={4}>
+  <Label>City</Label>
+  <Input
+    name="city"
+    value={formData.city || ""}
+    onChange={onChange}
+    placeholder="Enter city"
+  />
+</Col>
+
+{/* STATE */}
+<Col md={4}>
+  <Label>State</Label>
+  <Input
+    name="state"
+    value={formData.state || ""}
+    onChange={onChange}
+    placeholder="Enter state"
+  />
+</Col>
+
+{/* PINCODE */}
+<Col md={4}>
+  <Label>Pincode</Label>
+  <Input
+    name="pincode"
+    value={formData.pincode || ""}
+    onChange={onChange}
+    placeholder="Enter pincode"
+    maxLength={6}
+    inputMode="numeric"
+    onKeyPress={e => {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
+    }}
+  />
+</Col>
             <Col md={12}>
               <Label>Address</Label>
               <Input

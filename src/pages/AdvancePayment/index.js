@@ -46,7 +46,10 @@ const AdvancePayment = props => {
     clientId: 0,
     totalAmount: 0,
     remainingAmount: 0,
-    status: ""
+    status: "",
+    paymentDate: new Date().toISOString().slice(0, 10),
+    paymentMode: "",
+    remark: ""
   });
 
   // Client dropdown state
@@ -56,6 +59,10 @@ const AdvancePayment = props => {
   // Status dropdown state
   const [statusList, setStatusList] = useState([]);
   const [statusListLoading, setStatusListLoading] = useState(false);
+
+  // Payment mode dropdown state
+  const [paymentModeList, setPaymentModeList] = useState([]);
+  const [paymentModeListLoading, setPaymentModeListLoading] = useState(false);
 
   useEffect(() => {
     if (isFormPage) {
@@ -82,6 +89,18 @@ const AdvancePayment = props => {
         })
         .catch(() => setStatusList([]))
         .finally(() => setStatusListLoading(false));
+
+      setPaymentModeListLoading(true);
+      getLovDropdownList("PaymentMode")
+        .then((res) => {
+          if (res.isSuccess && Array.isArray(res.data)) {
+            setPaymentModeList(res.data);
+          } else {
+            setPaymentModeList([]);
+          }
+        })
+        .catch(() => setPaymentModeList([]))
+        .finally(() => setPaymentModeListLoading(false));
     }
   }, [isFormPage]);
 
@@ -184,6 +203,13 @@ const AdvancePayment = props => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handlePaymentModeChange = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      paymentMode: option ? option.value : "",
+    }));
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
@@ -229,7 +255,7 @@ const AdvancePayment = props => {
       columns: buildServerSortColumns({
         columns: [
           { label: "Client Name", field: "clientName", sort: "asc" },
-          { label: "Total Amount", field: "totalAmount", sort: "asc" },
+          { label: "Paid Amount", field: "totalAmount", sort: "asc" },
           { label: "Remaining Amount", field: "remainingAmount", sort: "asc" },
           { label: "Status", field: "statusName", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
@@ -244,33 +270,50 @@ const AdvancePayment = props => {
         totalAmount: item.totalAmount ?? 0,
         remainingAmount: item.remainingAmount ?? 0,
         statusName: item.statusName || "",
-        action: (
-          <div className="d-flex gap-2 justify-content-center">
-            <Button
-              color="link"
-              className="p-0 text-primary"
-              title="Edit"
-              type="button"
-              onClick={() => handleEdit(item.id)}
-            >
-              <i className="mdi mdi-pencil font-size-18" />
-            </Button>
-            <Button
-              color="link"
-              className="p-0 text-danger"
-              title="Delete"
-              type="button"
-              disabled={deletingId === item.id}
-              onClick={() => handleDelete(item.id)}
-            >
-              {deletingId === item.id ? (
-                <Spinner size="sm" />
-              ) : (
-                <i className="mdi mdi-trash-can-outline font-size-18" />
-              )}
-            </Button>
-          </div>
-        ),
+action: (
+  <div className="d-flex gap-2 justify-content-center">
+    
+    {/* EDIT BUTTON */}
+    <Button
+      color="link"
+      className="p-0 text-primary"
+      title="Edit"
+      type="button"
+      onClick={() => {
+        if (item.status !== "1") {
+          showError("You can't edit this record.");
+          return;
+        }
+        handleEdit(item.id);
+      }}
+    >
+      <i className="mdi mdi-pencil font-size-18" />
+    </Button>
+
+    {/* DELETE BUTTON */}
+    <Button
+      color="link"
+      className="p-0 text-danger"
+      title="Delete"
+      type="button"
+      disabled={deletingId === item.id}
+      onClick={() => {
+        if (item.status !== "1") {
+          showError("You can't delete this record.");
+          return;
+        }
+        handleDelete(item.id);
+      }}
+    >
+      {deletingId === item.id ? (
+        <Spinner size="sm" />
+      ) : (
+        <i className="mdi mdi-trash-can-outline font-size-18" />
+      )}
+    </Button>
+
+  </div>
+),
       })),
     });
   }, [rows, sortColumn, sortColumnDir, deletingId]);
@@ -302,6 +345,8 @@ const AdvancePayment = props => {
                 onClientChange={handleClientChange}
                 statusList={statusList}
                 onStatusChange={handleStatusChange}
+                paymentModeList={paymentModeList}
+                onPaymentModeChange={handlePaymentModeChange}
               />
             )
           ) : (

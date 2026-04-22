@@ -84,9 +84,9 @@ const CompanyMasterTable = (props) => {
 					<Button color="link" className="p-0 text-primary" title="Edit" type="button" onClick={() => navigate(`/company-master/edit/${item.id}`)}>
 						<i className="mdi mdi-pencil font-size-18" />
 					</Button>
-					<Button color="link" className="p-0 text-danger" title="Delete" type="button" disabled={deletingId === item.id} onClick={() => handleDelete(item.id)}>
+					{/* <Button color="link" className="p-0 text-danger" title="Delete" type="button" disabled={deletingId === item.id} onClick={() => handleDelete(item.id)}>
 						{deletingId === item.id ? <Spinner size="sm" /> : <i className="mdi mdi-trash-can-outline font-size-18" />}
-					</Button>
+					</Button> */}
 				</div>
 			),
 		})),

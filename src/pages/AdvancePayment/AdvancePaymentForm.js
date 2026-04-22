@@ -15,7 +15,10 @@ const AdvancePaymentForm = ({
   onClientChange,
   statusList = [],
   onStatusChange,
+  paymentModeList = [],
+  onPaymentModeChange,
 }) => {
+
   const clientSelectOptions = (clientList || []).map(client => ({
     value: client.id,
     label: client.name,
@@ -27,6 +30,12 @@ const AdvancePaymentForm = ({
     label: status.name || status.label,
   }));
   const selectedStatus = statusSelectOptions.find(option => String(option.value) === String(formData.status)) || null;
+
+  const paymentModeOptions = (paymentModeList || []).map(mode => ({
+    value: mode.code || mode.value || mode.id,
+    label: mode.name || mode.label,
+  }));
+  const selectedPaymentMode = paymentModeOptions.find(option => String(option.value) === String(formData.paymentMode)) || null;
 
   return (
     <Card className="mb-4 app-form-card">
@@ -52,13 +61,44 @@ const AdvancePaymentForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Total Amount<span style={{ color: "red" }}>*</span></Label>
+              <Label>Paid Amount<span style={{ color: "red" }}>*</span></Label>
               <Input
                 name="totalAmount"
                 type="number"
                 value={formData.totalAmount}
                 onChange={onChange}
                 placeholder="Enter total amount"
+              />
+            </Col>
+            <Col md={6}>
+              <Label>Payment Date<span style={{ color: "red" }}>*</span></Label>
+              <Input
+                name="paymentDate"
+                type="date"
+                value={formData.paymentDate ? formData.paymentDate.substring(0, 10) : ""}
+                onChange={onChange}
+                placeholder="YYYY-MM-DD"
+                max={new Date().toISOString().split("T")[0]}
+              />
+            </Col>
+            <Col md={6}>
+              <Label>Payment Mode<span style={{ color: "red" }}>*</span></Label>
+              <Select
+                classNamePrefix="select2-selection"
+                placeholder="Select payment mode"
+                options={paymentModeOptions}
+                value={selectedPaymentMode}
+                onChange={onPaymentModeChange}
+                isClearable
+              />
+            </Col>
+            <Col md={12}>
+              <Label>Remark</Label>
+              <Input
+                name="remark"
+                value={formData.remark || ""}
+                onChange={onChange}
+                placeholder="Enter remark"
               />
             </Col>
             {isEditMode && (
