@@ -87,11 +87,13 @@ const InvoiceDemoPage = () => {
     }, 800); // wait for API render
   }, []);
 
-  return (
+return (
+  <div style={{ display: "none" }}>
     <div id="invoice-pdf">
       <InvoiceLayout />
     </div>
-  );
+  </div>
+);
 };
 
 export default InvoiceDemoPage;
