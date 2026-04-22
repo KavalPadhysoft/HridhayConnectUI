@@ -101,7 +101,7 @@ const PendingPaymentFollowUp = () => {
                 color="warning"
                 size="sm"
                 title="Adjust Advance Payment"
-               onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}&remainingAmount=${row.remainingAmount}`)}
+               onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}&remainingAmount=${row.remainingAmount}&advance_ID=${row.advance_ID}&paymentDate=${row.paymentDate} `)}
               >
                 <DollarSign size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Advance
               </Button>
@@ -125,7 +125,24 @@ const PendingPaymentFollowUp = () => {
                     <Spinner color="primary" />
                   </div>
                 ) : (
-                  <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
+<MDBDataTable
+  className={rows && rows.length > 0 ? "table-auto-sr" : undefined}
+  striped
+  bordered
+  small
+  noBottomColumns
+  data={data}
+  noRecordsFoundLabel={
+    <span style={{
+      display: 'block',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      color: '#888'
+    }}>
+      You don't have any record
+    </span>
+  }
+/>
                 )}
               </CardBody>
             </Card>

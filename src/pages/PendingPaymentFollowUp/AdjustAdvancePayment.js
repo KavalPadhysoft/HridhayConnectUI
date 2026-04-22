@@ -14,18 +14,23 @@ const AdjustAdvancePayment = () => {
   const clientId = params.get("clientId") || 0;
   const remainingAmount = params.get("remainingAmount") || 0;
   const pendingAmount = params.get("pendingAmount") || 0;
+  const advance_ID = params.get("advance_ID") || 0;
+const rawDate = params.get("paymentDate");
+const paymentDate = rawDate
+  ? rawDate.split("T")[0]   // ✅ FIX: remove time
+  : new Date().toISOString().slice(0, 10);
 
   const [form, setForm] = useState({
     clientId: Number(clientId),
     invoiceId: Number(invoiceId),
-    paymentDate: new Date().toISOString().slice(0, 10),
+    paymentDate: paymentDate,
     advancePayment: Number(remainingAmount) || 0,
     originalAdvanceAmount: Number(remainingAmount) || 0,
     paymentMode: "",
     referenceNo: "",
     notes: "",
          pendingAmount: Number(pendingAmount),
-
+advance_ID: Number(advance_ID) || 0,
    // ✅ ADD THIS
     iS_Advance: true,
   });
@@ -134,6 +139,7 @@ const handleSubmit = async (e) => {
     return await post("/Payment/Add", {
       ...payload,
       amount: payload.advancePayment, // ✅ map सही field
+       advancePayment: payload.advancePayment,
       iS_Advance: true                // ✅ mark as advance
     });
   } 
@@ -265,15 +271,14 @@ const handleInvoiceChange = async (e) => {
             </Col>
              <Col md={6}>
               <Label for="paymentDate">Payment Date<span style={{ color: 'red' }}>*</span></Label>
-              <Input
-                type="date"
-                name="paymentDate"
-                id="paymentDate"
-                value={form.paymentDate}
-                onChange={handleChange}
-                required
-                disabled={saving}
-              />
+             <Input
+  type="date"
+  name="paymentDate"
+  id="paymentDate"
+  value={form.paymentDate}
+  readOnly   // ✅ ADD THIS
+  disabled   // ✅ optional (prevents click UI)
+/>
             </Col>
             <Col md={6}>
               <Label>Payment Mode<span style={{ color: "red" }}>*</span></Label>
