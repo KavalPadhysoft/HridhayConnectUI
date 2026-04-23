@@ -51,7 +51,7 @@ const navigate = useNavigate();
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
-          { label: "Invoice #", field: "invoiceNumber", sort: "asc" },
+          { label: "Invoice", field: "invoiceNumber", sort: "asc" },
           { label: "Client Name", field: "clientName", sort: "asc" },
           { label: "Payment Date", field: "paymentDate", sort: "asc" },
           { label: "Amount", field: "amount", sort: "asc" },

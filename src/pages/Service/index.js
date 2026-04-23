@@ -54,6 +54,7 @@ const Service = props => {
       const response = await getServicesPages({
         start: 0,
         length: 10,
+          sortColumn, 
         sortColumnDir,
       });
       if (response.isSuccess && response.data && response.data.data) {

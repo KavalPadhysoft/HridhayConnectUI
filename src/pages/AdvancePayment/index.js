@@ -111,7 +111,8 @@ const AdvancePayment = props => {
     try {
       const response = await getAdvancePaymentsPages({
         start: 0,
-        length: 10,
+        length: 4,
+        sortColumn,
         sortColumnDir,
       });
       if (response.isSuccess && response.data && response.data.data) {
@@ -311,6 +312,18 @@ action: (
         <i className="mdi mdi-trash-can-outline font-size-18" />
       )}
     </Button>
+
+    <Button
+  color="link"
+  className="p-0 text-info"
+  title="View History"
+  type="button"
+  onClick={() => {
+    navigate(`/AdvancePaymentHistory?AdvancePaymentId=${item.id}`);
+  }}
+>
+  <i className="mdi mdi-history font-size-18" />
+</Button>
 
   </div>
 ),

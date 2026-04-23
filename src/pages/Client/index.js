@@ -54,6 +54,7 @@ const Client = props => {
       const response = await getClientsPages({
         start: 0,
         length: 10,
+        sortColumn,
         sortColumnDir,
       });
       if (response.isSuccess && response.data && response.data.data) {

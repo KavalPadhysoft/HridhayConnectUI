@@ -18,6 +18,32 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+  const fetchInvoiceData = async () => {
+    if (!invoiceId || followUpId > 0) return; // only for ADD mode
+
+    try {
+      const res = await get(`/Invoice/GetById?id=${invoiceId}`);
+
+      if (res?.isSuccess && res.data) {
+        const data = res.data;
+
+        setFormData(prev => ({
+          ...prev,
+          dueDate: data.dueDate
+            ? data.dueDate.split("T")[0]
+            : "",
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to fetch invoice data", err);
+    }
+  };
+
+  fetchInvoiceData();
+}, [invoiceId, followUpId]);
+
+
+  useEffect(() => {
     if (followUpId > 0) {
       setLoading(true);
       get(`/PaymentFollowUp/GetById?id=${followUpId}`)
@@ -119,7 +145,7 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId }) => {
                 />
               </Col> */}
               <Col md={6}>
-                <Label>Remark</Label>
+                <Label>Remark<span style={{ color: "red" }}>*</span></Label>
                 <Input
                   type="text"
                   name="remark"

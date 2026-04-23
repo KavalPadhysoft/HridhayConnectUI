@@ -126,6 +126,7 @@ const Invoice = props => {
       const response = await getInvoicesPages({
         start: 0,
         length: 10,
+        sortColumn, 
         sortColumnDir,
       });
       if (response.isSuccess && response.data && response.data.data) {

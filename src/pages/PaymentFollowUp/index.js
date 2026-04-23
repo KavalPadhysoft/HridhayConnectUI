@@ -22,8 +22,8 @@ const PaymentFollowUp = () => {
   const [deletingId, setDeletingId] = useState(0);
   const [error, setError] = useState("");
   const [rows, setRows] = useState([]);
-  const [sortColumn, setSortColumn] = useState("invoiceNumber");
-  const [sortColumnDir, setSortColumnDir] = useState("asc");
+  const [sortColumn, setSortColumn] = useState("createdDate");
+  const [sortColumnDir, setSortColumnDir] = useState("desc");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [formError, setFormError] = useState("");
@@ -95,9 +95,9 @@ const PaymentFollowUp = () => {
       nextFollowUpDate: formatDateDMY(item.nextFollowUpDate),
       action: (
         <div className="d-flex gap-2 justify-content-center">
-          <Button color="link" className="p-0 text-primary" title="Edit" type="button" onClick={() => navigate(`/PaymentFollowUp/manage/${item.id}?invoiceId=${invoiceId}`)}>
+          {/* <Button color="link" className="p-0 text-primary" title="Edit" type="button" onClick={() => navigate(`/PaymentFollowUp/manage/${item.id}?invoiceId=${invoiceId}`)}>
             <i className="mdi mdi-pencil font-size-18" />
-          </Button>
+          </Button> */}
           <Button color="link" className="p-0 text-danger" title="Delete" type="button" disabled={deletingId === item.id} onClick={() => handleDelete(item.id)}>
             {deletingId === item.id ? <Spinner size="sm" /> : <i className="mdi mdi-trash-can-outline font-size-18" />}
           </Button>
@@ -129,17 +129,35 @@ const PaymentFollowUp = () => {
                 </div>
                 {error ? <Alert color="danger">{error}</Alert> : null}
                 {loading ? (
-                  <div className="text-center py-5">
-                    <Spinner color="primary" />
-                  </div>
-                ) : (
-                  rows.length === 0 ? (
-                    <div className="text-center py-5">No records found.</div>
-                  ) : (
-                    <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
-                  )
-                )}
-              </CardBody>
+                <div className="text-center py-5">
+                  <Spinner color="primary" />
+                </div>
+              ) : (
+                <MDBDataTable
+                  striped
+                  bordered
+                  small
+                  noBottomColumns
+                  data={data}
+                  className={
+                    rows && rows.length > 0 ? "table-auto-sr" : undefined
+                  }
+                  noRecordsFoundLabel={
+                    <span
+                      style={{
+                        display: "block",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "#888",
+                      }}
+                    >
+                      You don't have any record
+                    </span>
+                  }
+                />
+              )}
+
+            </CardBody>
             </Card>
           )}
         </Col>
