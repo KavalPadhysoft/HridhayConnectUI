@@ -13,7 +13,7 @@ import {
   getLovDetailsByColumn,
   getLovMasterByColumn,
   saveLovDetail,
-  saveLovMaster,DeleteDetail
+  saveLovMaster,DeleteDetail,DeleteMaster
 } from "../../helpers/fakebackend_helper"
 import { showError, showSuccess,showConfirm } from "../../Pop_show/alertService"
 import LovMasterForm from "./LovMasterForm"
@@ -53,6 +53,23 @@ const handleDeleteDetail = async (lovColumn, lovCode, onSuccess) => {
 
   try {
     const response = await DeleteDetail(lovColumn, lovCode);
+
+    if (response?.isSuccess || response?.statusCode === 1) {
+      await showSuccess(response?.message || "Deleted successfully");
+      if (onSuccess) onSuccess();
+    } else {
+      throw new Error(response?.message || "Delete failed");
+    }
+  } catch (err) {
+    await showError(err?.message || err || "Error deleting record");
+  }
+};
+
+const handleDeleteMaster = async (lovColumn, onSuccess) => {
+  if (!(await showConfirm("Are you sure you want to delete this record?"))) return;
+
+  try {
+    const response = await DeleteMaster(lovColumn);
 
     if (response?.isSuccess || response?.statusCode === 1) {
       await showSuccess(response?.message || "Deleted successfully");
@@ -354,11 +371,20 @@ const Lov = props => {
             >
               <i className="mdi mdi-eye-outline font-size-18" />
             </Button>
+            <Button
+              color="link"
+              className="p-0 text-danger"
+              title="Delete"
+              type="button"
+              onClick={() => handleDeleteMaster(item?.lov_Column, loadMasterList)}
+            >
+              <i className="mdi mdi-trash-can-outline font-size-18" />
+            </Button>
           </div>
         ),
       })),
     })
-  }, [masterRows, navigate, masterSortColumn, masterSortColumnDir])
+  }, [masterRows, navigate, masterSortColumn, masterSortColumnDir, loadMasterList])
 
   const detailTableData = useMemo(() => {
     return withAutoSrColumn({

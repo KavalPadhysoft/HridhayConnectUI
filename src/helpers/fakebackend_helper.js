@@ -797,6 +797,19 @@ const DeleteDetail = async (lovColumn, lovCode) => {
     );
   }
 };
+const DeleteMaster = async (lovColumn) => {
+  try {
+    return await del("/Lov/DeleteMaster", {
+      params: { lovColumn},
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Delete failed"
+    );
+  }
+};
 
 
 const getLovMasterByColumn = async lovColumn => {
@@ -1081,6 +1094,7 @@ export {
   getLovColumns,
   getLovMasterByColumn,
   DeleteDetail,
+  DeleteMaster,
   getLovDetailsByColumn,
   getLovDetailByCode,
   getRoleNames,
