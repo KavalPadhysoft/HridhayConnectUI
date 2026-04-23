@@ -545,7 +545,7 @@ const MyProfile = () => {
               </Card>
             </Col>
 
-            <Col xl="4">
+            {/* <Col xl="4">
               <Card className="h-100 shadow-sm">
                 <CardBody>
                   <div className="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom">
@@ -584,7 +584,7 @@ const MyProfile = () => {
                   </Form>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </div>

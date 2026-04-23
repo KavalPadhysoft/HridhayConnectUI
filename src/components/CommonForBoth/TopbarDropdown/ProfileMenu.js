@@ -16,6 +16,7 @@ import withRouter from "components/Common/withRouter"
 
 // users
 import user1 from "../../../assets/images/users/user-1.jpg"
+import UserLogo from "../../../assets/images/ChamperOfimg/Userimg.jpg"
 
 const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
@@ -36,7 +37,7 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-            src={user1}
+            src={UserLogo}
             alt="Header Avatar"
           />
         </DropdownToggle>
