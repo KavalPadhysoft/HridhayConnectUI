@@ -784,6 +784,21 @@ const getLovColumns = async (params = {}) => {
   }
 }
 
+const DeleteDetail = async (lovColumn, lovCode) => {
+  try {
+    return await del("/Lov/DeleteDetail", {
+      params: { lovColumn, lovCode },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Delete failed"
+    );
+  }
+};
+
+
 const getLovMasterByColumn = async lovColumn => {
   try {
     return await get("/Lov/Get", {
@@ -1065,6 +1080,7 @@ export {
   getRoleById,
   getLovColumns,
   getLovMasterByColumn,
+  DeleteDetail,
   getLovDetailsByColumn,
   getLovDetailByCode,
   getRoleNames,

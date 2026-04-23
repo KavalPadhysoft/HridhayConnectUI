@@ -13,9 +13,9 @@ import {
   getLovDetailsByColumn,
   getLovMasterByColumn,
   saveLovDetail,
-  saveLovMaster,
+  saveLovMaster,DeleteDetail
 } from "../../helpers/fakebackend_helper"
-import { showError, showSuccess } from "../../Pop_show/alertService"
+import { showError, showSuccess,showConfirm } from "../../Pop_show/alertService"
 import LovMasterForm from "./LovMasterForm"
 import LovDetailList from "./LovDetailList"
 import LovDetailForm from "./LovDetailForm"
@@ -46,6 +46,25 @@ const firstDataItem = payload => {
 
   return null
 }
+
+
+const handleDeleteDetail = async (lovColumn, lovCode, onSuccess) => {
+  if (!(await showConfirm("Are you sure you want to delete this record?"))) return;
+
+  try {
+    const response = await DeleteDetail(lovColumn, lovCode);
+
+    if (response?.isSuccess || response?.statusCode === 1) {
+      await showSuccess(response?.message || "Deleted successfully");
+      if (onSuccess) onSuccess();
+    } else {
+      throw new Error(response?.message || "Delete failed");
+    }
+  } catch (err) {
+    await showError(err?.message || err || "Error deleting record");
+  }
+};
+
 
 const normalizeList = payload => {
   if (Array.isArray(payload?.data)) return payload.data
@@ -377,6 +396,17 @@ const Lov = props => {
             >
               <i className="mdi mdi-pencil font-size-18" />
             </Button>
+
+             <Button
+      color="link"
+      className="p-0 text-danger"
+      title="Delete"
+      type="button"
+       onClick={() => handleDeleteDetail(lovColumnParam, item?.lov_Code, () => loadDetailRows(lovColumnParam))}
+    >
+      <i className="mdi mdi-trash-can-outline font-size-18" />
+    </Button>
+
           </div>
         ),
       })),
