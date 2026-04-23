@@ -53,7 +53,8 @@ const Invoice = props => {
     discount: 0,
     finalAmount: 0,
     status: "",
-    notes: ""
+    notes: "",
+    invoiceType: ""
   });
 
   // Client dropdown state
@@ -63,6 +64,10 @@ const Invoice = props => {
   // Status dropdown state
   const [statusList, setStatusList] = useState([]);
   const [statusListLoading, setStatusListLoading] = useState(false);
+
+  // Invoice Type dropdown state
+  const [invoiceTypeList, setInvoiceTypeList] = useState([]);
+  const [invoiceTypeListLoading, setInvoiceTypeListLoading] = useState(false);
 
   // Service dropdown state
   const [serviceList, setServiceList] = useState([]);
@@ -96,6 +101,18 @@ const Invoice = props => {
         })
         .catch(() => setStatusList([]))
         .finally(() => setStatusListLoading(false));
+
+      setInvoiceTypeListLoading(true);
+      getLovDropdownList("InvoiceType")
+        .then((res) => {
+          if (res.isSuccess && Array.isArray(res.data)) {
+            setInvoiceTypeList(res.data);
+          } else {
+            setInvoiceTypeList([]);
+          }
+        })
+        .catch(() => setInvoiceTypeList([]))
+        .finally(() => setInvoiceTypeListLoading(false));
 
       // Fetch service list for dropdown (new API)
       setServiceListLoading(true);
@@ -207,8 +224,9 @@ const Invoice = props => {
             subTotal: 0,
             discount: 0,
             finalAmount: 0,
-            status: "4", // Default status value for add
-            notes: ""
+            status: "4",
+            notes: "",
+            invoiceType: ""
           });
         })
         .catch(() => {
@@ -222,7 +240,8 @@ const Invoice = props => {
             discount: 0,
             finalAmount: 0,
             status: "",
-            notes: ""
+            notes: "",
+            invoiceType: ""
           });
         })
         .finally(() => {
@@ -347,6 +366,14 @@ const Invoice = props => {
     }));
   };
 
+  // Handler for react-select invoice type dropdown
+  const handleInvoiceTypeChange = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      invoiceType: option ? option.value : "",
+    }));
+  };
+
   // Table data
   const data = useMemo(() => {
     return withAutoSrColumn({
@@ -431,7 +458,7 @@ const Invoice = props => {
       <Row>
         <Col lg={12}>
           {isFormPage ? (
-            formLoading || clientListLoading ? (
+            formLoading || clientListLoading || statusListLoading || invoiceTypeListLoading ? (
               <Card>
                 <CardBody>
                   <div className="text-center py-5">
@@ -453,6 +480,8 @@ const Invoice = props => {
                 onClientChange={handleClientChange}
                 statusList={statusList}
                 onStatusChange={handleStatusChange}
+                invoiceTypeList={invoiceTypeList}
+                onInvoiceTypeChange={handleInvoiceTypeChange}
                 serviceList={serviceList}
                 invoiceItems={invoiceItems}
                 setInvoiceItems={setInvoiceItems}

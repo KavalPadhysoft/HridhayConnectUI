@@ -17,6 +17,8 @@ const InvoiceForm = ({
   onClientChange,
   statusList = [],
   onStatusChange,
+  invoiceTypeList = [],
+  onInvoiceTypeChange,
   serviceList = [],
   invoiceItems,
   setInvoiceItems,
@@ -189,6 +191,13 @@ const InvoiceForm = ({
   }));
   const selectedStatus = statusSelectOptions.find(option => String(option.value) === String(formData.status)) || null;
 
+  // Invoice Type dropdown options
+  const invoiceTypeSelectOptions = (invoiceTypeList || []).map(item => ({
+    value: item.code,
+    label: item.name,
+  }));
+  const selectedInvoiceType = invoiceTypeSelectOptions.find(option => String(option.value) === String(formData.invoiceType)) || null;
+
   // Calculate Sub Total and Final Amount
   const subTotal = invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0);
   const discountRaw = formData.discount === undefined || formData.discount === null ? "" : formData.discount;
@@ -251,6 +260,18 @@ const InvoiceForm = ({
                 min={(() => { const d = new Date(); d.setDate(d.getDate() + 1); return d.toISOString().split('T')[0]; })()}
               />
             </Col>
+            <Col md={6}>
+              <Label>Invoice Type<span style={{ color: "red" }}>*</span></Label>
+              <Select
+                classNamePrefix="select2-selection"
+                placeholder="Select invoice type"
+                options={invoiceTypeSelectOptions}
+                value={selectedInvoiceType}
+                onChange={onInvoiceTypeChange}
+                isSearchable
+                isClearable
+              />
+            </Col>
 
 
 
@@ -286,7 +307,7 @@ const InvoiceForm = ({
                             ))}
                           </select>
                         </Col>
-                        <Col md={12}>
+                        {/* <Col md={12}>
                           <Label>Item Type</Label>
                           <div className="d-flex align-items-center gap-2">
                             <button
@@ -304,7 +325,7 @@ const InvoiceForm = ({
                               GovtFee
                             </button>
                           </div>
-                        </Col>
+                        </Col> */}
                         <Col md={12}>
                           <Label>Description<span style={{ color: "red" }}>*</span></Label>
                           <textarea
@@ -359,7 +380,7 @@ const InvoiceForm = ({
                       <tr>
                         <th>Sr.</th>
                         <th>Service Name</th>
-                        <th>Item Type</th>
+                        {/* <th>Item Type</th> */}
                         <th>Description</th>
                         <th>Quantity</th>
                         <th>Rate</th>
@@ -382,7 +403,7 @@ const InvoiceForm = ({
                             {/* Service Name */}
                             <td>{item.ServiceName || (serviceList.find(s => String(s.serviceId) === String(item.serviceId))?.ServiceName) || ''}</td>
                             {/* Item Type */}
-                            <td>{item.ItemType === 'Service' ? 'Service' : 'GovtFee'}</td>
+                            {/* <td>{item.ItemType === 'Service' ? 'Service' : 'GovtFee'}</td> */}
                             {/* Description */}
                             <td>{item.Description}</td>
                             {/* Quantity */}
