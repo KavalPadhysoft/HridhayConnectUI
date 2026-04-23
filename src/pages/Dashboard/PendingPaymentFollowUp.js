@@ -107,7 +107,7 @@ const PendingPaymentFollowUp = () => {
                 color="warning"
                 size="sm"
                 title="Adjust Advance Payment"
-               onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}&remainingAmount=${row.remainingAmount}&advance_ID=${row.advance_ID}&paymentDate=${row.paymentDate} `)}
+               onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}&advance_ID=${row.advance_ID} `)}
               >
                 <DollarSign size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Advance
               </Button>

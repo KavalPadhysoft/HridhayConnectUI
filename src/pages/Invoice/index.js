@@ -16,49 +16,9 @@ import { setBreadcrumbItems } from "../../store/actions";
 
 import { getServiceDropdownList } from "../../helpers/api_helper";
 
-// add for Direct on PDF open
-import html2pdf from "html2pdf.js";
 
 const INVOICE_LIST_SORT_COLUMN = "invoiceNumber";
 const INVOICE_LIST_SORT_DIR = "asc";
-// add for Direct on PDF open
-const openPDFInNewTab = async (invoiceId) => {
-  try {
-    // 🔥 create hidden iframe
-    const iframe = document.createElement("iframe");
-    iframe.style.position = "fixed";
-    iframe.style.left = "-9999px";
-    document.body.appendChild(iframe);
-
-    // load your existing invoice page inside iframe
-    iframe.src = `/Invoice/view/${invoiceId}`;
-
-    iframe.onload = () => {
-      const element = iframe.contentDocument.getElementById("invoice-pdf");
-
-      if (!element) return;
-
-      const opt = {
-        margin: 0,
-        image: { type: "jpeg", quality: 1 },
-        html2canvas: { scale: 3 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-      };
-
-      html2pdf()
-        .set(opt)
-        .from(element)
-        .outputPdf("bloburl")
-        .then((url) => {
-          window.open(url, "_blank"); // ✅ OPEN PDF
-          document.body.removeChild(iframe); // cleanup
-        });
-    };
-
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 // end for direct PDF open
 const Invoice = props => {
@@ -429,8 +389,8 @@ const Invoice = props => {
                 title="View"
                 type="button"
                 // onClick={() => navigate(`/Invoice/view/${item.invoiceId}`)}
-                // onClick={() => navigate(`/Invoice/pdf/${item.invoiceId}`)}
-                onClick={() => openPDFInNewTab(item.invoiceId)}
+                 onClick={() => navigate(`/Invoice/pdf/${item.invoiceId}`)}
+               // onClick={() => openPDFInNewTab(item.invoiceId)}
                // onClick={() => window.open(`/Invoice/pdf/${item.invoiceId}`, "_blank")}
               >
                 <i className="mdi mdi-eye font-size-18" />

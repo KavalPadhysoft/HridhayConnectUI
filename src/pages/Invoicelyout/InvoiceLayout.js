@@ -70,10 +70,17 @@ const InvoiceLayout = () => {
 
         {/* BILL TO */}
         <div className="bill-to">
-          <b>Bill To:</b><br />
-          Client Name - {invoice?.clientName}<br />
-          Address - {invoice?.address}<br />
-          City - {invoice?.city}, State - {invoice?.state}
+          <div className="bill-to-label">Bill To:</div>
+          <div className="bill-to-details">
+            <strong>{invoice?.clientName || "N/A"}</strong><br />
+           {invoice?.address && (
+      <>
+        <br />
+        {invoice.address}
+      </>
+    )}
+            {invoice?.city}, {invoice?.state}, {invoice?.pincode}<br />
+          </div>
         </div>
 
         {/* TABLE */}
@@ -108,99 +115,77 @@ const InvoiceLayout = () => {
 )}
 
   {/* TOTAL */}
-  <tr>
-    <td colSpan="2" style={{ textAlign: "right", fontWeight: "bold" }}>
-      Total Amount
-    </td>
-    <td style={{ fontWeight: "bold", textAlign: "right" }}>
-      ₹{invoice?.finalAmount?.toLocaleString("en-IN")}/-
-    </td>
-  </tr>
+<tr className="total-row">
+  <td colSpan="2" className="total-label">
+    Total Amount
+  </td>
+  <td className="total-value">
+    ₹{invoice?.finalAmount?.toLocaleString("en-IN")}/-
+  </td>
+</tr>
 </tbody>
         </table>
 
         {/* PAYMENT DETAILS */}
-<div className="payment-box">
-  
-  {/* ICON */}
-  <div className="payment-icon">🏦</div>
+<div className="payment-signature-row">
 
-  {/* CONTENT */}
-  <div className="payment-content">
-    <div className="payment-title">Payment Details</div>
+  {/* LEFT → PAYMENT */}
+  <div className="payment-box">
+    <div className="payment-icon">🏦</div>
 
-    <ul>
+    <div className="payment-content">
+      <div className="payment-title">Payment Details</div>
 
-      {/* OPTIONAL EXTRA */}
-      <li><b>A/c No:</b> {company?.accountNo}</li>
-      <li><b>A/c Name:</b> {company?.accountName}</li>
-      <li><b>Bank:</b> {company?.bank}</li>
-      <li><b>IFSC:</b> {company?.ifscCode}</li>
-      <li><b>PAN:</b> {company?.pan}</li>
-    </ul>
+      <ul>
+        <li><b>A/c No:</b> {company?.accountNo}</li>
+        <li><b>A/c Name:</b> {company?.accountName}</li>
+        <li><b>Bank:</b> {company?.bank}</li>
+        <li><b>IFSC:</b> {company?.ifscCode}</li>
+        <li><b>PAN:</b> {company?.pan}</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* RIGHT → SIGNATURE */}
+  <div className="signature-right">
+    <div className="signature-box">
+
+      {company?.signData && company.signData.startsWith("iVBOR") ? (
+        <img
+          src={`data:${company.signContentType};base64,${company.signData}`}
+          alt="signature"
+          className="sign-img"
+        />
+      ) : (
+        <div className="sign-placeholder">Sign</div>
+      )}
+
+      <p className="sign-title">Authorized Signatory</p>
+      <p>Aditya Mahadevia</p>
+    </div>
   </div>
 
 </div>
 
-        {/* TERMS & SIGNATURE */}
-        <div className="terms-signature">
-          <div className="terms-left">
-            <h4>Terms & Conditions</h4>
-            <ol>
+
+<div className="terms-full">
+
+  <h4>Terms & Conditions</h4>
+
   {terms && terms.length > 0 ? (
-    [...terms]   // copy array
+    [...terms]
       .sort((a, b) => (a.displaySeqNo || 0) - (b.displaySeqNo || 0))
-      .map((term) => (
-        <li key={term.id}>
-          {term.terms}
-        </li>
+      .map((term, index) => (
+        <div key={term.id} className="term-item">
+          <span className="term-number">{index + 1}.</span>
+          <span className="term-text">{term.terms}</span>
+        </div>
       ))
   ) : (
-    <li>No terms available</li>
+    <p>No terms available</p>
   )}
-</ol>
-          </div>
-  <div className="signature-right">
-  <div className="signature-box">
 
-
-    {/* SIGNATURE IMAGE OR FALLBACK */}
-    {company?.signData && company.signData.startsWith("iVBOR") ? (
-      <img
-        src={`data:${company.signContentType};base64,${company.signData}`}
-        alt="signature"
-        className="sign-img"
-      />
-    ) : (
-      <div
-        style={{
-          margin: '10px auto',
-          fontWeight: 'bold',
-          fontSize: 16,
-          background: '#222',
-          color: '#fff',
-          width: 80,
-          textAlign: 'center',
-          borderRadius: 3,
-          padding: '5px 0'
-        }}
-      >
-        Sign
-      </div>
-    )}
-
-    {/* TEXT */}
-    <p style={{ margin: '10px 0 0 0', fontWeight: 'bold' }}>
-      Authorized Signatory
-    </p>
-
-    <p style={{ margin: 0 }}>
-      Aditya Mahadevia
-    </p>
-
-  </div>
 </div>
-        </div>
 
 
 <div className="thank-you">

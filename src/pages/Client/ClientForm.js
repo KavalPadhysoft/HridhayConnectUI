@@ -79,7 +79,7 @@ const ClientForm = ({
             </Col>
             {/* CITY */}
 <Col md={4}>
-  <Label>City</Label>
+  <Label>City<span style={{ color: "red" }}>*</span></Label>
   <Input
     name="city"
     value={formData.city || ""}
@@ -90,7 +90,7 @@ const ClientForm = ({
 
 {/* STATE */}
 <Col md={4}>
-  <Label>State</Label>
+  <Label>State<span style={{ color: "red" }}>*</span></Label>
   <Input
     name="state"
     value={formData.state || ""}
@@ -101,7 +101,7 @@ const ClientForm = ({
 
 {/* PINCODE */}
 <Col md={4}>
-  <Label>Pincode</Label>
+  <Label>Pincode<span style={{ color: "red" }}>*</span></Label>
   <Input
     name="pincode"
     value={formData.pincode || ""}

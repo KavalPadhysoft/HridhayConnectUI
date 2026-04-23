@@ -287,7 +287,7 @@ const InvoiceForm = ({
                           </select>
                         </Col>
                         <Col md={12}>
-                          <Label>Item Type<span style={{ color: "red" }}>*</span></Label>
+                          <Label>Item Type</Label>
                           <div className="d-flex align-items-center gap-2">
                             <button
                               type="button"
@@ -306,7 +306,7 @@ const InvoiceForm = ({
                           </div>
                         </Col>
                         <Col md={12}>
-                          <Label>Description</Label>
+                          <Label>Description<span style={{ color: "red" }}>*</span></Label>
                           <textarea
                             className="form-control form-control-sm"
                             name="Description"

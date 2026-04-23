@@ -176,7 +176,7 @@ const AdvancePayment = props => {
       setFormData({
         id: 0,
         clientId: 0,
-        totalAmount: 0,
+        totalAmount: null,
         remainingAmount: 0,
         status: ""
       });

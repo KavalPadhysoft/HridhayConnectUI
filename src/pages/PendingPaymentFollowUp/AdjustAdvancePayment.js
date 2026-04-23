@@ -5,6 +5,7 @@ import { post, get, getLovDropdownList } from "../../helpers/api_helper";
 import { Alert, CardHeader, Spinner } from "reactstrap";
 import { showError, showSuccess } from "../../Pop_show/alertService"
 import Select from "react-select";
+import { getAdvancePaymentById} from "../../helpers/fakebackend_helper";
 
 const AdjustAdvancePayment = () => {
   const navigate = useNavigate();
@@ -17,15 +18,15 @@ const AdjustAdvancePayment = () => {
   const advance_ID = params.get("advance_ID") || 0;
 const rawDate = params.get("paymentDate");
 const paymentDate = rawDate
-  ? rawDate.split("T")[0]   // ✅ FIX: remove time
+  ? rawDate.split("T")[0]   
   : new Date().toISOString().slice(0, 10);
 
   const [form, setForm] = useState({
     clientId: Number(clientId),
     invoiceId: Number(invoiceId),
     paymentDate: paymentDate,
-    advancePayment: Number(remainingAmount) || 0,
-    originalAdvanceAmount: Number(remainingAmount) || 0,
+    advancePayment: 0,
+    originalAdvanceAmount: 0,
     paymentMode: "",
     referenceNo: "",
     notes: "",
@@ -78,6 +79,49 @@ advance_ID: Number(advance_ID) || 0,
     fetchPaymentModes();
   }, []);
 
+
+useEffect(() => {
+  const fetchAdvanceById = async () => {
+    if (!form.advance_ID) return;
+
+    try {
+      const res = await getAdvancePaymentById(form.advance_ID);
+
+      if (res?.isSuccess && res.data) {
+        const data = res.data;
+
+        setForm(prev => ({
+          ...prev,
+          clientId: data.clientId,
+          advancePayment: data.remainingAmount,
+          originalAdvanceAmount: data.remainingAmount,
+          paymentMode: data.paymentMode,
+          paymentDate: data.paymentDate
+            ? data.paymentDate.split("T")[0]
+            : prev.paymentDate,
+          notes: data.remark || ""
+        }));
+
+        // ✅ FIXED (after options loaded)
+        const mode = paymentModeOptions.find(
+          opt => String(opt.value) === String(data.paymentMode)
+        );
+
+        setSelectedPaymentMode(mode || null);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load advance payment data");
+    }
+  };
+
+  if (paymentModeOptions.length > 0) {
+    fetchAdvanceById();
+  }
+
+}, [form.advance_ID, paymentModeOptions]);
+
+
 const handleChange = (e) => {
   const { name, value } = e.target;
 
@@ -104,6 +148,14 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   setError("");
 
+    // ✅ NEW: Advance validation
+  if (Number(form.advancePayment) > Number(form.originalAdvanceAmount)) {
+    const msg = "Advance payment cannot be greater than Advance Amount";
+    setError(msg);
+    await showError(msg);
+    return;
+  }
+  
   // ✅ Validation on SAVE click
   if (Number(form.advancePayment) > Number(form.pendingAmount)) {
     const msg = "Advance amount cannot be greater than Invoice Amount";
@@ -111,7 +163,10 @@ const handleSubmit = async (e) => {
     await showError(msg); // popup message
     return;
   }
+ 
+   
 
+   
   setSaving(true);
 
   try {
@@ -274,7 +329,7 @@ const handleInvoiceChange = async (e) => {
              <Input
   type="date"
   name="paymentDate"
-  id="paymentDate"
+ // id="paymentDate"
   value={form.paymentDate}
   readOnly   // ✅ ADD THIS
   disabled   // ✅ optional (prevents click UI)
@@ -282,7 +337,7 @@ const handleInvoiceChange = async (e) => {
             </Col>
             <Col md={6}>
               <Label>Payment Mode<span style={{ color: "red" }}>*</span></Label>
-              <Select
+              {/* <Select
                 classNamePrefix="select2-selection"
                 placeholder="Select payment mode"
                 options={paymentModeOptions}
@@ -292,9 +347,19 @@ const handleInvoiceChange = async (e) => {
                   setForm(prev => ({ ...prev, paymentMode: option ? option.value : "" }));
                 }}
                 isClearable
+                readOnly
                 styles={{ container: base => ({ ...base, width: "100%" }) }}
                 isDisabled={saving}
-              />
+              /> */}
+              <Select
+  options={paymentModeOptions}
+  value={
+    paymentModeOptions.find(
+      opt => String(opt.value) === String(form.paymentMode)
+    ) || null
+  }
+  isDisabled={true}   // ✅ user cannot change
+/>
             </Col>
             <Col md={6}>
               <Label for="referenceNo">Reference No</Label>
