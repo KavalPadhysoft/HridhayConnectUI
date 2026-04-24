@@ -356,6 +356,7 @@ useEffect(() => {
         bordered
         small
         noBottomColumns
+        searching={false}
         data={tableData}
         className={data && data.length > 0 ? "table-auto-sr" : undefined}
         noRecordsFoundLabel={
