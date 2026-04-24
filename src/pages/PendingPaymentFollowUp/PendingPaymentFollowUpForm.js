@@ -71,9 +71,12 @@ const PendingPaymentFollowUpForm = ({ invoiceId, followUpId }) => {
       <CardHeader className="bg-white d-flex align-items-center justify-content-between">
         <h5 className="mb-0">{followUpId > 0 ? "Edit" : "Add"} Pending Payment Follow Up</h5>
         <div>
-          <Button color="link" className="p-0" type="button" onClick={() => navigate(`/PendingPaymentFollowUp?invoiceId=${invoiceId}`)}>
+          {/* <Button color="link" className="p-0" type="button" onClick={() => navigate(`/PendingPaymentFollowUp?invoiceId=${invoiceId}`)}>
             Close
-          </Button>
+          </Button> */}
+              <Button color="secondary" type="button" onClick={() => navigate(`/PendingPaymentFollowUp?invoiceId=${invoiceId}`)}>
+                                      <i className="mdi mdi-arrow-left me-1" />Back
+                                    </Button>
         </div>
       </CardHeader>
       <CardBody className="app-form-body">

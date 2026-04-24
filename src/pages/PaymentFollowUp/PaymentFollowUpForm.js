@@ -97,9 +97,12 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId }) => {
     <Card className="mb-4 app-form-card">
       <CardHeader className="bg-white d-flex align-items-center justify-content-between">
         <h5 className="mb-0">{followUpId > 0 ? "Edit" : "Add"} Payment Follow Up</h5>
-        <Button color="link" className="p-0" type="button" onClick={() => navigate(`/PaymentFollowUp?invoiceId=${invoiceId}`)}>
+        {/* <Button color="link" className="p-0" type="button" onClick={() => navigate(`/PaymentFollowUp?invoiceId=${invoiceId}`)}>
           Close
-        </Button>
+        </Button> */}
+            <Button color="secondary" type="button" onClick={() => navigate(`/PaymentFollowUp?invoiceId=${invoiceId}`)}>
+                            <i className="mdi mdi-arrow-left me-1" />Back
+                          </Button>
       </CardHeader>
       <CardBody className="app-form-body">
         {error && <Alert color="danger">{error}</Alert>}

@@ -158,9 +158,12 @@ const handleSubmit = async (e) => {
     <Card className="mb-4 app-form-card">
       <CardHeader className="bg-white d-flex align-items-center justify-content-between">
         <h5 className="mb-0">Add Payment</h5>
-        <Button color="link" className="p-0" type="button" onClick={() => navigate(-1)} style={{ color: '#6c63ff', fontWeight: 500 }}>
+        {/* <Button color="link" className="p-0" type="button" onClick={() => navigate(-1)} style={{ color: '#6c63ff', fontWeight: 500 }}>
           Close
-        </Button>
+        </Button> */}
+            <Button color="secondary" type="button" onClick={() => navigate(-1)}>
+                            <i className="mdi mdi-arrow-left me-1" />Back
+                          </Button>
       </CardHeader>
       <CardBody className="app-form-body">
         {error ? <Alert color="danger">{error}</Alert> : null}

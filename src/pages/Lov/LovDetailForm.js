@@ -6,9 +6,12 @@ const LovDetailForm = ({ title, formData, saving, formError, onChange, onSubmit,
     <Card className="mb-4 app-form-card">
       <CardHeader className="bg-white d-flex align-items-center justify-content-between">
         <h5 className="mb-0">{title}</h5>
-        <Button color="link" className="p-0" type="button" onClick={onCancel}>
+        {/* <Button color="link" className="p-0" type="button" onClick={onCancel}>
           Close
-        </Button>
+        </Button> */}
+            <Button color="secondary" type="button" onClick={onCancel}>
+                            <i className="mdi mdi-arrow-left me-1" />Back
+                          </Button>
       </CardHeader>
       <CardBody className="app-form-body">
         {formError ? <Alert color="danger">{formError}</Alert> : null}
