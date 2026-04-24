@@ -464,6 +464,21 @@ const getInvoicesPages = async (params = {}) => {
   }
 }
 
+const GetInvoiceReport = async (params = {}) => {
+  try {
+    return await get("/InvoiceReport/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Invoice API call failed"
+    )
+  }
+}
+
+
 const getInvoiceById = async id => {
   try {
     return await get("/Invoice/GetById2", {
@@ -1130,4 +1145,5 @@ export {
   deletePaymentById,
   deletePendingPaymentFollowUpById,savePendingPaymentFollowUp,getPendingPaymentFollowUps,getPendingPaymentFollowUpById,getPaymentHistory,
   getCompanyMastersList,getCompanyMasterById,saveCompanyMaster,deleteCompanyMasterById,
+GetInvoiceReport,
 }

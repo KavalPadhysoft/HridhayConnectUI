@@ -40,6 +40,9 @@ import PendingPaymentHistory from "../pages/PendingPaymentFollowUp/PendingPaymen
 import AddPayment from "../pages/PendingPaymentFollowUp/AddPayment"
 import AdjustAdvancePayment from "../pages/PendingPaymentFollowUp/AdjustAdvancePayment"
 import AdvancePaymentHistory from "../pages/AdvancePayment/AdvancePaymentHistory";
+
+import InvoiceReport from "../pages/InvoiceReport";
+
 //Extra Pages
 import PagesBlank from "../pages/Extra Pages/pages-blank";
 import Pages404 from "../pages/Extra Pages/pages-404";
@@ -107,6 +110,8 @@ const userRoutes = [
   { path: "/Invoice/pdf/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceDemoPage").default) },
   { path: "/Invoice/view/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceLayout").default) },
 
+  // invoice report route
+  { path: "/InvoiceReport", component: <InvoiceReport /> },
   // AnotherBilling routes
 
   // AdvancePayment routes
