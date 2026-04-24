@@ -71,3 +71,26 @@
     background-color: $white; 
   }
 }
+@media (max-width: 768px) {
+  .table-auto-sr {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    
+    table {
+      display: block;
+      min-width: 600px;
+    }
+    
+    .dataTables_wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .dataTables_scrollBody {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}

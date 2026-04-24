@@ -29,3 +29,31 @@ div.dataTables_wrapper {
     }
   }
 }
+@media (max-width: 768px) {
+  div.dataTables_wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    .dataTables_filter,
+    .dataTables_length,
+    .dataTables_paginate {
+      margin-bottom: 10px;
+    }
+    
+    .dataTables_scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+      min-width: 600px;
+    }
+  }
+  
+  .table-auto-sr {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+}
