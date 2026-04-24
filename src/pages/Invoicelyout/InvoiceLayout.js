@@ -3,11 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./InvoiceLayout.css";
 import logo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png";
+import { INVOICE_LAYOUT_API_URL } from "helpers/api_helper";
 
 
 
-
-const API_URL = "https://localhost:7281/api/Invoice/GetInvoicesLayoutdata";
 
 
 const InvoiceLayout = () => {
@@ -22,7 +21,7 @@ const InvoiceLayout = () => {
   useEffect(() => {
     if (!invoiceId) return;
     setLoading(true);
-    fetch(`${API_URL}?id=${invoiceId}`)
+    fetch(`${INVOICE_LAYOUT_API_URL}?id=${invoiceId}`)
       .then(res => res.json())
       .then(res => {
         if (res.isSuccess && res.data) {

@@ -8,6 +8,7 @@ import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../.
 import { GetInvoiceReport } from "../../helpers/fakebackend_helper";
 import { formatDateDMY } from "../../utils/dateFormat";
 import Select from "react-select";
+import { InvoicereportExportToExcel, InvoicereportExportToPdf } from "../../helpers/fakebackend_helper";
 import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_helper";
 const INVOICE_REPORT_SORT_COLUMN = "invoiceDate";
 const INVOICE_REPORT_SORT_DIR = "desc";
@@ -28,10 +29,76 @@ const InvoiceReport = props => {
   const [sortColumn, setSortColumn] = useState(INVOICE_REPORT_SORT_COLUMN);
   const [sortColumnDir, setSortColumnDir] = useState(INVOICE_REPORT_SORT_DIR);
 const [statusList, setStatusList] = useState([]);
-
+const [hasSearched, setHasSearched] = useState(false);
 const [serviceList, setServiceList] = useState([]);
 
   const [clientList, setClientList] = useState([]);
+
+
+// export to excel
+const handleExport = async () => {
+  try {
+    const response = await InvoicereportExportToExcel({
+      start: 0,
+      length: 1000,
+      sortColumn,
+      sortColumnDir,
+      searchValue: "",
+
+      // ✅ ADD THESE
+      fromDate: filters.fromDate || null,
+      toDate: filters.toDate || null,
+      clientId: filters.clientId || null,
+      invoiceType: filters.invoiceType || null,
+      status: filters.status || null,
+    });
+
+    const url = window.URL.createObjectURL(response.data);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "InvoiceReport.xlsx";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("Export failed", err);
+  }
+};
+// pdf
+const handleExportPdf = async () => {
+  try {
+    const response = await InvoicereportExportToPdf({
+      start: 0,
+      length: 1000,
+      sortColumn,
+      sortColumnDir,
+      searchValue: "",
+
+      // ✅ ADD THESE
+      fromDate: filters.fromDate || null,
+      toDate: filters.toDate || null,
+      clientId: filters.clientId || null,
+      invoiceType: filters.invoiceType || null,
+      status: filters.status || null,
+    });
+
+    const url = window.URL.createObjectURL(response.data);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "InvoiceReport.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("PDF export failed", err);
+  }
+};
 
   useEffect(() => {
     props.setBreadcrumbItems("Invoice Report");
@@ -92,6 +159,7 @@ useEffect(() => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setHasSearched(true);
     try {
       const params = {
         fromDate: filters.fromDate,
@@ -146,6 +214,7 @@ useEffect(() => {
         <Col lg={12}>
           <Card>
             <CardBody>
+
               <Form onSubmit={handleSearch} className="mb-3">
 <Row>
   <Col md={2}>
@@ -261,22 +330,44 @@ useEffect(() => {
 </Col>
 </Row>
               </Form>
+{hasSearched && data.length > 0 && (
+  <div className="d-flex justify-content-end mb-3">
+    <Button color="success" className="me-2" onClick={handleExport}>
+      <i className="mdi mdi-file-excel me-1" />
+      Export Excel
+    </Button>
+
+    <Button color="danger" className="me-2" onClick={handleExportPdf}>
+      <i className="mdi mdi-file-pdf me-1" />
+      Export PDF
+    </Button>
+  </div>
+)}
               {error && <Alert color="danger">{error}</Alert>}
-              {loading ? (
-                <div className="text-center py-5">
-                  <Spinner color="primary" />
-                </div>
-              ) : (
-                <MDBDataTable
-                  striped
-                  bordered
-                  small
-                  noBottomColumns
-                  data={tableData}
-                  className={data && data.length > 0 ? "table-auto-sr" : undefined}
-                  noRecordsFoundLabel={<span style={{ display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888' }}>You don't have any record</span>}
-                />
-              )}
+             {hasSearched && (
+  <>
+    {loading ? (
+      <div className="text-center py-5">
+        <Spinner color="primary" />
+      </div>
+    ) : (
+      <MDBDataTable
+        striped
+        bordered
+        small
+        noBottomColumns
+        data={tableData}
+        className={data && data.length > 0 ? "table-auto-sr" : undefined}
+        noRecordsFoundLabel={
+          <span style={{ display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888' }}>
+            You don't have any record
+          </span>
+        }
+      />
+    )}
+  </>
+)}
+            
             </CardBody>
           </Card>
         </Col>

@@ -37,8 +37,9 @@ export async function exportToFile(url, filename, config = {}) {
   window.URL.revokeObjectURL(urlObj);
 }
 
+export const INVOICE_LAYOUT_API_URL = "https://aj.padhyasoft.com/api/Invoice/GetInvoicesLayoutdata";
 //apply base url for axios
-const API_URL = "https://localhost:7281/api";
+const API_URL = "https://aj.padhyasoft.com/api";
 
 const axiosApi = axios.create({
   baseURL: API_URL,

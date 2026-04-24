@@ -6,23 +6,17 @@ import { getBlob, exportToExcel } from "./api_helper";
 import { Delete } from "react-feather";
 
 // UserDemo API helpers
-const USER_DEMO_BASE_URL = "https://localhost:7281/api/UserDemo";
-
-// Get paginated users
+const USER_DEMO_BASE_URL = "https://aj.padhyasoft.com/api/UserDemo";
 export async function getUserDemoList({ start = 0, length = 10, sortColumnDir = "asc" }) {
   const url = `${USER_DEMO_BASE_URL}/GetAllpage?start=${start}&length=${length}&sortColumnDir=${sortColumnDir}`;
   const response = await axios.get(url);
   return response.data;
 }
-
-// Get user by ID
 export async function getUserDemoById(id) {
   const url = `${USER_DEMO_BASE_URL}/GetById?id=${id}`;
   const response = await axios.get(url);
   return response.data;
 }
-
-// Add or update user (with file upload)
 export async function saveUserDemo(formData) {
   const url = `${USER_DEMO_BASE_URL}/Add`;
   // formData should be FormData instance
@@ -133,7 +127,7 @@ const saveCompanyMaster = async payload => {
   try {
     // If payload is FormData, use axios directly for multipart/form-data
     if (payload instanceof FormData) {
-      const response = await axios.post("https://localhost:7281/api/CompanyMaster/Add", payload, {
+      const response = await axios.post("https://aj.padhyasoft.com/api/CompanyMaster/Add", payload, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       return response.data;
@@ -683,6 +677,19 @@ export const exportUsersPdf = async (params = {}) => {
   return await exportToExcel("/User/ExportToPdf", "Users.pdf", { params });
 };
 
+// Export users to Excel
+export const InvoicereportExportToExcel= async (params = {}) => {
+  return await exportToExcel("/InvoiceReport/ExportInvoiceExcel", "InvoiceReport.xlsx", { params });
+};
+
+// Export users to PDF
+export const InvoicereportExportToPdf = async (params = {}) => {
+  return await exportToExcel("/InvoiceReport/ExportInvoicePdf", "InvoiceReport.pdf", { params });
+};
+
+
+
+
 // using into ROle For Get value into Dropdown
 const getMenuPages = async () => {
   try {
@@ -1008,18 +1015,30 @@ const deleteRoleById = async id => {
     )
   }
 }
-
 const deleteMenuById = async id => {
   try {
-    return await del(`https://localhost:7281/api/Menu/Delete?id=${id}`)
+    return await del("/Menu/Delete", {
+      params: { id },
+    });
   } catch (error) {
     throw (
       error?.response?.data?.message ||
       error?.message ||
       "Menu delete failed"
-    )
+    );
   }
-}
+};
+// const deleteMenuById = async id => {
+//   try {
+//     return await del(`https://aj.padhyasoft.com/api/Menu/Delete?id=${id}`)
+//   } catch (error) {
+//     throw (
+//       error?.response?.data?.message ||
+//       error?.message ||
+//       "Menu delete failed"
+//     )
+//   }
+// }
 
 const changePassword = async payload => {
   try {
