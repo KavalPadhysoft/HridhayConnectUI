@@ -1,5 +1,8 @@
 import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect, useState } from "react";
+import ProfileLogo from "../../assets/images/ChamperOfimg/Userimg.jpg"
+
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -366,7 +369,7 @@ const MyProfile = () => {
 
                   <div className="d-flex align-items-center gap-3 mb-4">
                     <img
-                      src={user1}
+                      src={ProfileLogo}
                       alt="Profile"
                       className="avatar-md rounded-circle img-thumbnail"
                     />
