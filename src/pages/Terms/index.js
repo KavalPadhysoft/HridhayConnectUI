@@ -161,6 +161,7 @@ const Terms = (props) => {
     try {
       const res = await deleteTermsById(id);
       if (res?.isSuccess) {
+        await showSuccess(res?.message || "Terms deleted successfully");
         await loadTerms();
       } else {
         setError(res?.message || "Delete failed");
@@ -175,9 +176,6 @@ const Terms = (props) => {
   const handleSubmit = async e => {
     e.preventDefault();
     setFormError("");
-    // Show confirmation dialog before saving
-    const confirmed = await showConfirm("Are you sure you want to save this term?", "Yes, Save", "Cancel");
-    if (!confirmed) return;
     setSaving(true);
     try {
       const res = await saveTerms(formData);
