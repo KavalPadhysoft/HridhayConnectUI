@@ -66,7 +66,7 @@ const CompanyMasterTable = (props) => {
 
 	const data = useMemo(() => ({
 		columns: [
-			{ label: "Sr.", field: "NULL", sort: "disabled" },
+			{ label: "Sr.No", field: "NULL", sort: "disabled" },
             { label: "Account No", field: "accountNo", sort: "asc" },
 			{ label: "Account Name", field: "accountName", sort: "asc" },
 			{ label: "Bank", field: "bank", sort: "asc" },

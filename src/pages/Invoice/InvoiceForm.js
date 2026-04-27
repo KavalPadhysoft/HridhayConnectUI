@@ -381,7 +381,7 @@ const InvoiceForm = ({
                   <table className="table table-bordered table-striped table-sm mb-0">
                     <thead>
                       <tr>
-                        <th>Sr.</th>
+                        <th>Sr.No</th>
                         <th>Service Name</th>
                         {/* <th>Item Type</th> */}
                         <th>Description</th>

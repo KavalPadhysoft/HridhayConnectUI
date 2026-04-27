@@ -55,7 +55,7 @@ const navigate = useNavigate();
           { label: "Client Name", field: "clientName", sort: "asc" },
           { label: "Payment Date", field: "paymentDate", sort: "asc" },
           { label: "Amount", field: "amount", sort: "asc" },
-          { label: "Payment Mode", field: "paymentMode", sort: "asc" },
+       //   { label: "Payment Mode", field: "paymentMode", sort: "asc" },
           { label: "Reference No", field: "referenceNo", sort: "asc" },
         ],
       }),

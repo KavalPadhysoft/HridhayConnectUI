@@ -97,7 +97,7 @@ const PendingPaymentFollowUp = () => {
 
   const data = useMemo(() => ({
     columns: [
-      { label: "Sr.", field: null, sort: "asc" },
+      { label: "Sr.No", field: null, sort: "asc" },
       { label: "Due Date", field: "dueDate", sort: "asc" },
       { label: "Follow Up Date", field: "followUpDate", sort: "asc" },
       { label: "Next Follow Up", field: "nextFollowUpDate", sort: "asc" },

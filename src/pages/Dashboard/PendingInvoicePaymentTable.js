@@ -59,7 +59,7 @@ const PendingInvoicePaymentTable = () => {
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
-          { label: "Invoice #", field: "invoiceNumber", sort: "asc" },
+          { label: "Invoice No.", field: "invoiceNumber", sort: "asc" },
           { label: "Client", field: "clientName", sort: "asc" },
           { label: "Invoice Date", field: "invoiceDate", sort: "asc" },
           { label: "Due Date", field: "dueDate", sort: "asc" },

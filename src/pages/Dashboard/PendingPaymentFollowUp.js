@@ -60,7 +60,7 @@ const PendingPaymentFollowUp = () => {
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
-          { label: "Invoice #", field: "invoiceNumber", sort: "asc" },
+          { label: "Invoice No.", field: "invoiceNumber", sort: "asc" },
           { label: "Client", field: "clientName", sort: "asc" },
           { label: "Invoice Date", field: "invoiceDate", sort: "asc" },
           { label: "Due Date", field: "dueDate", sort: "asc" },
@@ -88,7 +88,8 @@ const PendingPaymentFollowUp = () => {
               onClick={() => navigate(`/PendingPaymentFollowUp?invoiceId=${row.invoiceId}`)}
             /> */}
              <Eye
-                          style={{ cursor: 'pointer', color: '#8f6ed5' }}
+                         // style={{ cursor: 'pointer', color: '#8f6ed5' }}
+                           style={{ cursor: 'pointer', color: '#8f6ed5', marginTop: '3px' }}
                           size={20}
                           title="View"
                           onClick={() => navigate(`/PaymentFollowUp?invoiceId=${row.invoiceId}`)}

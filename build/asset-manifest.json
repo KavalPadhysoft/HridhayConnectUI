@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.0f064ff5.css",
-    "main.js": "/static/js/main.0b1211c6.js",
+    "main.css": "/static/css/main.2fadc92f.css",
+    "main.js": "/static/js/main.94b33099.js",
     "static/media/materialdesignicons-webfont.eot": "/static/media/materialdesignicons-webfont.52adde0de9840940801f.eot",
     "static/media/materialdesignicons-webfont.ttf?v=5.8.55": "/static/media/materialdesignicons-webfont.506bc8215df8660d8f04.ttf",
-    "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.371dbce0dd46bd4d2033.svg",
-    "static/media/fa-brands-400.svg": "/static/media/fa-brands-400.e33e2cf6e02cac2ccb77.svg",
+    "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.ca408b63c26d83dbd1e4.svg",
+    "static/media/fa-brands-400.svg": "/static/media/fa-brands-400.bc671f97630e1af81f65.svg",
     "static/media/materialdesignicons-webfont.woff?v=5.8.55": "/static/media/materialdesignicons-webfont.d06df622bc47f0db9812.woff",
     "static/media/materialdesignicons-webfont.woff2?v=5.8.55": "/static/media/materialdesignicons-webfont.6147fc3741c622c5de2c.woff2",
-    "static/media/ionicons.svg?v=4.5.10-1": "/static/media/ionicons.bb0605ccfbc8cbabadc5.svg",
+    "static/media/ionicons.svg?v=4.5.10-1": "/static/media/ionicons.878fc92c9d741a0253a5.svg",
     "static/media/directory-bg.jpg": "/static/media/directory-bg.e603b6cd1aeef2ce2ec3.jpg",
-    "static/media/themify.svg?-fvbane": "/static/media/themify.f0fc8c798eac5636249c.svg",
+    "static/media/themify.svg?-fvbane": "/static/media/themify.c4292f34297f1004471a.svg",
     "static/media/fa-solid-900.eot": "/static/media/fa-solid-900.3a24a60e7f9c6574864a.eot",
     "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.10ecefc282f2761808bf.ttf",
-    "static/media/typicons.svg": "/static/media/typicons.6697a4a6203533fd919a.svg",
-    "static/media/fa-regular-400.svg": "/static/media/fa-regular-400.06b9d19ced8d17f3d5cb.svg",
+    "static/media/typicons.svg": "/static/media/typicons.456bdcf075c6b875317b.svg",
+    "static/media/AM-Logo-012-scaled.png": "/static/media/AM-Logo-012-scaled.c87ce637cd5b07bac51c.png",
+    "static/media/fa-regular-400.svg": "/static/media/fa-regular-400.64f4b211d3b0ddac8405.svg",
     "static/media/fa-brands-400.eot": "/static/media/fa-brands-400.0fea24969112a781acd2.eot",
     "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.ec82f282c7f54b637098.ttf",
     "static/media/ionicons.eot?v=4.5.10-1": "/static/media/ionicons.52cc4717a7334500d1bf.eot",
@@ -22,7 +23,7 @@
     "static/media/fa-solid-900.woff": "/static/media/fa-solid-900.46fdbd2d897f8824e63c.woff",
     "static/media/typicons.eot": "/static/media/typicons.17be2f814376a7f36498.eot",
     "static/media/typicons.ttf": "/static/media/typicons.d45316f67adb2dd7191e.ttf",
-    "static/media/dripicons-v2.svg": "/static/media/dripicons-v2.4cecedd188b606da855d.svg",
+    "static/media/dripicons-v2.svg": "/static/media/dripicons-v2.de54f4eb6e267d60dda5.svg",
     "static/media/fa-brands-400.woff": "/static/media/fa-brands-400.dc2cbadd690e1d4b2c9c.woff",
     "static/media/layout-2.jpg": "/static/media/layout-2.93a58fbc433287bf553c.jpg",
     "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.3ceb50e7bcafb577367c.woff2",
@@ -45,11 +46,11 @@
     "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.1008b5226941c24f4468.woff2",
     "static/media/bg-1.png": "/static/media/bg-1.7694411d08a41ca3baef.png",
     "index.html": "/index.html",
-    "main.0f064ff5.css.map": "/static/css/main.0f064ff5.css.map",
-    "main.0b1211c6.js.map": "/static/js/main.0b1211c6.js.map"
+    "main.2fadc92f.css.map": "/static/css/main.2fadc92f.css.map",
+    "main.94b33099.js.map": "/static/js/main.94b33099.js.map"
   },
   "entrypoints": [
-    "static/css/main.0f064ff5.css",
-    "static/js/main.0b1211c6.js"
+    "static/css/main.2fadc92f.css",
+    "static/js/main.94b33099.js"
   ]
 }
