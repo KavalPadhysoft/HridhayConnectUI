@@ -6,7 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { setBreadcrumbItems } from "../../store/actions";
 import { getTermsList, getTermsById, saveTerms, deleteTermsById } from "../../helpers/fakebackend_helper";
-import { showSuccess } from "../../Pop_show/alertService";
+import { showSuccess,showConfirm } from "../../Pop_show/alertService";
 import { buildServerSortColumns, getNextSortState, withAutoSrColumn } from "../../common/common";
 import TermsForm from "./TermsForm";
 
@@ -155,7 +155,8 @@ const Terms = (props) => {
   };
 
   const handleDelete = async id => {
-    if (!window.confirm("Are you sure you want to delete this term?")) return;
+    const confirmed = await showConfirm("Are you sure you want to delete this term?", "OK", "Cancel");
+    if (!confirmed) return;
     setDeletingId(id);
     try {
       const res = await deleteTermsById(id);
@@ -173,8 +174,11 @@ const Terms = (props) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setSaving(true);
     setFormError("");
+    // Show confirmation dialog before saving
+    const confirmed = await showConfirm("Are you sure you want to save this term?", "Yes, Save", "Cancel");
+    if (!confirmed) return;
+    setSaving(true);
     try {
       const res = await saveTerms(formData);
       if (res?.isSuccess) {
@@ -209,7 +213,14 @@ const Terms = (props) => {
     <Card>
       <CardBody>
         <div className="d-flex justify-content-end mb-3">
-          <Button color="primary" type="button" onClick={() => navigate("/Terms/manage")}> 
+          <Button
+            color="primary"
+            type="button"
+            onClick={() => {
+              setFormData({ id: 0, terms: "", displaySeqNo: 0 });
+              navigate("/Terms/manage");
+            }}
+          >
             <i className="mdi mdi-plus me-1" />Add Terms
           </Button>
         </div>
