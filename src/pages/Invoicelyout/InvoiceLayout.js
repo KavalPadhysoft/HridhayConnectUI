@@ -37,6 +37,7 @@ const InvoiceLayout = () => {
         if (res.isSuccess && res.data) {
           setItems(res.data.items || []);
           setCompany(res.data.company || null);
+          console.log("Invoice Data company :", res.data.company);
           setInvoice(res.data.invoice || null);
           setTerms(res.data.terms || []);
         } else {
@@ -163,6 +164,7 @@ const InvoiceLayout = () => {
                     <li>A/c No: {company?.accountNo}</li>
                     <li>Bank: {company?.bank}</li>
                     <li>IFSC: {company?.ifscCode}</li>
+                    <li>PAN: {company?.pan}</li>
                   </ul>
                 </div>
               </div>

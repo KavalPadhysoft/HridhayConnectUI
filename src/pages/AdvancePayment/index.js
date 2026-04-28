@@ -259,6 +259,7 @@ const AdvancePayment = props => {
           { label: "Paid Amount", field: "totalAmount", sort: "asc" },
           { label: "Remaining Amount", field: "remainingAmount", sort: "asc" },
           { label: "Status", field: "statusName", sort: "asc" },
+          { label: "Payment Mode", field: "paymentType", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },
         ],
         onSort: handleSortChange,
@@ -269,6 +270,7 @@ const AdvancePayment = props => {
         id: item.id,
         clientName: item.clientName || "",
         totalAmount: item.totalAmount ?? 0,
+        paymentType: item.paymentType || "",
         remainingAmount: item.remainingAmount ?? 0,
         statusName: item.statusName || "",
 action: (
