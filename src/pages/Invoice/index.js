@@ -243,7 +243,7 @@ const Invoice = props => {
             finalAmount: 0,
             status: "4",
             notes: "",
-            invoiceType: "",
+            invoiceType: invoiceTypeList.length > 0 ? invoiceTypeList[0].code : "",
             duedays: dueDaysList.length > 0 ? dueDaysList[0].name : ""
           });
         })
@@ -306,7 +306,7 @@ const Invoice = props => {
       })
       .catch((err) => setFormError(err?.message || err || "Failed to load Invoice"))
       .finally(() => setFormLoading(false));
-  }, [isFormPage, isEditMode, InvoiceId, serviceList, dueDaysList]);
+  }, [isFormPage, isEditMode, InvoiceId, serviceList, dueDaysList, invoiceTypeList]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

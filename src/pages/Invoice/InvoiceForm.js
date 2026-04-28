@@ -93,6 +93,9 @@ const InvoiceForm = ({
         let qty = Math.max(1, Number(value));
         updated.Quantity = qty;
         updated.Amount = qty * updated.Rate;
+      } else if (name === 'Rate') {
+        updated.Rate = Number(value) || 0;
+        updated.Amount = updated.Quantity * updated.Rate;
       } else if (name === 'ItemType') {
         updated.ItemType = value;
       } else if (name === 'Description') {
@@ -379,7 +382,7 @@ const InvoiceForm = ({
                             name="Rate"
                             type="number"
                             value={itemModalData.Rate}
-                            readOnly
+                            onChange={e => handleItemModalChange(e)}
                           />
                         </Col>
                         <Col md={12}>
