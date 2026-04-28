@@ -95,18 +95,9 @@ const AdvancePaymentForm = ({
                 isClearable
               />
             </Col>
-            <Col md={12}>
-              <Label>Remark</Label>
-              <Input
-                name="remark"
-                value={formData.remark || ""}
-                onChange={onChange}
-                placeholder="Enter remark"
-              />
-            </Col>
-            {isEditMode && (
+              {isEditMode && (
               <>
-                <Col md={6}>
+                {/* <Col md={6}>
                   <Label>Remaining Amount<span style={{ color: "red" }}>*</span></Label>
                   <Input
                     name="remainingAmount"
@@ -115,7 +106,7 @@ const AdvancePaymentForm = ({
                     onChange={onChange}
                     placeholder="Enter remaining amount"
                   />
-                </Col>
+                </Col> */}
                 <Col md={6}>
                   <Label>Status<span style={{ color: "red" }}>*</span></Label>
                   <Select
@@ -129,6 +120,16 @@ const AdvancePaymentForm = ({
                 </Col>
               </>
             )}
+            <Col md={12}>
+              <Label>Remark</Label>
+              <Input
+                name="remark"
+                value={formData.remark || ""}
+                onChange={onChange}
+                placeholder="Enter remark"
+              />
+            </Col>
+          
           </Row>
                 <div className="app-form-actions">
                                 <Button color="light" type="button" onClick={onClose}>
