@@ -244,7 +244,7 @@ const Invoice = props => {
             status: "4",
             notes: "",
             invoiceType: "",
-            duedays: dueDaysList.length > 0 ? dueDaysList[0].code : ""
+            duedays: dueDaysList.length > 0 ? dueDaysList[0].name : ""
           });
         })
         .catch(() => {

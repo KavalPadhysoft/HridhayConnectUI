@@ -93,7 +93,15 @@ const InvoiceLayout = () => {
                 <h2>TAX INVOICE</h2>
                 <div>
                   <div><b>Invoice No:</b> {invoice?.invoiceNumber}</div>
-                  <div><b>Date:</b> {invoice?.createdDate?.substring(0,10)}</div>
+                  {/* <div><b>Date:</b> {invoice?.createdDate?.substring(0,10)}</div> */}
+                  <div>
+  <b>Date:</b>{" "}
+  {invoice?.createdDate
+    ? new Date(invoice.createdDate)
+        .toLocaleDateString("en-GB")
+        .replace(/\//g, "-")
+    : ""}
+</div>
                 </div>
               </div>
             </div>
