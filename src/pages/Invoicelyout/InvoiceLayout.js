@@ -5,6 +5,18 @@ import logo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png";
 import { INVOICE_LAYOUT_API_URL } from "helpers/api_helper";
 
 const ITEMS_PER_PAGE = 5;
+const CHARS_PER_LINE = 35;
+const MAX_LINES_PER_PAGE = 13;
+
+const estimateLines = (text) => {
+  if (!text) return 1;
+  const lines = Math.ceil(text.length / CHARS_PER_LINE);
+  return Math.max(1, lines);
+};
+
+const calculatePageLines = (pageItems) => {
+  return pageItems.reduce((total, item) => total + estimateLines(item.description), 0);
+};
 
 const InvoiceLayout = () => {
   const [items, setItems] = useState([]);
@@ -105,21 +117,30 @@ const InvoiceLayout = () => {
               </thead>
 
               <tbody>
-                {pageItems.map((item, index) => (
-                  <tr key={index}>
-                    <td>{pageIndex * ITEMS_PER_PAGE + index + 1}</td>
-                    <td>{item.description}</td>
-                    <td>{item.amount?.toLocaleString("en-IN")}</td>
-                  </tr>
-                ))}
-
-{[...Array(Math.max(0, ITEMS_PER_PAGE - pageItems.length))].map((_, i) => (
-                    <tr key={`empty-${i}`}>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                {pageItems.map((item, index) => {
+                  const lineCount = estimateLines(item.description);
+                  return (
+                    <tr key={index}>
+                      <td>{pageIndex * ITEMS_PER_PAGE + index + 1}</td>
+                      <td style={{ whiteSpace: "pre-wrap", verticalAlign: "top" }}>{item.description}</td>
+                      <td style={{ verticalAlign: lineCount > 1 ? "top" : "middle" }}>{item.amount?.toLocaleString("en-IN")}</td>
                     </tr>
-                  ))}
+                  );
+                })}
+
+                {(() => {
+                  const usedLines = calculatePageLines(pageItems);
+                  const remainingLines = Math.max(0, MAX_LINES_PER_PAGE - usedLines);
+                  const emptyRowsNeeded = Math.max(0, remainingLines - 1);
+
+                  return [...Array(emptyRowsNeeded)].map((_, i) => (
+                    <tr key={`empty-${i}`} style={{ height: "28px" }}>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  ));
+                })()}
 
                 {/* SHOW SUBTOTAL ON ALL PAGES, FINAL TOTAL ON LAST PAGE */}
                 <tr className="total-row">
