@@ -19,6 +19,8 @@ const InvoiceForm = ({
   onStatusChange,
   invoiceTypeList = [],
   onInvoiceTypeChange,
+  dueDaysList = [],
+  onDueDaysChange,
   serviceList = [],
   invoiceItems,
   setInvoiceItems,
@@ -198,6 +200,13 @@ const InvoiceForm = ({
   }));
   const selectedInvoiceType = invoiceTypeSelectOptions.find(option => String(option.value) === String(formData.invoiceType)) || null;
 
+  // Due Days dropdown options
+  const dueDaysSelectOptions = (dueDaysList || []).map(item => ({
+    value: item.name,
+    label: `${item.name} Days`,
+  }));
+  const selectedDueDays = dueDaysSelectOptions.find(option => String(option.value) === String(formData.duedays)) || null;
+
   // Calculate Sub Total and Final Amount
   const subTotal = invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0);
   const discountRaw = formData.discount === undefined || formData.discount === null ? "" : formData.discount;
@@ -252,8 +261,20 @@ const InvoiceForm = ({
                 max={new Date().toISOString().split("T")[0]}
               />
             </Col>
-            <Col md={6}>
-              <Label>Due Date<span style={{ color: "red" }}>*</span></Label>
+             <Col md={6}>
+              <Label>Due Days</Label>
+              <Select
+                classNamePrefix="select2-selection"
+                placeholder="Select due days"
+                options={dueDaysSelectOptions}
+                value={selectedDueDays}
+                onChange={onDueDaysChange}
+                isSearchable
+                isClearable
+              />
+            </Col>
+            {/* <Col md={6}>
+              <Label>Due Date</Label>
               <Input
                 name="dueDate"
                 value={formData.dueDate}
@@ -262,7 +283,7 @@ const InvoiceForm = ({
                 type="date"
                 min={(() => { const d = new Date(); d.setDate(d.getDate() + 1); return d.toISOString().split('T')[0]; })()}
               />
-            </Col>
+            </Col> */}
             <Col md={6}>
               <Label>Invoice Type<span style={{ color: "red" }}>*</span></Label>
               <Select
@@ -275,6 +296,7 @@ const InvoiceForm = ({
                 isClearable
               />
             </Col>
+           
 
 
 

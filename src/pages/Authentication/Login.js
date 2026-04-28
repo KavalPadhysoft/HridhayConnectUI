@@ -86,8 +86,8 @@ const Login = props => {
                                 </h3>
 
                                 <div className="p-3">
-                                    <h4 className="text-muted font-size-18 mb-1 text-center">Welcome Back !</h4>
-                                    <p className="text-muted text-center">Sign in to continue to Lexa.</p>
+                                    {/* <h4 className="text-muted font-size-18 mb-1 text-center">Welcome Back !</h4>
+                                    <p className="text-muted text-center">Sign in to continue to Lexa.</p> */}
                                     <Form
                                       className="form-horizontal mt-4"
                                       onSubmit={(e) => {

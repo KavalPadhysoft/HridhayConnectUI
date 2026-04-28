@@ -54,7 +54,8 @@ const Invoice = props => {
     finalAmount: 0,
     status: "",
     notes: "",
-    invoiceType: ""
+    invoiceType: "",
+    duedays: ""
   });
 
   // Client dropdown state
@@ -68,6 +69,10 @@ const Invoice = props => {
   // Invoice Type dropdown state
   const [invoiceTypeList, setInvoiceTypeList] = useState([]);
   const [invoiceTypeListLoading, setInvoiceTypeListLoading] = useState(false);
+
+  // Due Days dropdown state
+  const [dueDaysList, setDueDaysList] = useState([]);
+  const [dueDaysListLoading, setDueDaysListLoading] = useState(false);
 
   // Service dropdown state
   const [serviceList, setServiceList] = useState([]);
@@ -113,6 +118,18 @@ const Invoice = props => {
         })
         .catch(() => setInvoiceTypeList([]))
         .finally(() => setInvoiceTypeListLoading(false));
+
+      setDueDaysListLoading(true);
+      getLovDropdownList("duedays")
+        .then((res) => {
+          if (res.isSuccess && Array.isArray(res.data)) {
+            setDueDaysList(res.data);
+          } else {
+            setDueDaysList([]);
+          }
+        })
+        .catch(() => setDueDaysList([]))
+        .finally(() => setDueDaysListLoading(false));
 
       // Fetch service list for dropdown (new API)
       setServiceListLoading(true);
@@ -226,7 +243,8 @@ const Invoice = props => {
             finalAmount: 0,
             status: "4",
             notes: "",
-            invoiceType: ""
+            invoiceType: "",
+            duedays: dueDaysList.length > 0 ? dueDaysList[0].code : ""
           });
         })
         .catch(() => {
@@ -241,7 +259,8 @@ const Invoice = props => {
             finalAmount: 0,
             status: "",
             notes: "",
-            invoiceType: ""
+            invoiceType: "",
+            duedays: ""
           });
         })
         .finally(() => {
@@ -287,7 +306,7 @@ const Invoice = props => {
       })
       .catch((err) => setFormError(err?.message || err || "Failed to load Invoice"))
       .finally(() => setFormLoading(false));
-  }, [isFormPage, isEditMode, InvoiceId, serviceList]);
+  }, [isFormPage, isEditMode, InvoiceId, serviceList, dueDaysList]);
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -371,6 +390,14 @@ const Invoice = props => {
     setFormData(prev => ({
       ...prev,
       invoiceType: option ? option.value : "",
+    }));
+  };
+
+  // Handler for due days dropdown
+  const handleDueDaysChange = (option) => {
+    setFormData(prev => ({
+      ...prev,
+      duedays: option ? option.value : "",
     }));
   };
 
@@ -458,7 +485,7 @@ const Invoice = props => {
       <Row>
         <Col lg={12}>
           {isFormPage ? (
-            formLoading || clientListLoading || statusListLoading || invoiceTypeListLoading ? (
+            formLoading || clientListLoading || statusListLoading || invoiceTypeListLoading || dueDaysListLoading ? (
               <Card>
                 <CardBody>
                   <div className="text-center py-5">
@@ -482,6 +509,8 @@ const Invoice = props => {
                 onStatusChange={handleStatusChange}
                 invoiceTypeList={invoiceTypeList}
                 onInvoiceTypeChange={handleInvoiceTypeChange}
+                dueDaysList={dueDaysList}
+                onDueDaysChange={handleDueDaysChange}
                 serviceList={serviceList}
                 invoiceItems={invoiceItems}
                 setInvoiceItems={setInvoiceItems}
