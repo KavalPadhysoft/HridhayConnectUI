@@ -1,3 +1,18 @@
+/* Add top border to tfoot */
+.invoice-page .table tfoot td {
+  border-top: 2px solid #2f4b6e;
+}
+/* SEPARATOR ROW BEFORE TOTAL */
+.separator-row td {
+  border-top: 2px solid #2f4b6e;
+  padding: 0;
+  height: 0;
+}
+
+/* Ensure columns visually touch separator and total row */
+.invoice-page .table .separator-row + .total-row td {
+  border-top: none;
+}
 /* ================= PAGE WRAPPER ================= */
 .invoice-wrapper {
   background: #f5f5f5;
@@ -93,10 +108,15 @@
   padding: 6px 8px;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
-  border-top: none;
-  border-bottom: none;
+ /* border-top: none !important; */
+  border-bottom: none !important;
   word-break: break-word;   /* 🔥 fix long text */
   vertical-align: top;
+}
+
+/* Remove row borders in tbody, keep only outer and cell borders */
+.invoice-page .table tbody tr {
+  border: none !important;
 }
 
 /* COLUMN WIDTH */
@@ -133,18 +153,22 @@
 
 /* TOTAL ROW */
 .total-row td {
-  border-top: 1px solid #000;
-  border-bottom: 2px solid #000;
+  border-top: 2px solid #2f4b6e !important;
+  border-bottom: 2px solid #000 !important;
   font-weight: bold;
   background: #f2f4f7;
 }
 
+/* LEFT TEXT */
 .total-label {
   text-align: right !important;
+  padding-right: 10px;
 }
 
+/* RIGHT AMOUNT */
 .total-value {
   text-align: right !important;
+  padding-right: 10px;
 }
 
 /* ================= PAYMENT + SIGNATURE ================= */
@@ -244,16 +268,6 @@
 .thank-you::after {
   margin-left: 10px;
 }
-/* 🔥 FORCE LINE ABOVE TOTAL */
-.invoice-page .table .total-row td {
-  border-top: 2px solid #dad5d5 !important;
-}
-/* 🔥 TOTAL ROW FIX */
-.total-row td {
-  border-top: 1px solid #000;   /* ✅ only top line */
-  font-weight: bold;
-  background: #f2f4f7;
-}
 
 /* LEFT TEXT */
 .total-label {
@@ -292,7 +306,6 @@
   page-break-inside: avoid;
   display: flex;
   flex-direction: column;
-  min-height: 280mm;
 }
 
 .invoice-page:last-child {

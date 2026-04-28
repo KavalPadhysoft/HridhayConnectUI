@@ -113,13 +113,13 @@ const InvoiceLayout = () => {
                   </tr>
                 ))}
 
-                {[...Array(Math.max(0, ITEMS_PER_PAGE - pageItems.length))].map((_, i) => (
-                  <tr key={`empty-${i}`} className="empty-space-row">
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                ))}
+{[...Array(Math.max(0, ITEMS_PER_PAGE - pageItems.length))].map((_, i) => (
+                    <tr key={`empty-${i}`}>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  ))}
 
                 {/* SHOW SUBTOTAL ON ALL PAGES, FINAL TOTAL ON LAST PAGE */}
                 <tr className="total-row">
