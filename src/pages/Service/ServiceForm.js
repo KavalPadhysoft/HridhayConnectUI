@@ -33,6 +33,13 @@ const ServiceForm = ({
                 value={formData.serviceName}
                 onChange={onChange}
                 placeholder="Enter service name"
+                maxLength={100}
+                onKeyDown={(e) => {
+                  const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", " "];
+                  if (!/[a-zA-Z0-9 ]/.test(e.key) && !allowedKeys.includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </Col>
             <Col md={6}>
@@ -61,6 +68,7 @@ const ServiceForm = ({
                 onChange={onChange}
                 placeholder="Enter description"
                 rows={3}
+                 maxLength={100}
               />
             </Col>
           </Row>
