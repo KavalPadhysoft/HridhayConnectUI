@@ -36,18 +36,33 @@ const TermsForm = ({ title, formError, formData, isEditMode, saving, onChange, o
               value={formData.terms}
               onChange={onChange}
               placeholder="Enter terms"
-              required
+              maxLength={150}
             />
           </Col>
           <Col md={6}>
             <Label>Display Seq No<span style={{ color: "red" }}>*</span></Label>
-            <Input
+<Input
               name="displaySeqNo"
               type="number"
               value={formData.displaySeqNo}
-              onChange={onChange}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val.length <= 2) {
+                  onChange(e);
+                }
+              }}
               placeholder="Enter display sequence number"
-              required
+              min={1}
+              max={99}
+              onKeyDown={(e) => {
+                const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+                if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+                  e.preventDefault();
+                }
+                if (e.key === "0" && !e.target.value) {
+                  e.preventDefault();
+                }
+              }}
             />
           </Col>
         </Row>

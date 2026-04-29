@@ -43,7 +43,7 @@ const Terms = (props) => {
   const [formData, setFormData] = useState({
     id: 0,
     terms: "",
-    displaySeqNo: 0,
+    displaySeqNo: null,
   });
 
   const loadTerms = async () => {
@@ -89,7 +89,7 @@ const Terms = (props) => {
       setFormData({
         id: 0,
         terms: "",
-        displaySeqNo: 0,
+        displaySeqNo: null,
       });
     }
   }, [isEditMode, termsId]);
@@ -116,7 +116,7 @@ const Terms = (props) => {
       rows: rows.map(item => ({
         id: item.id,
         terms: item.terms || "",
-        displaySeqNo: item.displaySeqNo ?? 0,
+        displaySeqNo: item.displaySeqNo ?? "",
       //  isActive: item.isActive ? "Yes" : "No",
         action: (
           <div className="d-flex gap-2 justify-content-center">

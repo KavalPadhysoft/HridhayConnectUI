@@ -54,7 +54,7 @@ const ClientForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Phone</Label>
+              <Label>Phone<span style={{ color: "red" }}>*</span></Label>
               <Input
                 name="phone"
                 value={formData.phone}
