@@ -44,7 +44,7 @@ const AdvancePayment = props => {
   const [formData, setFormData] = useState({
     id: 0,
     clientId: 0,
-    totalAmount: 0,
+    totalAmount: null,
     remainingAmount: 0,
     status: "",
     paymentDate: new Date().toISOString().slice(0, 10),

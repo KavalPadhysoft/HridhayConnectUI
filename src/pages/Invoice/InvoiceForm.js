@@ -498,7 +498,6 @@ const InvoiceForm = ({
     onChange={(e) => {
       let value = e.target.value;
 
-      // allow empty
       if (value === "") {
         onChange({
           target: { name: "discount", value: "" }
@@ -518,7 +517,7 @@ const InvoiceForm = ({
     onBlur={(e) => {
       let value = e.target.value;
 
-      if (value === "") return; // don't force 0
+      if (value === "") return;
 
       let num = Number(value);
 
@@ -527,11 +526,25 @@ const InvoiceForm = ({
           target: { name: "discount", value: 100 }
         });
       }
+      if (num > 0 && num < 0.01) {
+        onChange({
+          target: { name: "discount", value: "" }
+        });
+      }
     }}
     placeholder="Enter discount %"
     type="number"
-    min={0}
+    min={0.01}
     max={100}
+    onKeyDown={(e) => {
+      const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "."];
+      if (!/[0-9.]/.test(e.key) && !allowedKeys.includes(e.key)) {
+        e.preventDefault();
+      }
+      if (e.key === "0" && !e.target.value) {
+        e.preventDefault();
+      }
+    }}
     style={{ paddingRight: 30 }}
   />
 
@@ -580,6 +593,7 @@ const InvoiceForm = ({
                 value={formData.notes}
                 onChange={onChange}
                 placeholder="Enter notes"
+                maxLength={100}
               />
             </Col>
           </Row>
