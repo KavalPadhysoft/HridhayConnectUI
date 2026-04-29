@@ -71,6 +71,16 @@ const AdvancePaymentForm = ({
                 value={formData.totalAmount}
                 onChange={onChange}
                 placeholder="Enter total amount"
+                min={1}
+                onKeyDown={(e) => {
+                  const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "."];
+                  if (!/[0-9.]/.test(e.key) && !allowedKeys.includes(e.key)) {
+                    e.preventDefault();
+                  }
+                  if (e.key === "0" && !e.target.value) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </Col>
             <Col md={6}>
