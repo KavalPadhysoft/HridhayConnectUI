@@ -3,12 +3,14 @@ import { Button, Card, CardBody, CardHeader, Col, Form, Input, Label, Row, Spinn
 import { get, post } from "../../helpers/api_helper";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { toast } from "react-toastify";
 
 const PaymentFollowUpForm = ({ invoiceId, followUpId, dueDaysList }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: followUpId || 0,
     invoiceId: invoiceId || 0,
+    invoiceDate: "",
     dueDate: "",
     nextFollowUpDate: "",
     status: "",
@@ -31,10 +33,13 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId, dueDaysList }) => {
 
         setFormData(prev => ({
           ...prev,
+          invoiceDate: data.invoiceDate
+            ? data.invoiceDate.split("T")[0]
+            : "",
           dueDate: data.dueDate
             ? data.dueDate.split("T")[0]
             : "",
-          dueDays: data.dueDays || "",
+          dueDays: data.duedays || data.dueDays || "",
         }));
       }
     } catch (err) {
@@ -49,20 +54,25 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId, dueDaysList }) => {
   useEffect(() => {
     if (followUpId > 0) {
       setLoading(true);
-      get(`/PaymentFollowUp/GetById?id=${followUpId}`)
-        .then(response => {
-          if (response?.isSuccess && response?.statusCode === 1) {
+      Promise.all([
+        get(`/PaymentFollowUp/GetById?id=${followUpId}`),
+        get(`/Invoice/GetById?id=${invoiceId}`)
+      ])
+        .then(([followUpRes, invoiceRes]) => {
+          if (followUpRes?.isSuccess && followUpRes?.statusCode === 1) {
+            const invoiceData = invoiceRes?.data || {};
             setFormData({
-              id: response.data.id,
-              invoiceId: response.data.invoiceId,
-              dueDate: response.data.dueDate?.slice(0, 16),
-              nextFollowUpDate: response.data.nextFollowUpDate?.slice(0, 16),
-              status: response.data.status,
-              remark: response.data.remark,
-              dueDays: response.data.dueDays || "",
+              id: followUpRes.data.id,
+              invoiceId: followUpRes.data.invoiceId,
+              invoiceDate: invoiceData.invoiceDate ? invoiceData.invoiceDate.split("T")[0] : "",
+              dueDate: invoiceData.dueDate ? invoiceData.dueDate.split("T")[0] : "",
+              nextFollowUpDate: followUpRes.data.nextFollowUpDate?.slice(0, 16),
+              status: followUpRes.data.status,
+              remark: followUpRes.data.remark,
+              dueDays: invoiceData.duedays || invoiceData.dueDays || "",
             });
           } else {
-            setError(response?.message || "Failed to load follow-up");
+            setError(followUpRes?.message || "Failed to load follow-up");
           }
         })
         .catch(() => setError("Failed to load follow-up"))
@@ -82,11 +92,34 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId, dueDaysList }) => {
   const selectedDueDays = dueDaysSelectOptions.find(option => String(option.value) === String(formData.dueDays)) || null;
 
   const onDueDaysChange = (option) => {
-    setFormData(prev => ({ ...prev, dueDays: option ? option.value : "" }));
+    const newDueDays = option ? option.value : "";
+    setFormData(prev => ({ ...prev, dueDays: newDueDays }));
   };
+
+  const calculateMaxDate = () => {
+    if (!formData.invoiceDate || !formData.dueDays) return "";
+    const invoiceDate = new Date(formData.invoiceDate);
+    const dueDays = parseInt(formData.dueDays, 10);
+    if (isNaN(dueDays) || dueDays <= 0) return "";
+    const maxDate = new Date(invoiceDate);
+    maxDate.setDate(maxDate.getDate() + dueDays);
+    return maxDate.toISOString().split('T')[0];
+  };
+
+  const maxFollowUpDate = calculateMaxDate();
 
   const handleSubmit = async e => {
     e.preventDefault();
+    
+    // const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    // const followUpDate = new Date(formData.nextFollowUpDate);
+    
+    // if (followUpDate < today) {
+    //   toast.error("Follow up date cannot be in the past!");
+    //   return;
+    // }
+    
     setSaving(true);
     setError("");
     try {
@@ -143,7 +176,8 @@ const PaymentFollowUpForm = ({ invoiceId, followUpId, dueDaysList }) => {
                 <Input
                   type="date"
                   name="nextFollowUpDate"
-                   min={(() => { const d = new Date(); d.setDate(d.getDate()); return d.toISOString().split('T')[0]; })()}
+                  min={(() => { const d = new Date(); d.setDate(d.getDate()); return d.toISOString().split('T')[0]; })()}
+                  max={maxFollowUpDate || undefined}
                   value={formData.nextFollowUpDate}
                   onChange={handleChange}
                   required
