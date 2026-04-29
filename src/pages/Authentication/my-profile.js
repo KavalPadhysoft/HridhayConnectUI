@@ -497,7 +497,7 @@ const MyProfile = () => {
                         className="btn btn-link text-muted p-0 position-absolute"
                         style={{ right: "14px", top: "38px" }}
                       >
-                        <i className={showCurrentPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} />
+                        {/* <i className={showCurrentPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} /> */}
                       </button>
                     </div>
 
@@ -515,7 +515,7 @@ const MyProfile = () => {
                         className="btn btn-link text-muted p-0 position-absolute"
                         style={{ right: "14px", top: "38px" }}
                       >
-                        <i className={showNewPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} />
+                        {/* <i className={showNewPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} /> */}
                       </button>
                     </div>
 
@@ -533,7 +533,7 @@ const MyProfile = () => {
                         className="btn btn-link text-muted p-0 position-absolute"
                         style={{ right: "14px", top: "38px" }}
                       >
-                        <i className={showConfirmPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} />
+                        {/* <i className={showConfirmPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} /> */}
                       </button>
                     </div>
 

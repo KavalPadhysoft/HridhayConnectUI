@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { get, post } from "../../helpers/api_helper";
+import { get, post, getLovDropdownList } from "../../helpers/api_helper";
 import PaymentFollowUpForm from "./PaymentFollowUpForm";
 import { formatDateDMY } from "../../utils/dateFormat";
 
@@ -22,6 +22,7 @@ const PaymentFollowUp = () => {
   const [deletingId, setDeletingId] = useState(0);
   const [error, setError] = useState("");
   const [rows, setRows] = useState([]);
+  const [dueDaysList, setDueDaysList] = useState([]);
   const [sortColumn, setSortColumn] = useState("createdDate");
   const [sortColumnDir, setSortColumnDir] = useState("desc");
   const [page, setPage] = useState(0);
@@ -59,6 +60,18 @@ const PaymentFollowUp = () => {
       loadFollowUps();
     }
   }, [isFormPage, page, pageSize, sortColumn, sortColumnDir, invoiceId]);
+
+  useEffect(() => {
+    getLovDropdownList("duedays")
+      .then((res) => {
+        if (res.isSuccess && Array.isArray(res.data)) {
+          setDueDaysList(res.data);
+        } else {
+          setDueDaysList([]);
+        }
+      })
+      .catch(() => setDueDaysList([]));
+  }, []);
 
   const handleSortChange = fieldName => {
     setSortColumn(fieldName);
@@ -112,7 +125,7 @@ const PaymentFollowUp = () => {
         <Col lg={12}>
           {/* <h4 className="mb-4">Payment FollowUp</h4> */}
           {isFormPage ? (
-            <PaymentFollowUpForm invoiceId={invoiceId} followUpId={followUpId} />
+            <PaymentFollowUpForm invoiceId={invoiceId} followUpId={followUpId} dueDaysList={dueDaysList} />
           ) : (
             <Card>
               <CardBody>
