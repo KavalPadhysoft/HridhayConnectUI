@@ -3,6 +3,7 @@ import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap"
 import { MDBDataTable } from "mdbreact";
 import { Eye, DollarSign, PlusSquare } from "react-feather";
 
+import { IndianRupee } from "lucide-react";
 import { get } from "../../helpers/api_helper";
 import { useNavigate } from "react-router-dom";
 import { buildServerSortColumns, withAutoSrColumn } from "../../common/common";
@@ -110,7 +111,7 @@ const PendingPaymentFollowUp = () => {
                 title="Adjust Advance Payment"
                onClick={() => navigate(`/PendingPaymentFollowUp/AdjustAdvance?invoiceId=${row.invoiceId}&clientId=${row.clientId}&pendingAmount=${row.pendingAmount}&advance_ID=${row.advance_ID} `)}
               >
-                <DollarSign size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Advance
+               <IndianRupee size={16} style={{ marginRight: 4, verticalAlign: 'middle' }} />Advance
               </Button>
             )}
           </div>

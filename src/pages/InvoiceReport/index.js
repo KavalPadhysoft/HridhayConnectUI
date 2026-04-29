@@ -10,6 +10,7 @@ import { formatDateDMY } from "../../utils/dateFormat";
 import Select from "react-select";
 import { InvoicereportExportToExcel, InvoicereportExportToPdf } from "../../helpers/fakebackend_helper";
 import { getClientDropdownList, getLovDropdownList } from "../../helpers/api_helper";
+import { toast } from "react-toastify";
 const INVOICE_REPORT_SORT_COLUMN = "invoiceDate";
 const INVOICE_REPORT_SORT_DIR = "desc";
 
@@ -37,6 +38,14 @@ const [serviceList, setServiceList] = useState([]);
 
 // export to excel
 const handleExport = async () => {
+  if (filters.fromDate && filters.toDate) {
+    const fromDate = new Date(filters.fromDate);
+    const toDate = new Date(filters.toDate);
+    if (toDate < fromDate) {
+      toast.error("To Date cannot be before From Date");
+      return;
+    }
+  }
   try {
     const response = await InvoicereportExportToExcel({
       start: 0,
@@ -69,6 +78,14 @@ const handleExport = async () => {
 };
 // pdf
 const handleExportPdf = async () => {
+  if (filters.fromDate && filters.toDate) {
+    const fromDate = new Date(filters.fromDate);
+    const toDate = new Date(filters.toDate);
+    if (toDate < fromDate) {
+      toast.error("To Date cannot be before From Date");
+      return;
+    }
+  }
   try {
     const response = await InvoicereportExportToPdf({
       start: 0,
@@ -157,6 +174,16 @@ useEffect(() => {
 
   const handleSearch = async e => {
     e.preventDefault();
+    
+    if (filters.fromDate && filters.toDate) {
+      const fromDate = new Date(filters.fromDate);
+      const toDate = new Date(filters.toDate);
+      if (toDate < fromDate) {
+        toast.error("To Date cannot be before From Date");
+        return;
+      }
+    }
+    
     setLoading(true);
     setError("");
     setHasSearched(true);
