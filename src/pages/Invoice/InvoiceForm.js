@@ -564,9 +564,7 @@ const InvoiceForm = ({
       }
     }}
     placeholder="Enter discount %"
-    type="number"
-    min={0.01}
-    max={100}
+    type="text"
     onKeyDown={(e) => {
       const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "."];
       if (!/[0-9.]/.test(e.key) && !allowedKeys.includes(e.key)) {
