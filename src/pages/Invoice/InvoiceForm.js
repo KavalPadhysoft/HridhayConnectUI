@@ -36,8 +36,8 @@ const InvoiceForm = ({
     ServiceName: "",
     ItemType: "Service",
     Description: "",
-    Quantity: 1,
-    Rate: 0,
+    Quantity: "",
+    Rate: "",
     Amount: 0,
   });
   const [itemModalError, setItemModalError] = useState("");
@@ -48,8 +48,8 @@ const InvoiceForm = ({
       ServiceName: "",
       ItemType: "Service",
       Description: "",
-      Quantity: 1,
-      Rate: 0,
+      Quantity: "1",
+      Rate: "0",
       Amount: 0,
     });
     setItemModalMode('add');
@@ -87,15 +87,18 @@ const InvoiceForm = ({
         if (itemModalMode === 'edit' && !prev.Description && found && found.Description) {
           updated.Description = found.Description;
         }
-        updated.Rate = found ? found.Rate : 0;
-        updated.Amount = updated.Quantity * updated.Rate;
+        updated.Rate = found ? found.Rate : "";
+        const qty = updated.Quantity === "" ? 0 : Number(updated.Quantity);
+        updated.Amount = qty * (Number(updated.Rate) || 0);
       } else if (name === 'Quantity') {
-        let qty = Math.max(1, Number(value));
+        const qty = value === "" ? "" : Math.max(1, Number(value));
         updated.Quantity = qty;
-        updated.Amount = qty * updated.Rate;
+        const rate = updated.Rate === "" ? 0 : Number(updated.Rate);
+        updated.Amount = (qty === "" ? 0 : qty) * rate;
       } else if (name === 'Rate') {
-        updated.Rate = Number(value) || 0;
-        updated.Amount = updated.Quantity * updated.Rate;
+        updated.Rate = value;
+        const qty = updated.Quantity === "" ? 0 : Number(updated.Quantity);
+        updated.Amount = qty * (value === "" ? 0 : Number(value));
       } else if (name === 'ItemType') {
         updated.ItemType = value;
       } else if (name === 'Description') {
@@ -118,17 +121,31 @@ const InvoiceForm = ({
       toast.error("Please enter a description.");
       return;
     }
+    if (itemModalData.Quantity === "" || itemModalData.Quantity === null || itemModalData.Quantity === undefined) {
+      setItemModalError("Quantity is required.");
+      toast.error("Quantity is required.");
+      return;
+    }
+    if (itemModalData.Rate === "" || itemModalData.Rate === null || itemModalData.Rate === undefined) {
+      setItemModalError("Rate is required.");
+      toast.error("Rate is required.");
+      return;
+    }
     if (Number(itemModalData.Quantity) < 1) {
       setItemModalError("Quantity must be at least 1.");
       toast.error("Quantity must be at least 1.");
       return;
     }
     setItemModalError("");
+    const quantity = Number(itemModalData.Quantity);
+    const rate = Number(itemModalData.Rate);
+    const calculatedAmount = quantity * rate;
+    const itemToSave = { ...itemModalData, Quantity: quantity, Rate: rate, Amount: calculatedAmount };
     if (itemModalMode === 'add') {
-      setInvoiceItems(items => [...items, itemModalData]);
+      setInvoiceItems(items => [...items, itemToSave]);
       toast.success("Item added successfully!");
     } else if (itemModalMode === 'edit' && itemModalIndex !== null) {
-      setInvoiceItems(items => items.map((it, idx) => idx === itemModalIndex ? itemModalData : it));
+      setInvoiceItems(items => items.map((it, idx) => idx === itemModalIndex ? itemToSave : it));
       toast.success("Item updated successfully!");
     }
     setItemModalOpen(false);
@@ -153,7 +170,7 @@ const InvoiceForm = ({
       let name, value;
       if (typeof eOrValue === 'object' && eOrValue.target) {
         name = eOrValue.target.name;
-        value = eOrValue.target.type === 'number' ? Number(eOrValue.target.value) : eOrValue.target.value;
+        value = eOrValue.target.value;
       } else {
         name = fieldName;
         value = eOrValue;
@@ -166,11 +183,14 @@ const InvoiceForm = ({
         if (!updated.Description || updated.Description === updatedItems[idx].Description) {
           updated.Description = found ? found.Description : '';
         }
-        updated.Rate = found ? found.Rate : 0;
-        updated.Amount = updated.Quantity * updated.Rate;
+        updated.Rate = found ? found.Rate : "";
+        const qty = updated.Quantity === "" ? 0 : Number(updated.Quantity);
+        updated.Amount = qty * (Number(updated.Rate) || 0);
       } else if (name === 'Quantity') {
-        updated.Quantity = Number(value);
-        updated.Amount = updated.Quantity * updated.Rate;
+        updated.Quantity = value;
+        const qty = value === "" ? 0 : Number(value);
+        const rate = updated.Rate === "" ? 0 : Number(updated.Rate);
+        updated.Amount = qty * rate;
       } else if (name === 'ItemType') {
         updated.ItemType = value;
       } else if (name === 'Description') {
@@ -369,10 +389,15 @@ const InvoiceForm = ({
                           <input
                             className="form-control form-control-sm"
                             name="Quantity"
-                            type="number"
-                            min="1"
+                            type="text"
                             value={itemModalData.Quantity}
                             onChange={e => handleItemModalChange(e)}
+                            onKeyDown={(e) => {
+                              const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+                              if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+                                e.preventDefault();
+                              }
+                            }}
                           />
                         </Col>
                         <Col md={6}>
@@ -380,9 +405,15 @@ const InvoiceForm = ({
                           <input
                             className="form-control form-control-sm"
                             name="Rate"
-                            type="number"
+                            type="text"
                             value={itemModalData.Rate}
                             onChange={e => handleItemModalChange(e)}
+                            onKeyDown={(e) => {
+                              const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "."];
+                              if (!/[0-9.]/.test(e.key) && !allowedKeys.includes(e.key)) {
+                                e.preventDefault();
+                              }
+                            }}
                           />
                         </Col>
                         <Col md={12}>
