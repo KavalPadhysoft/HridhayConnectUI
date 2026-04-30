@@ -75,6 +75,8 @@ const CompanyMasterForm = () => {
       // Only allow digits and max 10 characters
       const digits = value.replace(/\D/g, "").slice(0, 10);
       setForm({ ...form, [name]: digits });
+    } else if (name === "pan") {
+      setForm({ ...form, [name]: value.toUpperCase() });
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -155,7 +157,7 @@ const CompanyMasterForm = () => {
             </Col>
             <Col md={6}>
               <Label>PAN<span style={{ color: "red" }}>*</span></Label>
-              <Input name="pan" value={form.pan} onChange={handleChange} placeholder="Enter PAN"  />
+              <Input name="pan" value={form.pan} onChange={handleChange} placeholder="Enter PAN" maxLength={10} />
             </Col>
             <Col md={6}>
               <Label>Mobile<span style={{ color: "red" }}>*</span></Label>
