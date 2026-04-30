@@ -326,7 +326,7 @@ const Invoice = props => {
       const invoicePayload = {
         ...formData,
         subTotal,
-        discount: discountRaw,
+        discount: discountRaw === "" ? null : discountRaw,
         finalAmount
       };
       // Remove invoiceDate and dueDate if empty
