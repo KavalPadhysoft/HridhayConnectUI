@@ -94,10 +94,63 @@ const PaymentForm = ({
               <Label>Amount<span style={{ color: "red" }}>*</span></Label>
               <Input
                 name="amount"
-                type="number"
+                type="text"
                 value={formData.amount}
                 onChange={onChange}
                 placeholder="Enter amount"
+                maxLength={14}
+onKeyDown={(e) => {
+                  const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Tab", "."];
+                  if (!/[0-9.]/.test(e.key) && !allowedKeys.includes(e.key)) {
+                    e.preventDefault();
+                    return;
+                  }
+
+                  const currentValue = e.target.value;
+                  const cursorStart = e.target.selectionStart;
+                  const cursorEnd = e.target.selectionEnd;
+                  const newValue = currentValue.substring(0, cursorStart) + e.key + currentValue.substring(cursorEnd);
+
+                  if (e.key === '.' && currentValue.includes('.')) {
+                    e.preventDefault();
+                    return;
+                  }
+
+                  if (/[0-9]/.test(e.key)) {
+                    const parts = newValue.split('.');
+                    const intPart = parts[0] || '';
+                    const decimalPart = parts[1] || '';
+
+                    if (intPart.length > 9) {
+                      e.preventDefault();
+                      return;
+                    }
+                    if (parts.length > 1 && decimalPart.length > 2) {
+                      e.preventDefault();
+                      return;
+                    }
+                  }
+                }}
+                onBlur={(e) => {
+                  let val = e.target.value.trim();
+                  if (val === "" || val === ".") {
+                    onChange({ target: { name: "amount", value: "" } });
+                    return;
+                  }
+                  let num = parseFloat(val);
+                  if (isNaN(num)) {
+                    onChange({ target: { name: "amount", value: "" } });
+                    return;
+                  }
+                  if (num > 999999999.99) {
+                    num = 999999999.99;
+                  }
+                  if (num < 0) {
+                    num = 0;
+                  }
+                  num = Math.round(num * 100) / 100;
+                  onChange({ target: { name: "amount", value: num.toString() } });
+                }}
               />
             </Col>
             <Col md={6}>

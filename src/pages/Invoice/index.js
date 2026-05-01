@@ -232,11 +232,12 @@ const Invoice = props => {
           if (res && (res.invoiceNumber || (res.data && res.data.invoiceNumber))) {
             invoiceNumber = res.invoiceNumber || (res.data && res.data.invoiceNumber) || "";
           }
+          const today = new Date().toISOString().split("T")[0];
           setFormData({
             invoiceId: 0,
             clientId: 0,
             invoiceNumber: invoiceNumber,
-            invoiceDate: "",
+            invoiceDate: today,
             dueDate: "",
             subTotal: 0,
             discount: null,

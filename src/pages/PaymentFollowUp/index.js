@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Card, CardBody, Col, Row, Spinner } from "reactstrap";
 import { MDBDataTable } from "mdbreact";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { get, post, getLovDropdownList } from "../../helpers/api_helper";
+import { get, post, getLovDropdownList,del } from "../../helpers/api_helper";
 import PaymentFollowUpForm from "./PaymentFollowUpForm";
 import { formatDateDMY } from "../../utils/dateFormat";
+import { showConfirm, showError, showSuccess } from "../../Pop_show/alertService";
 
 const PaymentFollowUp = () => {
   const navigate = useNavigate();
@@ -79,13 +80,14 @@ const PaymentFollowUp = () => {
   };
 
   const handleDelete = async id => {
-    if (!window.confirm("Are you sure you want to delete this follow-up?")) return;
+    if (!await showConfirm("Are you sure you want to delete this follow-up?")) return;
     setDeletingId(id);
     try {
-      await get(`/PaymentFollowUp/Delete?id=${id}`);
+      await del (`/PaymentFollowUp/Delete?id=${id}`);
+      await showSuccess("Follow-up deleted successfully.");
       loadFollowUps();
     } catch (err) {
-      alert("Failed to delete follow-up");
+      await showError("Failed to delete follow-up");
     } finally {
       setDeletingId(0);
     }
