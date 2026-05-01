@@ -444,6 +444,7 @@ const InvoiceForm = ({
                         <th>Quantity</th>
                         <th>Rate</th>
                         <th>Amount</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -491,9 +492,10 @@ const InvoiceForm = ({
                           </tr>
                         ))
                       )}
-                      {/* Total row always visible */}
+                      {/* Total row always visible, now under Amount column */}
                       <tr>
-                        <td colSpan={6} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
+                        <td colSpan={5}></td>
+                        <td style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
                         <td style={{ fontWeight: 'bold' }}>
                           {invoiceItems.length > 0 ? invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0) : 0}
                         </td>
