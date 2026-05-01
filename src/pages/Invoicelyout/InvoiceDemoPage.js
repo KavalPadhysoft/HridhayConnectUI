@@ -1,8 +1,12 @@
 import React, { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "reactstrap";
 import InvoiceLayout from "./InvoiceLayout";
 import html2pdf from "html2pdf.js";
 
 const InvoiceDemoPage = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const loadingRef = useRef(true);
 
   useEffect(() => {
@@ -36,8 +40,15 @@ const InvoiceDemoPage = () => {
   };
 
   return (
-    <div id="invoice-pdf">
-      <InvoiceLayout />
+    <div className="invoice-page-container">
+      <div className="d-flex justify-content-end mb-3">
+        <Button color="secondary" onClick={() => navigate("/Invoice")}>
+          ← Back to List
+        </Button>
+      </div>
+      <div id="invoice-pdf">
+        <InvoiceLayout />
+      </div>
     </div>
   );
 };
