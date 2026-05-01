@@ -444,13 +444,12 @@ const InvoiceForm = ({
                         <th>Quantity</th>
                         <th>Rate</th>
                         <th>Amount</th>
-                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {invoiceItems.length === 0 ? (
                         <tr style={{ height: 48 }}>
-                          <td colSpan={8} style={{ textAlign: 'center', color: '#888', verticalAlign: 'middle', height: 48 }}>
+                          <td colSpan={7} style={{ textAlign: 'center', color: '#888', verticalAlign: 'middle', height: 48 }}>
                             No items added
                           </td>
                         </tr>
@@ -461,8 +460,6 @@ const InvoiceForm = ({
                             <td>{idx + 1}</td>
                             {/* Service Name */}
                             <td>{item.ServiceName || (serviceList.find(s => String(s.serviceId) === String(item.serviceId))?.ServiceName) || ''}</td>
-                            {/* Item Type */}
-                            {/* <td>{item.ItemType === 'Service' ? 'Service' : 'GovtFee'}</td> */}
                             {/* Description */}
                             <td>{item.Description}</td>
                             {/* Quantity */}
@@ -500,7 +497,6 @@ const InvoiceForm = ({
                         <td style={{ fontWeight: 'bold' }}>
                           {invoiceItems.length > 0 ? invoiceItems.reduce((sum, it) => sum + Number(it.Amount), 0) : 0}
                         </td>
-                        <td></td>
                       </tr>
                     </tbody>
                   </table>
