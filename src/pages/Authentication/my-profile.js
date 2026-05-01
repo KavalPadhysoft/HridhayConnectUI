@@ -25,6 +25,7 @@ import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import withRouter from "components/Common/withRouter";
+import { useNavigate } from "react-router-dom";
 
 import user1 from "../../assets/images/users/user-1.jpg";
 import { changePassword, getUserById, resetPassword } from "../../helpers/fakebackend_helper";
@@ -34,6 +35,7 @@ const MyProfile = () => {
   document.title = `My Profile | ${DASHBOARD_NAME}`;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState({
     fullName: "Admin",
@@ -278,6 +280,10 @@ const MyProfile = () => {
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
+        setTimeout(() => {
+          localStorage.removeItem("data");
+          navigate("/login");
+        }, 1500);
       } else {
         setPasswordError(response?.message || "");
         toast.error(response?.message || "Change password failed");
