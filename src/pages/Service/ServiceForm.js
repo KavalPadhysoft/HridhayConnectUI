@@ -18,9 +18,11 @@ const ServiceForm = ({
         {/* <Button color="link" className="p-0" type="button" onClick={onClose} style={{ color: '#6c63ff', fontWeight: 500 }}>
           Close
         </Button> */}
-            <Button color="secondary" type="button" onClick={onClose}>
-                                    <i className="mdi mdi-arrow-left me-1" />Back
-                                  </Button>
+<div style={{ display: "flex", justifyContent: "flex-end" }}>
+  <Button color="secondary" type="button" onClick={onClose}>
+    <i className="mdi mdi-arrow-left me-1" /> Back
+  </Button>
+</div>
       </CardHeader>
       <CardBody className="app-form-body">
         {formError ? <Alert color="danger">{formError}</Alert> : null}
@@ -55,14 +57,19 @@ const ServiceForm = ({
         const value = e.target.value;
         const parts = value.split('.');
         const decimalPart = parts[1] || '';
+        const cursorPos = e.target.selectionStart;
+        const dotIndex = value.indexOf('.');
 
         if (e.key === '.' && value.includes('.')) {
           e.preventDefault();
           return;
         }
         if (decimalPart.length >= 2 && /[0-9]/.test(e.key)) {
-          e.preventDefault();
-          return;
+          if (dotIndex === -1 || cursorPos <= dotIndex) {
+          } else {
+            e.preventDefault();
+            return;
+          }
         }
       if (!/[0-9.]/.test(e.key) && !allowedKeys.includes(e.key)) {
         e.preventDefault();
