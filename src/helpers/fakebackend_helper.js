@@ -635,6 +635,75 @@ const getPackagingTypeList = async () => {
   }
 }
 
+const getPaymentModeList = async () => {
+  try {
+    const response = await get("/Dropdown/LovMaster", {
+      params: { Lov_column: "PaymentMode" },
+    })
+    return response
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "PaymentMode list API call failed"
+    )
+  }
+}
+
+const getPaymentCollectionsPages = async (params = {}) => {
+  try {
+    return await get("/PaymentCollection/GetAllPaymentCollections", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payment Collections API call failed"
+    )
+  }
+}
+
+const getPaymentCollectionById = async id => {
+  try {
+    return await get("/PaymentCollection/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payment Collection fetch by id failed"
+    )
+  }
+}
+
+const savePaymentCollection = async payload => {
+  try {
+    return await post("/PaymentCollection/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Payment Collection save failed"
+    )
+  }
+}
+
+const getAllOutstandingPayments = async (params = {}) => {
+  try {
+    return await get("/PaymentCollection/GetAllOutstandingPayments", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Outstanding Payments API call failed"
+    )
+  }
+}
+
 const getAssignSaleList = async () => {
   try {
     const response = await get("/Dropdown/AssignSaleList")
@@ -965,9 +1034,14 @@ export {
    getOrderNo,
    getItemList,
    getCustomerList,
-    getDeliveryById,
-    saveDelivery,
-    cancelOrder,
-    getOrderLayoutData,
-    getPackagingTypeList,
+getDeliveryById,
+     saveDelivery,
+     cancelOrder,
+     getOrderLayoutData,
+     getPackagingTypeList,
+     getPaymentModeList,
+     getPaymentCollectionsPages,
+     getPaymentCollectionById,
+     savePaymentCollection,
+     getAllOutstandingPayments,
 }

@@ -14,7 +14,7 @@ import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDr
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu"
 
 // import megamenuImg from "../../assets/images/megamenu-img.png"
-import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect.jpeg"
+import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect-Logo.png"
 
 //i18n
 import { withTranslation } from "react-i18next"
@@ -70,21 +70,21 @@ const Header = props => {
         <div className="navbar-header">
           <div className="d-flex">
             <div className="navbar-brand-box">
-               <Link to="/" className="logo logo-dark">
+               <Link to="/dashboard" className="logo logo-dark">
                  <span className="logo-sm">
-                   <img src={hridhayConnectLogo} alt="Logo" height="60" style={{ objectFit: 'contain' }} />
+                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
                  </span>
                  <span className="logo-lg">
-                   <img src={hridhayConnectLogo} alt="Logo" height="60" style={{ objectFit: 'contain' }} />
+                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
                  </span>
                </Link>
 
-               <Link to="/" className="logo logo-light">
+               <Link to="/dashboard" className="logo logo-light">
                  <span className="logo-sm">
-                   <img src={hridhayConnectLogo} alt="Logo" height="60" style={{ objectFit: 'contain' }} />
+                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
                  </span>
                  <span className="logo-lg">
-                   <img src={hridhayConnectLogo} alt="Logo" height="60" style={{ objectFit: 'contain' }} />
+                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
                  </span>
                </Link>
             </div>

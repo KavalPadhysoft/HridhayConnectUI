@@ -360,7 +360,7 @@ const OrderForm = ({
               />
             </Col>
 
-            <Col md={12}>
+            <Col md={6}>
               <Label>Notes</Label>
               <Input
                 name="notes"

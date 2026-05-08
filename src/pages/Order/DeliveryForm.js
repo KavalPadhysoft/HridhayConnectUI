@@ -232,9 +232,9 @@ const DeliveryForm = ({
                         ))
                       )}
                       <tr>
-                        <td colSpan={4}></td>
-                        <td style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
+                        <td style={{ textAlign: 'right', fontWeight: 'bold' }} colSpan={4}>Total Amount</td>
                         <td style={{ fontWeight: 'bold' }}>{totalAmount}</td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>

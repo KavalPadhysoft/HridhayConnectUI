@@ -2,7 +2,7 @@ import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { Container, Row,Col, Card, CardBody, Label, Form, Alert, Input, FormFeedback } from 'reactstrap';
-import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect.jpeg";
+import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect-Logo.png";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import PropTypes from "prop-types";
@@ -81,7 +81,7 @@ const Login = props => {
 
                                 <h3 className="text-center mt-3 mb-2">
                                   {/* <Link to="/" className="d-block auth-logo"> */}
-                                    <img src={hridhayConnectLogo} alt="Logo" height="100" style={{ objectFit: 'contain' }} />
+                                    <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
                                   {/* </Link> */}
                                 </h3>
 

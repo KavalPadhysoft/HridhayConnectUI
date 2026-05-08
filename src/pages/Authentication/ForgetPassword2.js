@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Card, CardBody, Col, Container, FormFeedback, Input, Label, Row } from 'reactstrap';
 import logoDark from "../../assets/images/logo-dark.png";
 import logoLight from "../../assets/images/logo-light.png";
-import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect.jpeg";
+import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect-Logo.png";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { post } from "../../helpers/api_helper";
@@ -60,7 +60,7 @@ const ForgetPassword2Page = () => {
               <Card className="overflow-hidden">
                 <CardBody className="pt-0">
                   <h3 className="text-center mt-3 mb-2">
-                      <img src={hridhayConnectLogo} alt="Logo" height="100" style={{ objectFit: 'contain' }} />
+                      <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
                   </h3>
                   <div className="p-2">
                     <h4 className="text-muted font-size-18 mb-3 text-center">Reset Password</h4>

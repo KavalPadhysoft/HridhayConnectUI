@@ -155,7 +155,7 @@ const Dashboard = props => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <h4 className="mb-4">Welcome to {DASHBOARD_NAME}</h4>
+            
           </div>
         </div>
         

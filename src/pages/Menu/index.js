@@ -201,7 +201,7 @@ const Menus = props => {
       columns: buildServerSortColumns({
         columns: [
           { label: "Name", field: "name", sort: "asc" },
-          { label: "Parent", field: "parentId", sort: "asc" },
+          { label: "Parent", field: "parentNenuName", sort: "asc" },
           { label: "Controller", field: "controller", sort: "asc" },
          // { label: "URL", field: "url", sort: "disabled" },
         //  { label: "Is Admin", field: "isAdmin", sort: "asc" },
@@ -216,6 +216,7 @@ const Menus = props => {
         id: item.id,
         name: item.name || "",
         parentId: item.parentId ?? 0,
+        parentNenuName: item.parent_Menu_Name || "",
         controller: item.controller || "",
         url: item.url || "",
         isAdmin: item.isAdmin ? "Yes" : "No",

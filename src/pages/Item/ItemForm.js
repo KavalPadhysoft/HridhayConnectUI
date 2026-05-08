@@ -87,7 +87,7 @@ const ItemForm = ({
              />
            </Col>
            <Col md={6}>
-             <Label>Packaging Type</Label>
+             <Label>Packaging Type<span style={{ color: "red" }}>*</span></Label>
               <Select
                 classNamePrefix="select2-selection"
                 placeholder="Select packaging type"

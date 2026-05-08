@@ -30,6 +30,8 @@ import Customers from "../pages/Customers"
 import Categories from "../pages/Category"
 import Items from "../pages/Item"
 import Orders from "../pages/Order"
+import PaymentCollections from "../pages/PaymentCollection"
+import Outstanding from "../pages/Outstanding"
 import DeliveryForm from "../pages/Order/DeliveryForm"
 import OrderLayout from "../pages/Order/OrderLayout"
 
@@ -67,6 +69,12 @@ const userRoutes = [
   { path: "/Customers", component: <Customers /> },
   { path: "/Customers/manage", component: <Customers /> },
   { path: "/Customers/manage/:id", component: <Customers /> },
+
+  { path: "/PaymentCollection", component: <PaymentCollections /> },
+  { path: "/PaymentCollection/manage", component: <PaymentCollections /> },
+  { path: "/PaymentCollection/manage/:id", component: <PaymentCollections /> },
+
+  { path: "/Outstanding", component: <Outstanding /> },
 
   { path: "/Category", component: <Categories /> },
   { path: "/Category/manage", component: <Categories /> },

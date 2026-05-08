@@ -122,9 +122,9 @@ const handleDownloadPDF = () => {
       </Row>
 
       <div id="order-layout-print" style={{ fontFamily: 'Arial, sans-serif', fontSize: '12px', lineHeight: '1.4', color: '#333', width: '210mm', margin: '0 auto', backgroundColor: 'white', padding: '15mm 15mm 5mm 15mm' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', borderBottom: '2px solid #333', paddingBottom: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', borderBottom: '2px solid #5a318c', paddingBottom: '10px' }}>
           <div>
-            <img src={logo} alt="Hridhay Connect" style={{ width: '120px', height: 'auto' }} />
+            <img src={logo} alt="Hridhay Connect" style={{ width: '198px', height: '176px' }} />
           </div>
           <div style={{ textAlign: 'right' }}>
             <h1 style={{ fontSize: '24px', fontWeight: 'bold', margin: '0 0 5px 0', color: logoColor }}>Hridhay Connect</h1>
@@ -132,12 +132,12 @@ const handleDownloadPDF = () => {
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', display: 'inline-block', borderBottom: '2px solid #333', paddingBottom: '5px', color: '#333' }}>Order Information</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', display: 'inline-block', borderBottom: '2px solid #5a318c', paddingBottom: '5px', color: '#333' }}>Order Information</h2>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
             <div style={{ width: '48%' }}>
-                <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>Bill To:</div>
+                <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #5a318c', paddingBottom: '4px' }}>Bill To:</div>
                 <div style={{ marginBottom: '4px', display: 'flex' }}><strong>{orderData?.customerName}</strong></div>
                 <div style={{ marginBottom: '4px', display: 'flex' }}>{orderData?.address}</div>
                 <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '60px', display: 'inline-block' }}>Phone:</span> {orderData?.phone}</div>
@@ -145,7 +145,7 @@ const handleDownloadPDF = () => {
                 {orderData?.gsT_NO && <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '60px', display: 'inline-block' }}>GST:</span> {orderData.gsT_NO}</div>}
             </div>
             <div style={{ width: '48%' }}>
-              <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>Order Details:</div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #5a318c', paddingBottom: '4px' }}>Order Details:</div>
               <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Order No:</strong></span> {orderData?.order_No}</div>
               <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Order Date:</strong></span> {formatDate(orderData?.order_Date)}</div>
               {orderData?.delivery_Date && (
@@ -163,26 +163,26 @@ const handleDownloadPDF = () => {
         <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '15px' }}>
           <thead>
             <tr>
-              <th style={{ border: '1px solid #ddd', padding: '6px', backgroundColor: '#f5f5f5', fontWeight: 'bold', fontSize: '11px' }}>#</th>
-              <th style={{ border: '1px solid #ddd', padding: '6px', backgroundColor: '#f5f5f5', fontWeight: 'bold', fontSize: '11px' }}>Item Name</th>
-              <th style={{ border: '1px solid #ddd', padding: '6px', backgroundColor: '#f5f5f5', fontWeight: 'bold', fontSize: '11px', textAlign: 'center' }}>Quantity</th>
-              <th style={{ border: '1px solid #ddd', padding: '6px', backgroundColor: '#f5f5f5', fontWeight: 'bold', fontSize: '11px', textAlign: 'right' }}>Rate</th>
-              <th style={{ border: '1px solid #ddd', padding: '6px', backgroundColor: '#f5f5f5', fontWeight: 'bold', fontSize: '11px', textAlign: 'right' }}>Amount</th>
+              <th style={{ borderLeft: '1px solid #5a318c', borderRight: '1px solid white', borderTop: '1px solid white', borderBottom: '1px solid white', padding: '6px', backgroundColor: '#5a318c', fontWeight: 'bold', fontSize: '11px', color: 'white' }}>#</th>
+              <th style={{ border: '1px solid white', padding: '6px', backgroundColor: '#5a318c', fontWeight: 'bold', fontSize: '11px', color: 'white' }}>Item Name</th>
+              <th style={{ border: '1px solid white', padding: '6px', backgroundColor: '#5a318c', fontWeight: 'bold', fontSize: '11px', color: 'white', textAlign: 'center' }}>Quantity</th>
+              <th style={{ border: '1px solid white', padding: '6px', backgroundColor: '#5a318c', fontWeight: 'bold', fontSize: '11px', color: 'white', textAlign: 'right' }}>Rate</th>
+              <th style={{ borderLeft: '1px solid white', borderRight: '1px solid #5a318c', borderTop: '1px solid white', borderBottom: '1px solid white', padding: '6px', backgroundColor: '#5a318c', fontWeight: 'bold', fontSize: '11px', color: 'white', textAlign: 'right' }}>Amount</th>
             </tr>
           </thead>
           <tbody>
             {orderItems.map((item, index) => (
               <tr key={index}>
-                <td style={{ border: '1px solid #ddd', padding: '6px', fontSize: '11px' }}>{index + 1}</td>
-                <td style={{ border: '1px solid #ddd', padding: '6px', fontSize: '11px' }}>{item.itemName}</td>
-                <td style={{ border: '1px solid #ddd', padding: '6px', fontSize: '11px', textAlign: 'center' }}>{item.quantity}</td>
-                <td style={{ border: '1px solid #ddd', padding: '6px', fontSize: '11px', textAlign: 'right' }}>₹{item.rate?.toLocaleString()}</td>
-                <td style={{ border: '1px solid #ddd', padding: '6px', fontSize: '11px', textAlign: 'right' }}>₹{((item.quantity || 0) * (item.rate || 0)).toLocaleString()}</td>
+                <td style={{ border: '1px solid #5a318c', padding: '6px', fontSize: '11px' }}>{index + 1}</td>
+                <td style={{ border: '1px solid #5a318c', padding: '6px', fontSize: '11px' }}>{item.itemName}</td>
+                <td style={{ border: '1px solid #5a318c', padding: '6px', fontSize: '11px', textAlign: 'center' }}>{item.quantity}</td>
+                <td style={{ border: '1px solid #5a318c', padding: '6px', fontSize: '11px', textAlign: 'right' }}>₹{item.rate?.toLocaleString()}</td>
+                <td style={{ border: '1px solid #5a318c', padding: '6px', fontSize: '11px', textAlign: 'right' }}>₹{((item.quantity || 0) * (item.rate || 0)).toLocaleString()}</td>
               </tr>
             ))}
             <tr>
-              <td colSpan="4" style={{ border: '1px solid #ddd', padding: '8px', fontSize: '11px', textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px', fontSize: '12px', textAlign: 'right', fontWeight: 'bold' }}>₹{orderData?.total_Amount?.toLocaleString()}</td>
+              <td colSpan="4" style={{ border: '1px solid #5a318c', padding: '8px', fontSize: '11px', textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
+              <td style={{ border: '1px solid #5a318c', padding: '8px', fontSize: '12px', textAlign: 'right', fontWeight: 'bold' }}>₹{orderData?.total_Amount?.toLocaleString()}</td>
             </tr>
           </tbody>
         </table>
@@ -208,7 +208,7 @@ const handleDownloadPDF = () => {
           <span style={{ color: logoColor, fontWeight: 'bold', fontSize: '12px' }}>For Hridhay Connect</span>
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #ddd', color: '#666', fontSize: '11px', marginBottom: '0', paddingBottom: '0' }}>
+        <div style={{ textAlign: 'center', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #5a318c', color: '#666', fontSize: '11px', marginBottom: '0', paddingBottom: '0' }}>
           <p style={{ margin: '0', paddingBottom: '0' }}>Thank you for your business!</p>
         </div>
       </div>
