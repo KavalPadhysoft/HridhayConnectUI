@@ -114,13 +114,13 @@ const UserForm = ({
           </Row>
 
           <div className="app-form-actions">
-            <Button color="light" type="button" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button color="success" type="submit" disabled={saving}>
+              <Button color="success" type="submit" disabled={saving}>
               {saving ? <Spinner size="sm" className="me-2" /> : null}
               Save
             </Button>
+            <Button color="light" type="button" onClick={onClose}>
+              Cancel
+            </Button>          
           </div>
         </Form>
       </CardBody>

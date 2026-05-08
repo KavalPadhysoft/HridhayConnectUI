@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect.jpeg"
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
@@ -250,13 +251,21 @@ const SidebarContent = props => {
             )}
 
             {dynamicMenu.length === 0 && (
-              <li>
-                <Link to="/dashboard" className="waves-effect">
-                  <i className="mdi mdi-view-dashboard"></i>
-                  <span className="badge rounded-pill bg-primary float-end">2</span>
-                  <span>{props.t("Dashboard")}</span>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/dashboard" className="waves-effect">
+                    <i className="mdi mdi-view-dashboard"></i>
+                    <span className="badge rounded-pill bg-primary float-end">2</span>
+                    <span>{props.t("Dashboard")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/Items" className="waves-effect">
+                    <i className="mdi mdi-package-variant-closed"></i>
+                    <span>Items</span>
+                  </Link>
+                </li>
+              </>
             )}
 
             {/* <li>

@@ -93,3 +93,24 @@ File: Main Css File
 	font-weight: 500;
 }
 
+.table-auto-sr tbody td,
+.dataTables_empty,
+.mdb-datatable tbody td[data-test="no-records"] {
+	color: #212529 !important;
+}
+
+/* Fix MDBDataTable empty message visibility */
+.table-auto-sr tbody tr td,
+table tbody tr td,
+.dataTables_empty {
+	color: #212529 !important;
+	font-weight: 400;
+}
+
+/* Ensure proper sentence for no records */
+table tbody tr td[colspan] {
+	text-align: center !important;
+	color: #212529 !important;
+	padding: 1rem !important;
+}
+

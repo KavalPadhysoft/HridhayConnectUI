@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardBody, Col, Container, FormFeedback, Input, Label, Row } from 'reactstrap';
 import logoDark from "../../assets/images/logo-dark.png";
 import logoLight from "../../assets/images/logo-light.png";
-import amLogo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png";
+import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect.jpeg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
@@ -61,14 +61,10 @@ const ResetPasswordPage = () => {
             <Col md={8} lg={6} xl={5}>
               <Card className="overflow-hidden">
                 <CardBody className="pt-0">
-                  <h3 className="text-center mt-5 mb-4">
-                    {/* <Link to="/" className="d-block auth-logo">
-                      <img src={logoDark} alt="" height="30" className="auth-logo-dark" />
-                      <img src={logoLight} alt="" height="30" className="auth-logo-light" />
-                    </Link> */}
-                    <img src={amLogo} alt="Logo" height="40" />
+                  <h3 className="text-center mt-3 mb-2">
+                    <img src={hridhayConnectLogo} alt="Logo" height="100" style={{ objectFit: 'contain' }} />
                   </h3>
-                  <div className="p-3">
+                  <div className="p-2">
                     <h4 className="text-muted font-size-18 mb-3 text-center">Reset Password</h4>
                     <form className="form-horizontal mt-4"
                       onSubmit={(e) => {

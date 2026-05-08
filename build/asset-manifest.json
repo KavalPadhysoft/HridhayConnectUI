@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.fec6525f.css",
-    "main.js": "/static/js/main.6303a1d1.js",
+    "main.css": "/static/css/main.e15ded94.css",
+    "main.js": "/static/js/main.cab0028b.js",
     "static/media/materialdesignicons-webfont.eot": "/static/media/materialdesignicons-webfont.52adde0de9840940801f.eot",
     "static/media/materialdesignicons-webfont.ttf?v=5.8.55": "/static/media/materialdesignicons-webfont.506bc8215df8660d8f04.ttf",
     "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.ca408b63c26d83dbd1e4.svg",
@@ -14,7 +14,6 @@
     "static/media/fa-solid-900.eot": "/static/media/fa-solid-900.3a24a60e7f9c6574864a.eot",
     "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.10ecefc282f2761808bf.ttf",
     "static/media/typicons.svg": "/static/media/typicons.456bdcf075c6b875317b.svg",
-    "static/media/AM-Logo-012-scaled.png": "/static/media/AM-Logo-012-scaled.c87ce637cd5b07bac51c.png",
     "static/media/fa-regular-400.svg": "/static/media/fa-regular-400.64f4b211d3b0ddac8405.svg",
     "static/media/fa-brands-400.eot": "/static/media/fa-brands-400.0fea24969112a781acd2.eot",
     "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.ec82f282c7f54b637098.ttf",
@@ -35,22 +34,24 @@
     "static/media/ionicons.woff?v=4.5.10-1": "/static/media/ionicons.bf69b013f69d1f0c2f6c.woff",
     "static/media/typicons.woff": "/static/media/typicons.6df05c03e777fdac1d4c.woff",
     "static/media/themify.woff?-fvbane": "/static/media/themify.29b39089170885ae2967.woff",
+    "static/media/HridhayConnect-Logo.png": "/static/media/HridhayConnect-Logo.e13418a784c0894b7c2c.png",
     "static/media/ionicons.woff2?v=4.5.10-1": "/static/media/ionicons.175f391f238cd7deffa8.woff2",
     "static/media/axios.cjs": "/static/media/axios.693cfcc9e5223535a0dc.cjs",
     "static/media/dripicons-v2.eot": "/static/media/dripicons-v2.7f392f1e4787b46b3e8b.eot",
     "static/media/dripicons-v2.ttf": "/static/media/dripicons-v2.09c9c870ef8f9cffcc8f.ttf",
     "static/media/fa-regular-400.eot": "/static/media/fa-regular-400.08f9891a6f44d9546678.eot",
     "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.1495f578452eb676f730.ttf",
+    "static/media/HridhayConnect.jpeg": "/static/media/HridhayConnect.d930a0aea37486acc889.jpeg",
     "static/media/dripicons-v2.woff": "/static/media/dripicons-v2.f19dcc0358afed69d277.woff",
     "static/media/fa-regular-400.woff": "/static/media/fa-regular-400.1069ea55beaa01060302.woff",
     "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.1008b5226941c24f4468.woff2",
     "static/media/bg-1.png": "/static/media/bg-1.7694411d08a41ca3baef.png",
     "index.html": "/index.html",
-    "main.fec6525f.css.map": "/static/css/main.fec6525f.css.map",
-    "main.6303a1d1.js.map": "/static/js/main.6303a1d1.js.map"
+    "main.e15ded94.css.map": "/static/css/main.e15ded94.css.map",
+    "main.cab0028b.js.map": "/static/js/main.cab0028b.js.map"
   },
   "entrypoints": [
-    "static/css/main.fec6525f.css",
-    "static/js/main.6303a1d1.js"
+    "static/css/main.e15ded94.css",
+    "static/js/main.cab0028b.js"
   ]
 }

@@ -2,7 +2,7 @@ import { DASHBOARD_NAME } from "../../config";
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { Container, Row,Col, Card, CardBody, Label, Form, Alert, Input, FormFeedback } from 'reactstrap';
-import amLogo from "../../assets/images/ChamperOfimg/AM-Logo-012-scaled.png";
+import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect.jpeg";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import PropTypes from "prop-types";
@@ -79,13 +79,13 @@ const Login = props => {
                         <Card className="overflow-hidden">
                             <CardBody className="pt-0">
 
-                                <h3 className="text-center mt-5 mb-4">
+                                <h3 className="text-center mt-3 mb-2">
                                   {/* <Link to="/" className="d-block auth-logo"> */}
-                                    <img src={amLogo} alt="Logo" height="40" />
+                                    <img src={hridhayConnectLogo} alt="Logo" height="100" style={{ objectFit: 'contain' }} />
                                   {/* </Link> */}
                                 </h3>
 
-                                <div className="p-3">
+                                <div className="p-2">
                                     {/* <h4 className="text-muted font-size-18 mb-1 text-center">Welcome Back !</h4>
                                     <p className="text-muted text-center">Sign in to continue to Lexa.</p> */}
                                     <Form

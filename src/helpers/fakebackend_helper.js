@@ -1,590 +1,8 @@
-
+﻿
 import axios from "axios";
 import { del, get, post } from "./api_helper";
 import * as url from "./url_helper";
 import { getBlob, exportToExcel } from "./api_helper";
-import { Delete } from "react-feather";
-
-// UserDemo API helpers
-const USER_DEMO_BASE_URL = "https://aj.padhyasoft.com/api/UserDemo";
-export async function getUserDemoList({ start = 0, length = 10, sortColumnDir = "asc" }) {
-  const url = `${USER_DEMO_BASE_URL}/GetAllpage?start=${start}&length=${length}&sortColumnDir=${sortColumnDir}`;
-  const response = await axios.get(url);
-  return response.data;
-}
-export async function getUserDemoById(id) {
-  const url = `${USER_DEMO_BASE_URL}/GetById?id=${id}`;
-  const response = await axios.get(url);
-  return response.data;
-}
-export async function saveUserDemo(formData) {
-  const url = `${USER_DEMO_BASE_URL}/Add`;
-  // formData should be FormData instance
-  const response = await axios.post(url, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response.data;
-}
-
-// Terms API helpers
-const getTermsList = async (params = {}) => {
-  try {
-    return await get("/Terms/GetAllpage", {
-      params: buildPageParams({
-        ...params,
-        sortColumn: params.sortColumn || "terms",
-        sortColumnDir: params.sortColumnDir || "asc",
-      }),
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Terms API call failed"
-    );
-  }
-};
-
-const getTermsById = async id => {
-  try {
-    return await get("/Terms/GetById", {
-      params: { id },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Terms fetch by id failed"
-    );
-  }
-};
-
-const saveTerms = async payload => {
-  try {
-    return await post("/Terms/Add", payload);
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Terms save failed"
-    );
-  }
-};
-
-const deleteTermsById = async id => {
-  try {
-    return await del("/Terms/Delete", {
-      params: { id },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Terms delete failed"
-    );
-  }
-};
-
-
-
-
-// CompanyMaster API helpers
-const getCompanyMastersList = async (params = {}) => {
-  try {
-    return await get("/CompanyMaster/GetAllpage", {
-      params: buildPageParams({
-        ...params,
-        sortColumn: params.sortColumn || "CompanyMasters",
-        sortColumnDir: params.sortColumnDir || "asc",
-      }),
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "CompanyMasters API call failed"
-    );
-  }
-};
-
-const getCompanyMasterById = async id => {
-  try {
-    return await get("/CompanyMaster/GetById", {
-      params: { id },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "CompanyMasters fetch by id failed"
-    );
-  }
-};
-
-const saveCompanyMaster = async payload => {
-  try {
-    // If payload is FormData, use axios directly for multipart/form-data
-    if (payload instanceof FormData) {
-      const response = await axios.post("https://aj.padhyasoft.com/api/CompanyMaster/Add", payload, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      return response.data;
-    } else {
-      // Fallback to JSON for non-FormData payloads
-      return await post("/CompanyMaster/Add", payload);
-    }
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "CompanyMasters save failed"
-    );
-  }
-};
-
-const deleteCompanyMasterById = async id => {
-  try {
-    return await del("/CompanyMaster/Delete", {
-      params: { id },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "CompanyMasters delete failed"
-    );
-  }
-};
-
-//client API helpers
-const getClientsPages = async (params = {}) => {
-  try {
-    return await get("/Client/GetAllpage", {
-      params: buildPageParams(params),
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Clients API call failed"
-    )
-  }
-}
-
-
-
-
-
-
-const getClientById = async id => {
-  try {
-    return await get("/Client/GetById", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Client fetch by id failed"
-    )
-  }
-}
-
-const saveClient = async payload => {
-  try {
-    return await post("/Client/Add", payload)
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Client save failed"
-    )
-  }
-}
-
-const deleteClientById = async id => {
-  try {
-    return await del("/Client/Delete", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Client delete failed"
-    )
-  }
-}
-//pending payment follow up API helpers
-// PendingPaymentFollowUp API helpers
-const getPendingPaymentFollowUps = async (params = {}) => {
-  try {
-    return await get("/PaymentFollowUp/GetAll2", {
-      params: {
-        start: params.start || 0,
-        length: params.length || 10,
-        sortColumn: params.sortColumn || "statusName",
-        sortColumnDir: params.sortColumnDir || "asc",
-        searchValue: params.searchValue || "",
-        invoiceId: params.invoiceId || 0,
-      },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "PendingPaymentFollowUp API call failed"
-    );
-  }
-};
-
-const getPendingPaymentFollowUpById = async id => {
-  try {
-    return await get("/PaymentFollowUp/GetById2", {
-      params: { id },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "PendingPaymentFollowUp fetch by id failed"
-    );
-  }
-};
-
-const savePendingPaymentFollowUp = async payload => {
-  try {
-    return await post("/PaymentFollowUp/Add2", payload);
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "PendingPaymentFollowUp save failed"
-    );
-  }
-};
-
-const deletePendingPaymentFollowUpById = async id => {
-  try {
-    return await del (`/PaymentFollowUp/Delete2?id=${id}`);
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "PendingPaymentFollowUp delete failed"
-    );
-  }
-};
-
-const getPaymentHistory = async (params = {}) => {
-  try {
-    return await get("/PaymentFollowUp/GetAllPaymentHistory", {
-      params: {
-        start: params.start || 0,
-        length: params.length || 10,
-        sortColumn: params.sortColumn || "statusName",
-        sortColumnDir: params.sortColumnDir || "asc",
-        searchValue: params.searchValue || "",
-        FollowupId: params.FollowupId || 0,
-      },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "PendingPaymentFollowUp API call failed"
-    );
-  }
-};
-
-//AdvancePayment API helpers
-const getAdvancePaymentsPages = async (params = {}) => {
-  try {
-    return await get("/AdvancePayment/GetAllpage", {
-      params: buildPageParams(params),
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "AdvancePayments API call failed"
-    )
-  }
-}
-
-const getAdvancePaymentHistoryPages = async (params = {}) => {
-  try {
-    return await get("/AdvancePayment/AdvancePaymentHistory", {
-      params: {
-        ...buildPageParams(params),
-        AdvancePaymentId: params.AdvancePaymentId || 0   // ✅ FIX
-      }
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "AdvancePayments API call failed"
-    )
-  }
-}
-
-const getAdvancePaymentById = async id => {
-  try {
-    return await get("/AdvancePayment/GetById", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "AdvancePayment fetch by id failed"
-    )
-  }
-}
-
-const saveAdvancePayment = async payload => {
-  try {
-    return await post("/AdvancePayment/Add", payload)
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "AdvancePayment save failed"
-    )
-  }
-}
-
-const deleteAdvancePaymentById = async id => {
-  try {
-    return await del("/AdvancePayment/Delete", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "AdvancePayment delete failed"
-    )
-  }
-}
-
-// Payment API helpers
-// const getPaymentsPages = async (params = {}) => {
-//   try {
-//     return await get("/Payment/GetAllpage", {
-//       params: buildPageParams(params),
-//     })
-//   } catch (error) {
-//     throw (
-//       error?.response?.data?.message ||
-//       error?.message ||
-//       "Payments API call failed"
-//     )
-//   }
-// }
-const getPaymentsPages = async (params = {}) => {
-  try {
-    return await get("/Payment/PendingPayment", {
-      params: buildPageParams(params),
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Payments API call failed"
-    )
-  }
-}
-
-const getPaymentById = async id => {
-  try {
-    return await get("/Payment/GetById", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Payment fetch by id failed"
-    )
-  }
-}
-
-const savePayment = async payload => {
-  try {
-    return await post("/Payment/Add", payload)
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Payment save failed"
-    )
-  }
-}
-
-const deletePaymentById = async id => {
-  try {
-    return await del("/Payment/Delete", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Payment delete failed"
-    )
-  }
-}
-
-
-
-
-
-//client API helpers
-const getInvoicesPages = async (params = {}) => {
-  try {
-    return await get("/Invoice/GetAllpage", {
-      params: buildPageParams(params),
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Invoice API call failed"
-    )
-  }
-}
-
-const GetInvoiceReport = async (params = {}) => {
-  try {
-    return await get("/InvoiceReport/GetAllpage", {
-      params: buildPageParams(params),
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Invoice API call failed"
-    )
-  }
-}
-
-
-const getInvoiceById = async id => {
-  try {
-    return await get("/Invoice/GetById2", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Invoice fetch by id failed"
-    )
-  }
-}
-
-const saveInvoice = async payload => {
-  try {
-    return await post("/Invoice/SaveWithItems", payload)
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Invoice save failed"
-    )
-  }
-}
-
-const deleteInvoiceById = async id => {
-  try {
-    return await del("/Invoice/Delete", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Invoice delete failed"
-    )
-  }
-}
-
-
-
-//Services API helpers
-const getServicesPages = async (params = {}) => {
-  try {
-    return await get("/Service/GetAllpage", {
-      params: buildPageParams(params),
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Services API call failed"
-    )
-  }
-}
-
-const getServiceById = async id => {
-  try {
-    return await get("/Service/GetById", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Service fetch by id failed"
-    )
-  }
-}
-
-const saveService = async payload => {
-  try {
-    return await post("/Service/Add", payload)
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Service save failed"
-    )
-  }
-}
-
-const deleteServiceById = async id => {
-  try {
-    return await del("/Service/Delete", {
-      params: { id },
-    })
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Service delete failed"
-    )
-  }
-}
-
-
-// Reset Password API
-const resetPassword = async (username) => {
-  try {
-    return await post("/User/ResetPassword", null, {
-      params: { username },
-    });
-  } catch (error) {
-    throw (
-      error?.response?.data?.message ||
-      error?.message ||
-      "Reset password failed"
-    );
-  }
-};
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -677,20 +95,7 @@ export const exportUsersPdf = async (params = {}) => {
   return await exportToExcel("/User/ExportToPdf", "Users.pdf", { params });
 };
 
-// Export users to Excel
-export const InvoicereportExportToExcel= async (params = {}) => {
-  return await exportToExcel("/InvoiceReport/ExportInvoiceExcel", "InvoiceReport.xlsx", { params });
-};
-
-// Export users to PDF
-export const InvoicereportExportToPdf = async (params = {}) => {
-  return await exportToExcel("/InvoiceReport/ExportInvoicePdf", "InvoiceReport.pdf", { params });
-};
-
-
-
-
-// using into ROle For Get value into Dropdown
+// Menu API helpers
 const getMenuPages = async () => {
   try {
     return await get("/Menu/GetAllpage", {
@@ -819,6 +224,7 @@ const DeleteDetail = async (lovColumn, lovCode) => {
     );
   }
 };
+
 const DeleteMaster = async (lovColumn) => {
   try {
     return await del("/Lov/DeleteMaster", {
@@ -1015,6 +421,400 @@ const deleteRoleById = async id => {
     )
   }
 }
+
+const getCustomersPages = async (params = {}) => {
+  try {
+    return await get("/Customers/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Customers API call failed"
+    )
+  }
+}
+
+const getCustomerById = async id => {
+  try {
+    return await get("/Customers/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Customer fetch by id failed"
+    )
+  }
+}
+
+const saveCustomer = async payload => {
+  try {
+    return await post("/Customers/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Customer save failed"
+    )
+  }
+}
+
+const deleteCustomerById = async id => {
+  try {
+    return await del("/Customers/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Customer delete failed"
+    )
+  }
+}
+
+// Category API helpers
+const getCategoriesPages = async (params = {}) => {
+  try {
+    return await get("/Category/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Categories API call failed"
+    )
+  }
+}
+
+const getCategoryById = async id => {
+  try {
+    return await get("/Category/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Category fetch by id failed"
+    )
+  }
+}
+
+const saveCategory = async payload => {
+  try {
+    return await post("/Category/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Category save failed"
+    )
+  }
+}
+
+const deleteCategoryById = async id => {
+  try {
+    return await del("/Category/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Category delete failed"
+    )
+  }
+}
+
+// Item API helpers
+const getItemsPages = async (params = {}) => {
+  try {
+    return await get("/Item/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Items API call failed"
+    )
+  }
+}
+
+const getItemById = async id => {
+  try {
+    return await get("/Item/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Item fetch by id failed"
+    )
+  }
+}
+
+const saveItem = async payload => {
+  try {
+    return await post("/Item/Add", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Item save failed"
+    )
+  }
+}
+
+const deleteItemById = async id => {
+  try {
+    return await del("/Item/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Item delete failed"
+    )
+  }
+}
+
+const getCategoryList = async () => {
+  try {
+    const response = await get("/Dropdown/CategoryList")
+    console.log("CategoryList API response:", response)
+    return response
+  } catch (error) {
+    console.error("CategoryList API error:", error)
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Category list API call failed"
+    )
+  }
+}
+
+const getUnitList = async () => {
+  try {
+    const response = await get("/Dropdown/LovMaster", {
+      params: { Lov_column: "Unit" },
+    })
+    console.log("LovMaster Unit API response:", response)
+    return response
+  } catch (error) {
+    console.error("LovMaster Unit API error:", error)
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Unit list API call failed"
+    )
+   }
+}
+
+const getPackagingTypeList = async () => {
+  try {
+    const response = await get("/Dropdown/LovMaster", {
+      params: { Lov_column: "PackagingType" },
+    })
+    console.log("LovMaster PackagingType API response:", response)
+    return response
+  } catch (error) {
+    console.error("LovMaster PackagingType API error:", error)
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "LovMaster PackagingType API call failed"
+    )
+  }
+}
+
+const getAssignSaleList = async () => {
+  try {
+    const response = await get("/Dropdown/AssignSaleList")
+    console.log("AssignSaleList API response:", response)
+    return response
+  } catch (error) {
+    console.error("AssignSaleList API error:", error)
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Assign Sale list API call failed"
+    )
+  }
+}
+
+// Order API helpers
+const getOrdersPages = async (params = {}) => {
+  try {
+    return await get("/Order/GetAllpage", {
+      params: buildPageParams(params),
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Orders API call failed"
+    )
+  }
+}
+
+const getOrderById = async id => {
+  try {
+    return await get("/Order/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Order fetch by id failed"
+    )
+  }
+}
+
+const saveOrder = async payload => {
+  try {
+    return await post("/Order/Save", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Order save failed"
+    )
+  }
+}
+
+const deleteOrderById = async id => {
+  try {
+    return await del("/Order/Delete", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Order delete failed"
+    )
+  }
+}
+
+const getOrderNo = async () => {
+  try {
+    return await get("/Order/GetOrderNo")
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Order number API call failed"
+    )
+  }
+}
+
+const getItemList = async () => {
+  try {
+    const response = await get("/Dropdown/ItemList")
+    return response
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Item list API call failed"
+    )
+  }
+}
+
+// Delivery API helpers
+const getDeliveryById = async id => {
+  try {
+    return await get("/Deliveries/GetById", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Delivery fetch by id failed"
+    )
+  }
+}
+
+const saveDelivery = async payload => {
+  try {
+    return await post("/Deliveries/Save", payload)
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Delivery save failed"
+    )
+  }
+}
+
+const cancelOrder = async id => {
+  try {
+    return await del("/Deliveries/CancelOrder", {
+      params: { id },
+    })
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Cancel order failed"
+    )
+  }
+}
+
+const getOrderLayoutData = async (id, status) => {
+  try {
+    return await get("/Order/GetOrderLayoutdata", {
+      params: { id, status },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Get order layout data failed"
+    );
+  }
+}
+
+const getCustomerList = async () => {
+  try {
+    const response = await get("/Dropdown/CustomerList")
+    return response
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Customer list API call failed"
+    )
+  }
+}
+
+const getCustomerTypeList = async () => {
+  try {
+    const response = await get("/Dropdown/LovMaster", {
+      params: { Lov_column: "CustomerType" },
+    })
+    console.log("LovMaster CustomerType API response:", response)
+    return response
+  } catch (error) {
+    console.error("LovMaster CustomerType API error:", error)
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Customer Type list API call failed"
+    )
+  }
+}
+
 const deleteMenuById = async id => {
   try {
     return await del("/Menu/Delete", {
@@ -1028,17 +828,6 @@ const deleteMenuById = async id => {
     );
   }
 };
-// const deleteMenuById = async id => {
-//   try {
-//     return await del(`https://aj.padhyasoft.com/api/Menu/Delete?id=${id}`)
-//   } catch (error) {
-//     throw (
-//       error?.response?.data?.message ||
-//       error?.message ||
-//       "Menu delete failed"
-//     )
-//   }
-// }
 
 const changePassword = async payload => {
   try {
@@ -1100,14 +889,22 @@ const postJwtForgetPwd = data => post(url.POST_FAKE_JWT_PASSWORD_FORGET, data);
 // postSocialLogin
 export const postSocialLogin = data => post(url.SOCIAL_LOGIN, data);
 
-
-// export const getUserProfile = () => get(url.GET_USER_PROFILE)
+// Reset Password API
+const resetPassword = async (username) => {
+  try {
+    return await post("/User/ResetPassword", null, {
+      params: { username },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Reset password failed"
+    );
+  }
+};
 
 export {
-  getTermsList,
-  getTermsById,
-  saveTerms,
-  deleteTermsById,
   getLoggedInUser,
   isUserAuthenticated,
   postFakeRegister,
@@ -1129,6 +926,14 @@ export {
   getLovMasterByColumn,
   DeleteDetail,
   DeleteMaster,
+  getCustomersPages,
+  getCustomerById,
+  saveCustomer,
+  deleteCustomerById,
+  getCategoriesPages,
+  getCategoryById,
+  saveCategory,
+  deleteCategoryById,
   getLovDetailsByColumn,
   getLovDetailByCode,
   getRoleNames,
@@ -1139,30 +944,30 @@ export {
   saveMenu,
   saveLovMaster,
   saveLovDetail,
-  getClientsPages,
-  getClientById,
-  saveClient,
-  deleteClientById,
   deleteUserById,
   deleteRoleById,
   deleteMenuById,
   changePassword,
   buildPageParams,
   resetPassword,
-  getServicesPages,
-  getServiceById,
-  saveService,
-  deleteServiceById,
-  getInvoicesPages,
-  getInvoiceById,
-  saveInvoice,
-  deleteInvoiceById,
-  getAdvancePaymentsPages,getAdvancePaymentHistoryPages,getAdvancePaymentById,saveAdvancePayment, deleteAdvancePaymentById,
-  getPaymentsPages,
-  getPaymentById,
-  savePayment,
-  deletePaymentById,
-  deletePendingPaymentFollowUpById,savePendingPaymentFollowUp,getPendingPaymentFollowUps,getPendingPaymentFollowUpById,getPaymentHistory,
-  getCompanyMastersList,getCompanyMasterById,saveCompanyMaster,deleteCompanyMasterById,
-GetInvoiceReport,
+  getItemsPages,
+  getItemById,
+  saveItem,
+  deleteItemById,
+  getCategoryList,
+  getUnitList,
+  getAssignSaleList,
+   getCustomerTypeList,
+   getOrdersPages,
+   getOrderById,
+   saveOrder,
+   deleteOrderById,
+   getOrderNo,
+   getItemList,
+   getCustomerList,
+    getDeliveryById,
+    saveDelivery,
+    cancelOrder,
+    getOrderLayoutData,
+    getPackagingTypeList,
 }

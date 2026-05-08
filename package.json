@@ -65,7 +65,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.28.0",
     "react-script": "^2.0.5",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^0.0.0",
     "react-select": "^5.8.2",
     "react-sparklines": "^1.7.0",
     "react-super-responsive-table": "^6.0.0",

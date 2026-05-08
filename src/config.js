@@ -1,3 +1,3 @@
 // src/config.js
 
-export const DASHBOARD_NAME = "Chambers Of AM";
+export const DASHBOARD_NAME = "Hridhay Connect";

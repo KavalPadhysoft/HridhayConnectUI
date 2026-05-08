@@ -1,4 +1,4 @@
-
+﻿
 import axios from "axios";
 
 // Download a file (e.g., Excel) from the backend and trigger browser download
@@ -37,11 +37,8 @@ export async function exportToFile(url, filename, config = {}) {
   window.URL.revokeObjectURL(urlObj);
 }
 
-// export const INVOICE_LAYOUT_API_URL = "https://localhost:7281/api/Invoice/GetInvoicesLayoutdata";
-// const API_URL = "https://localhost:7281/api";
-
-export const INVOICE_LAYOUT_API_URL = "https://aj.padhyasoft.com/api/Invoice/GetInvoicesLayoutdata";
-const API_URL = "https://aj.padhyasoft.com/api";
+export const INVOICE_LAYOUT_API_URL = "https://localhost:7218/api/Invoice/GetInvoicesLayoutdata";
+const API_URL = process.env.REACT_APP_API_URL || "https://localhost:7218/api";
 
 
 const axiosApi = axios.create({
@@ -100,7 +97,7 @@ export async function get(url, config = {}) {
 
 export async function post(url, data, config = {}) {
   return axiosApi
-    .post(url, { ...data }, { ...config })
+    .post(url, data ?? {}, { ...config })
     .then((response) => response.data);
 }
 
@@ -122,61 +119,7 @@ export async function getBlob(url, config = {}) {
   });
 }
 
-// UserDemo API helpers
-const USER_DEMO_BASE_URL = "/UserDemo";
-
-// Get paginated users
-export async function getUserDemoList({ start = 0, length = 10, sortColumnDir = "asc" }) {
-  const url = `${USER_DEMO_BASE_URL}/GetAllpage?start=${start}&length=${length}&sortColumnDir=${sortColumnDir}`;
-  return await get(url);
-}
-
-// Get user by ID
-export async function getUserDemoById(id) {
-  const url = `${USER_DEMO_BASE_URL}/GetById?id=${id}`;
-  return await get(url);
-}
-
-// Add or update user (with file upload)
-export async function saveUserDemo(formData) {
-  const url = `${USER_DEMO_BASE_URL}/Add`;
-  // formData should be FormData instance
-  return await axiosApi.post(url, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }).then(res => res.data);
-}
-
-// Property API helpers
-const PROPERTY_BASE_URL = "/Property";
-
-export async function getPropertyList({ start = 0, length = 10, sortColumnDir = "asc" }) {
-  const url = `${PROPERTY_BASE_URL}/GetAllpage?start=${start}&length=${length}&sortColumnDir=${sortColumnDir}`;
-  return await get(url);
-}
-
-export async function saveOrUpdateProperty(formData) {
-  const url = `${PROPERTY_BASE_URL}/SaveOrUpdate`;
-  return await axiosApi.post(url, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  }).then(res => res.data);
-}
-
-// Dropdown API helpers
-export async function getClientDropdownList() {
-  return await get("/Dropdown/ClientList");
-}
-
-export async function getServiceDropdownList() {
-  return await get("/Dropdown/ServiceList");
-}
-// Invoice Dropdown API helper
-export async function getInvoiceDropdownList() {
-  return await get("/Dropdown/InvoiceList");
-}
 // Generic Lov dropdown helper
 export async function getLovDropdownList(lovColumn) {
   return await get(`/Dropdown/LovMaster?Lov_column=${encodeURIComponent(lovColumn)}`);
 }
-

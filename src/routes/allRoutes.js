@@ -1,9 +1,8 @@
-import React from "react";
+﻿import React from "react";
 import { Navigate } from "react-router-dom";
-import Terms from "../pages/Terms";
 
 // Profile
-import MyProfile from "../pages/Authentication/my-profile"
+import MyProfile from "../pages/Authentication/my-profile";
 
 
 // Authentication related pages
@@ -27,36 +26,19 @@ import Users from "../pages/User"
 import Roles from "../pages/Role"
 import Menus from "../pages/Menu"
 import Lov from "../pages/Lov"
-import Property from "../pages/Property"
-
-import Client from "../pages/Client"
-import Service from "../pages/Service"
-import Invoice from "../pages/Invoice"
-import AdvancePayment from "../pages/AdvancePayment"
-import Payment from "../pages/Payment"
-import PaymentFollowUp from "../pages/PaymentFollowUp"
-import PendingPaymentFollowUp from "../pages/PendingPaymentFollowUp"
-import PendingPaymentHistory from "../pages/PendingPaymentFollowUp/PendingPaymentHistory"
-import AddPayment from "../pages/PendingPaymentFollowUp/AddPayment"
-import AdjustAdvancePayment from "../pages/PendingPaymentFollowUp/AdjustAdvancePayment"
-import AdvancePaymentHistory from "../pages/AdvancePayment/AdvancePaymentHistory";
-
-import InvoiceReport from "../pages/InvoiceReport";
+import Customers from "../pages/Customers"
+import Categories from "../pages/Category"
+import Items from "../pages/Item"
+import Orders from "../pages/Order"
+import DeliveryForm from "../pages/Order/DeliveryForm"
+import OrderLayout from "../pages/Order/OrderLayout"
 
 //Extra Pages
 import PagesBlank from "../pages/Extra Pages/pages-blank";
 import Pages404 from "../pages/Extra Pages/pages-404";
 import Pages500 from "../pages/Extra Pages/pages-500";
 
-import UserDemo from "../pages/UserDemo";
-
-import CompanyMasterTable from "../pages/CompanyMaster";
-import CompanyMasterForm from "../pages/CompanyMaster/CompanyMasterForm";
-
 const userRoutes = [
-    { path: "/Terms", component: <Terms /> },
-    { path: "/Terms/manage", component: <Terms /> },
-    { path: "/Terms/manage/:id", component: <Terms /> },
   { path: "/dashboard", component: <Dashboard /> },
 
   // // //profile
@@ -75,78 +57,32 @@ const userRoutes = [
   { path: "/menus/manage", component: <Menus /> },
   { path: "/menus/manage/:id", component: <Menus /> },
 
-    { path: "/Lov", component: <Lov /> },
+  { path: "/Lov", component: <Lov /> },
     { path: "/Lov/manage", component: <Lov /> },
     { path: "/Lov/manage/:lovColumn", component: <Lov /> },
     { path: "/Lov/details/:lovColumn", component: <Lov /> },
     { path: "/Lov/details/:lovColumn/manage", component: <Lov /> },
     { path: "/Lov/details/:lovColumn/manage/:lovCode", component: <Lov /> },
+
+  { path: "/Customers", component: <Customers /> },
+  { path: "/Customers/manage", component: <Customers /> },
+  { path: "/Customers/manage/:id", component: <Customers /> },
+
+  { path: "/Category", component: <Categories /> },
+  { path: "/Category/manage", component: <Categories /> },
+  { path: "/Category/manage/:id", component: <Categories /> },
+
+  { path: "/Item", component: <Items /> },
+  { path: "/Item/manage", component: <Items /> },
+  { path: "/Item/manage/:id", component: <Items /> },
+
+  { path: "/Order", component: <Orders /> },
+  { path: "/Order/manage", component: <Orders /> },
+  { path: "/Order/manage/:id", component: <Orders /> },
+  { path: "/Order/deliver/:id", component: <Orders /> },
+  { path: "/Order/layout/:id/:status", component: <OrderLayout /> },
+
   { path: "/pages-blank", component: <PagesBlank /> },
-  { path: "/userdemo", component: <UserDemo /> },
-  { path: "/userdemo/manage", component: <UserDemo /> },
-  { path: "/userdemo/manage/:id", component: <UserDemo /> },
-  { path: "/userdemos", component: <UserDemo /> },
-  { path: "/property", component: <Property /> },
-  { path: "/property/manage", component: <Property /> },
-  { path: "/property/manage/:id", component: <Property /> },
-  { path: "/propertys", component: <Property /> },
-
-  // Client routes
-  { path: "/Client", component: <Client /> },
-  { path: "/Client/manage", component: <Client /> },
-  { path: "/Client/manage/:id", component: <Client /> },
-
-    // Service routes
-    { path: "/Service", component: <Service /> },
-    { path: "/Service/manage", component: <Service /> },
-    { path: "/Service/manage/:id", component: <Service /> },
-
-  // Invoice routes
-  { path: "/Invoice", component: <Invoice /> },
-  { path: "/Invoice/manage", component: <Invoice /> },
-  { path: "/Invoice/manage/:id", component: <Invoice /> },
-  { path: "/Invoice/demo", component: React.createElement(require("../pages/Invoicelyout/InvoiceDemoPage").default) },
-
-  { path: "/Invoice/pdf/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceDemoPage").default) },
-  { path: "/Invoice/view/:id", component: React.createElement(require("../pages/Invoicelyout/InvoiceLayout").default) },
-
-  // invoice report route
-  { path: "/InvoiceReport", component: <InvoiceReport /> },
-  // AnotherBilling routes
-
-  // AdvancePayment routes
-  { path: "/AdvancePayment", component: <AdvancePayment /> },
-  { path: "/AdvancePayment/manage", component: <AdvancePayment /> },
-  { path: "/AdvancePayment/manage/:id", component: <AdvancePayment /> },
-{ path: "/AdvancePaymentHistory", component: <AdvancePaymentHistory /> },
-
-  // Payment routes (singular and plural, both supported)
-  { path: "/Payment", component: <Payment /> },
-  { path: "/Payment/manage", component: <Payment /> },
-  { path: "/Payment/manage/:id", component: <Payment /> },
-
-  // PaymentFollowUp routes
-  { path: "/PaymentFollowUp", component: <PaymentFollowUp /> },
-  { path: "/PaymentFollowUp/manage/:id", component: <PaymentFollowUp /> },
-
-  // PendingPaymentFollowUp routes
-  { path: "/PendingPaymentFollowUp", component: <PendingPaymentFollowUp /> },
-  { path: "/PendingPaymentFollowUp/manage/:id", component: <PendingPaymentFollowUp /> },
-  { path: "/PendingPaymentFollowUp/AddPayment", component: <AddPayment /> },
-  { path: "/PendingPaymentFollowUp/AdjustAdvance", component: <AdjustAdvancePayment /> },
-
-  // PendingPaymentHistory route
-  { path: "/PendingPaymentHistory", component: <PendingPaymentHistory /> },
-
-    // Company Master routes
-    { path: "/company-master", component: <CompanyMasterTable /> },
-    { path: "/company-master/add", component: <CompanyMasterForm /> },
-    { path: "/company-master/edit/:id", component: <CompanyMasterForm /> },
-
-      // Company Master routes (CamelCase for compatibility)
-      { path: "/CompanyMaster", component: <CompanyMasterTable /> },
-      { path: "/CompanyMaster/add", component: <CompanyMasterForm /> },
-      { path: "/CompanyMaster/edit/:id", component: <CompanyMasterForm /> },
 
   // this route should be at the end of all other routes
   {
