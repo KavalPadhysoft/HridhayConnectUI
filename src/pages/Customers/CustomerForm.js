@@ -55,7 +55,7 @@ const CustomerForm = ({
         <Form onSubmit={onSubmit}>
           <Row className="g-3">
             <Col md={6}>
-              <Label>Customer Name<span style={{ color: "red" }}>*</span></Label>
+              <Label>Shop Name<span style={{ color: "red" }}>*</span></Label>
               <Input
                 name="name"
                 value={formData.name}

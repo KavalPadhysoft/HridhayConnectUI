@@ -98,7 +98,7 @@ const DeliveryForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Customer</Label>
+              <Label>Shop Name</Label>
               <Input
                 name="customerName"
                 value={formData?.customerName || ""}
@@ -107,7 +107,7 @@ const DeliveryForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Salesperson</Label>
+              <Label>Sales Person</Label>
               <Input
                 name="salesPersonName"
                 value={formData?.salesPersonName || ""}
@@ -141,12 +141,12 @@ const DeliveryForm = ({
                   <table className="table table-bordered table-striped table-sm mb-0">
                     <thead>
                       <tr>
-                        <th>Sr.No</th>
+                        <th style={{ textAlign: 'center' }}>Sr.No</th>
                         <th>Item Name</th>
-                        <th>Rate</th>
                         <th>Quantity</th>
-                        <th>Total Amount</th>
-                        <th>Action</th>
+                        <th style={{ textAlign: 'right' }}>Rate</th>
+                        <th style={{ textAlign: 'right' }}>Total Amount</th>
+                        <th style={{ textAlign: 'center' }}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -161,7 +161,6 @@ const DeliveryForm = ({
                           <tr key={idx}>
                             <td>{idx + 1}</td>
                             <td>{item.itemName || `Item ID: ${item.item_ID}`}</td>
-                            <td>{item.rate}</td>
                             <td>
                               {editingIndex === idx ? (
                                 <input
@@ -181,10 +180,11 @@ const DeliveryForm = ({
                                 item.quantity
                               )}
                             </td>
-                            <td>
+                            <td style={{ textAlign: 'right' }}>{item.rate}</td>
+                            <td style={{ textAlign: 'right' }}>
                               {editingIndex === idx ? editData.quantity * item.rate : item.total_Amount}
                             </td>
-                            <td>
+                            <td style={{ textAlign: 'center' }}>
                               <div className="d-flex gap-2 align-items-center">
                                 {editingIndex === idx ? (
                                   <>
@@ -231,9 +231,9 @@ const DeliveryForm = ({
                           </tr>
                         ))
                       )}
-                      <tr>
-                        <td style={{ textAlign: 'right', fontWeight: 'bold' }} colSpan={4}>Total Amount</td>
-                        <td style={{ fontWeight: 'bold' }}>{totalAmount}</td>
+                        <tr>
+                        <td className="order-items-total-label" colSpan={4} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
+                        <td style={{ textAlign: 'right', fontWeight: 'bold' }}>{totalAmount}</td>
                         <td></td>
                       </tr>
                     </tbody>

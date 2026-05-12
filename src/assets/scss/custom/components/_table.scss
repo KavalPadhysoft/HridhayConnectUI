@@ -71,26 +71,50 @@
     background-color: $white; 
   }
 }
+
 @media (max-width: 768px) {
   .table-auto-sr {
     display: block;
+    width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
     
     table {
-      display: block;
-      min-width: 600px;
+      font-size: 11px;
+      min-width: 500px;
+    }
+    
+    td, th {
+      padding: 5px 8px !important;
+      font-size: 11px;
+      white-space: nowrap;
     }
     
     .dataTables_wrapper {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    
-    .dataTables_scrollBody {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+  }
+  
+  .table-auto-sr tbody td:first-child::before {
+    display: none;
+  }
+  
+  .table-auto-sr tbody td:first-child {
+    text-align: center;
+    min-width: 40px;
+  }
+  
+  #order-table-container,
+  #customer-ledger-table-container,
+  #outstanding-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+  
+  .card {
+    overflow: hidden;
   }
 }

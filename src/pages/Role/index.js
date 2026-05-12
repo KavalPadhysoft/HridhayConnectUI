@@ -57,7 +57,7 @@ const Roles = props => {
   })
 
   const breadcrumbItems = [
-    { title: "Roles", link: "#" },
+    { title: "Role", link: "#" },
   ]
 
   const loadRoles = async () => {
@@ -86,7 +86,7 @@ const Roles = props => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Roles")
+    props.setBreadcrumbItems("Role")
   }, [])
 
   useEffect(() => {

@@ -65,7 +65,7 @@ const OrderForm = ({
       let name, value;
       if (typeof eOrValue === 'object' && eOrValue.target) {
         name = eOrValue.target.name;
-        value = eOrValue.target.type === 'number' ? Number(eOrValue.target.value) : eOrValue.target.value;
+        value = eOrValue.target.value;
       } else {
         name = fieldName;
         value = eOrValue;
@@ -186,7 +186,7 @@ const OrderForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Customer<span style={{ color: "red" }}>*</span></Label>
+              <Label>Shop Name<span style={{ color: "red" }}>*</span></Label>
               <Select
                 classNamePrefix="select2-selection"
                 placeholder="Select customer"
@@ -208,7 +208,7 @@ const OrderForm = ({
               />
             </Col>
             <Col md={6}>
-              <Label>Salesman<span style={{ color: "red" }}>*</span></Label>
+              <Label>Sales Person<span style={{ color: "red" }}>*</span></Label>
               <Select
                 classNamePrefix="select2-selection"
                 placeholder="Select salesman"
@@ -248,26 +248,27 @@ const OrderForm = ({
                             isClearable
                           />
                         </Col>
-<Col md={6}>
-  <Label>Rate</Label>
-  <input
-    className="form-control form-control-sm"
-    name="Rate"
-    type="text"
-    value={itemModalData.Rate}
-    readOnly
-  />
-</Col>
-<Col md={6}>
-  <Label>Rate</Label>
-  <input
-    className="form-control form-control-sm"
-    name="Rate"
-    type="text"
-    value={itemModalData.Rate}
-    readOnly
-  />
-</Col>
+                        <Col md={6}>
+                          <Label>Quantity<span style={{ color: "red" }}>*</span></Label>
+                          <input
+                            className="form-control form-control-sm"
+                            name="Quantity"
+                            type="number"
+                            min="1"
+                            value={itemModalData.Quantity}
+                            onChange={handleItemModalChange}
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <Label>Rate</Label>
+                          <input
+                            className="form-control form-control-sm"
+                            name="Rate"
+                            type="text"
+                            value={itemModalData.Rate}
+                            readOnly
+                          />
+                        </Col>
                         <Col md={12}>
                           <Label>Total Amount</Label>
                           <input
@@ -292,9 +293,9 @@ const OrderForm = ({
                         <th>Sr.No</th>
                         <th>Item Name</th>
                         <th>Quantity</th>
-                        <th>Rate</th>
-                        <th>Total Amount</th>
-                        <th>Action</th>
+                        <th style={{ textAlign: 'right' }}>Rate</th>
+                        <th style={{ textAlign: 'right' }}>Total Amount</th>
+                        <th style={{ textAlign: 'center' }}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -310,10 +311,10 @@ const OrderForm = ({
                             <td>{idx + 1}</td>
                             <td>{item.itemName || (itemList.find(s => String(s.id) === String(item.itemId))?.item_Name) || ''}</td>
                             <td>{item.Quantity}</td>
-                            <td>{item.Rate}</td>
-                            <td>{item.Total_Amount}</td>
-                            <td>
-                              <div className="d-flex gap-2 align-items-center">
+                            <td style={{ textAlign: 'right' }}>{item.Rate}</td>
+                            <td style={{ textAlign: 'right' }}>{item.Total_Amount}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              <div className="d-flex gap-2 align-items-center justify-content-center">
                                 <button
                                   type="button"
                                   title="Edit"
@@ -336,12 +337,11 @@ const OrderForm = ({
                         ))
                       )}
                       <tr>
-                        <td colSpan={4} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
-                       <td style={{ fontWeight: 'bold' }}>
+                        <td className="order-items-total-label" colSpan={4} style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Amount</td>
+                        <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
                           {orderItems.length > 0 ? totalAmount : 0}
                         </td>
-                        <td></td>
-                         
+                        <td style={{ textAlign: 'center' }}></td>
                       </tr>
                     </tbody>
                   </table>

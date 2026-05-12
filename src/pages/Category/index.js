@@ -15,7 +15,7 @@ const CATEGORY_LIST_SORT_COLUMN = "name"
 const CATEGORY_LIST_SORT_DIR = "asc"
 
 const Categories = props => {
-  document.title = `Categories | ${DASHBOARD_NAME}`
+  document.title = `Category | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()
@@ -40,7 +40,7 @@ const Categories = props => {
 
   const breadcrumbItems = [
     { title: "Lexa", link: "#" },
-    { title: "Categories", link: "#" },
+    { title: "Category", link: "#" },
   ]
 
   const loadCategories = async () => {
@@ -69,7 +69,7 @@ const Categories = props => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Categories")
+    props.setBreadcrumbItems("Category")
   }, [])
 
   useEffect(() => {

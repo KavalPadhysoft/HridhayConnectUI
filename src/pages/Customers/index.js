@@ -16,7 +16,7 @@ const CUSTOMER_LIST_SORT_COLUMN = "customerName"
 const CUSTOMER_LIST_SORT_DIR = "asc"
 
 const Customers = props => {
-  document.title = `Customers | ${DASHBOARD_NAME}`
+  document.title = `Customer | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()
@@ -56,7 +56,7 @@ const Customers = props => {
 
   const breadcrumbItems = [
     { title: "Lexa", link: "#" },
-    { title: "Customers", link: "#" },
+    { title: "Customer", link: "#" },
   ]
 
   const loadCustomers = async () => {
@@ -85,7 +85,7 @@ const Customers = props => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Customers")
+    props.setBreadcrumbItems("Customer")
   }, [])
   
   useEffect(() => {
@@ -226,7 +226,7 @@ const Customers = props => {
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
-          { label: "Customer Name", field: "name", sort: "asc" },
+          { label: "Shop Name", field: "name", sort: "asc" },
           { label: "Phone No", field: "phone", sort: "asc" },
           { label: "Location", field: "location", sort: "asc" },
           { label: "Action", field: "action", sort: "disabled" },

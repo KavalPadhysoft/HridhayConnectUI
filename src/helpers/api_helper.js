@@ -37,8 +37,9 @@ export async function exportToFile(url, filename, config = {}) {
   window.URL.revokeObjectURL(urlObj);
 }
 
-export const INVOICE_LAYOUT_API_URL = "https://localhost:7218/api/Invoice/GetInvoicesLayoutdata";
-const API_URL = process.env.REACT_APP_API_URL || "https://localhost:7218/api";
+export const API_BASE_URL = "https://hridhayconnect.bsite.net/api";
+export const INVOICE_LAYOUT_API_URL = `${API_BASE_URL}/Invoice/GetInvoicesLayoutdata`;
+const API_URL = API_BASE_URL;
 
 
 const axiosApi = axios.create({

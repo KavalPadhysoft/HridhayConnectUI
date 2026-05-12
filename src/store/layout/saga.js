@@ -144,21 +144,16 @@ function* changeLeftSidebarType({ payload: { sidebarType, isMobile } }) {
         // yield call(manageBodyClass, "sidebar-enable", "add")
         // if (!isMobile) yield call(manageBodyClass, "vertical-collpsed", "add")
         yield call(manageBodyClass, "sidebar-enable", "add")
-        if (window.screen.width >= 992) {
-          yield call(manageBodyClass, "vertical-collpsed", "remove")
-          yield call(manageBodyClass, "sidebar-enable", "remove")
+        if (window.innerWidth >= 992) {
           yield call(manageBodyClass, "vertical-collpsed", "add")
-          yield call(manageBodyClass, "sidebar-enable", "add")
         } else {
-          yield call(manageBodyClass, "sidebar-enable", "add")
-          yield call(manageBodyClass, "vertical-collpsed", "add")
+          yield call(manageBodyClass, "vertical-collpsed", "remove")
         }
         break
       default:
         yield call(changeBodyAttribute, "data-sidebar-size", "")
         yield call(manageBodyClass, "sidebar-enable", "remove")
-        if (!isMobile)
-          yield call(manageBodyClass, "vertical-collpsed", "remove")
+        yield call(manageBodyClass, "vertical-collpsed", "remove")
         break
     }
   } catch (error) { }

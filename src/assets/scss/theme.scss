@@ -301,3 +301,143 @@ span.flatpickr-weekday {
   orphans: 1;
   widows: 1;
 }
+
+@media (max-width: 991.98px) {
+  body.vertical-collpsed {
+    .main-content {
+      margin-left: 0 !important;
+    }
+
+    .footer {
+      left: 0 !important;
+    }
+
+    .navbar-brand-box {
+      width: auto !important;
+    }
+  }
+
+  body.sidebar-enable.vertical-collpsed {
+    .vertical-menu {
+      display: block;
+      position: fixed;
+      top: $header-height;
+      width: $sidebar-width !important;
+      z-index: 1001;
+
+      #sidebar-menu {
+        text-align: left;
+
+        .menu-title {
+          display: block !important;
+        }
+
+        .has-arrow::after {
+          display: block;
+        }
+
+        > ul {
+          > li {
+            white-space: normal;
+
+            > a {
+              min-height: auto;
+              padding: 11px 20px;
+              width: auto;
+
+              i {
+                display: inline-block;
+                font-size: 1rem;
+                margin-left: 0;
+              }
+
+              span {
+                display: inline;
+                padding-left: 0;
+              }
+            }
+
+            &:hover {
+              > a {
+                width: auto;
+              }
+
+              > ul {
+                box-shadow: none;
+                left: auto;
+                position: static;
+                width: auto;
+              }
+            }
+          }
+
+          ul.mm-show {
+            display: block;
+            position: static;
+            width: auto;
+          }
+        }
+      }
+    }
+  }
+
+  .main-content {
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .page-content {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+
+    .container-fluid {
+      max-width: 100%;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+  }
+
+  div.dataTables_wrapper {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+
+    > .row {
+      margin-left: 0;
+      margin-right: 0;
+      row-gap: 0.5rem;
+    }
+
+    .dataTables_length,
+    .dataTables_filter,
+    .dataTables_info,
+    .dataTables_paginate {
+      float: none;
+      text-align: left;
+    }
+
+    .dataTables_filter {
+      label {
+        width: 100%;
+      }
+
+      input {
+        margin: 0.35rem 0 0;
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+
+    table.dataTable {
+      min-width: 100%;
+      width: max-content;
+    }
+  }
+
+  .dataTables_paginate {
+    .pagination {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+}

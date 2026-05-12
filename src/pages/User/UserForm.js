@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Select from "react-select"
 import {
   Alert,
@@ -26,6 +26,8 @@ const UserForm = ({
   onSubmit,
   onClose,
 }) => {
+  const [showPassword, setShowPassword] = useState(false)
+
   const roleSelectOptions = (roleOptions || []).map(role => ({
     value: role.id,
     label: role.name,
@@ -60,13 +62,26 @@ const UserForm = ({
             {!isEditMode && (
               <Col md={6}>
                 <Label>Password<span style={{ color: "red" }}>*</span></Label>
-                <Input
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={onChange}
-                  placeholder="Enter password"
-                />
+                <div className="position-relative">
+                  <Input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={onChange}
+                    placeholder="Enter password"
+                    style={{ paddingRight: "2.75rem" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                    title={showPassword ? "Hide password" : "Show password"}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    onClick={() => setShowPassword(previous => !previous)}
+                    style={{ zIndex: 5, textDecoration: "none" }}
+                  >
+                    <i className={`mdi ${showPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                  </button>
+                </div>
               </Col>
             )}
             <Col md={6}>

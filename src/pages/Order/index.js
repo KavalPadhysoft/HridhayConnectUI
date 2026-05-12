@@ -34,6 +34,7 @@ const Order = props => {
   const [rows, setRows] = useState([]);
   const [sortColumn, setSortColumn] = useState(ORDER_LIST_SORT_COLUMN);
   const [sortColumnDir, setSortColumnDir] = useState(ORDER_LIST_SORT_DIR);
+  const [startIndexForPagination, setStartIndexForPagination] = useState(0);
 
   // Form state
   const [formLoading, setFormLoading] = useState(false);
@@ -149,27 +150,28 @@ const Order = props => {
   }, [isFormPage]);
 
   // List logic
-  const loadOrders = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await getOrdersPages({
-        start: 0,
-        length: 10,
-        sortColumn,
-        sortColumnDir,
-      });
-      if (response.isSuccess && response.data && response.data.data) {
-        setRows(response.data.data);
-      } else {
-        setRows([]);
-        setError(response.message || "Failed to load Orders.");
-      }
-    } catch (err) {
-      setError("Error loading Orders.");
-    }
-    setLoading(false);
-  };
+   const loadOrders = async () => {
+     setLoading(true);
+     setError("");
+     try {
+       const response = await getOrdersPages({
+         start: 0,
+         length: 10,
+         sortColumn,
+         sortColumnDir,
+       });
+       if (response.isSuccess && response.data && response.data.data) {
+         setRows(response.data.data);
+         setStartIndexForPagination(0); // Reset start index when loading new data
+       } else {
+         setRows([]);
+         setError(response.message || "Failed to load Orders.");
+       }
+     } catch (err) {
+       setError("Error loading Orders.");
+     }
+     setLoading(false);
+   };
 
   useEffect(() => {
     props.setBreadcrumbItems("Order")
@@ -291,6 +293,7 @@ const Order = props => {
         order: {
           ...deliveryFormData,
           delivery_Date: deliveryFormData.delivery_Date,
+          total_Amount: totalAmount,
         },
         deliveryItems: deliveryItems.map(item => ({
           itemId: 0,
@@ -503,99 +506,121 @@ const Order = props => {
     );
   };
 
-  // Table data
-  const data = useMemo(() => {
-    return withAutoSrColumn({
-      columns: buildServerSortColumns({
-        columns: [
-          { label: "Order No", field: "order_No", sort: "asc" },
-          { label: "Customer Name", field: "customerName", sort: "asc" },
-          { label: "Order Date", field: "order_Date", sort: "asc" },
-          { label: "Items", field: "itemsCount", sort: "asc" },
-          { label: "Delivered Items", field: "delivered_Items", sort: "asc" },
-          { label: "Total Amount", field: "total_Amount", sort: "asc" },
-          { label: "Salesman", field: "salesPersonName", sort: "asc" },
-          { label: "Status", field: "order_Status_Text", sort: "asc" },
-          { label: "Action", field: "action", sort: "disabled" },
-        ],
-        onSort: handleSortChange,
-        activeSortColumn: sortColumn,
-        sortColumnDir,
-      }),
-      rows: rows.map(item => ({
-        order_No: item.order_No || "",
-        customerName: item.customerName || "",
-        order_Date: formatDate(item.order_Date),
-        itemsCount: item.no_Of_Items || 0,
-        delivered_Items: item.delivered_Items || 0,
-        total_Amount: item.total_Amount ?? 0,
-        salesPersonName: item.salesPersonName || "",
-        order_Status_Text: getStatusBadge(item.order_Status),
-        action: (
-          <div className="d-flex gap-2 justify-content-center">
-            {item.order_Status === "1" ? (
-              <>
-                <Button
-                  color="link"
-                  className="p-0 text-primary"
-                  title="Edit"
-                  type="button"
-                  onClick={() => handleEdit(item.id)}
-                >
-                  <i className="mdi mdi-pencil font-size-18" />
-                </Button>
-                <Button
-                  color="link"
-                  className="p-0 text-danger"
-                  title="Delete"
-                  type="button"
-                  disabled={deletingId === item.id}
-                  onClick={() => handleDelete(item.id)}
-                >
-                  {deletingId === item.id ? (
-                    <Spinner size="sm" />
-                  ) : (
-                    <i className="mdi mdi-trash-can-outline font-size-18" />
-                  )}
-                </Button>
-                <Button
-                  color="success"
-                  size="sm"
-                  title="Deliver"
-                  type="button"
-                  onClick={() => handleDeliver(item.id)}
-                  style={{ fontWeight: 500 }}
-                >
-                  <i className="mdi mdi-truck-delivery me-1" />
-                  Deliver
-                </Button>
-                <Button
-                  color="warning"
-                  size="sm"
-                  title="Cancel Order"
-                  type="button"
-                  onClick={() => handleCancelOrder(item.id)}
-                  style={{ fontWeight: 500 }}
-                >
-                  <i className="mdi mdi-close-circle me-1" />
-                  Cancel
-                </Button>
-              </>
-            ) : null}
-            <Button
-              color="link"
-              className="p-0 text-info"
-              title="View"
-              type="button"
-              onClick={() => navigate(`/Order/layout/${item.id}/${item.order_Status}`)}
-            >
-              <i className="mdi mdi-eye font-size-18" />
-            </Button>
-          </div>
-        ),
-      })),
-    });
-  }, [rows, sortColumn, sortColumnDir, deletingId]);
+   // Table data
+   const data = useMemo(() => {
+     return withAutoSrColumn({
+       columns: buildServerSortColumns({
+         columns: [
+           { label: "Order No", field: "order_No", sort: "asc" },
+           { label: "Shop Name", field: "customerName", sort: "asc" },
+           { label: "Order Date", field: "order_Date", sort: "asc" },
+           { label: "Item", field: "itemsCount", sort: "asc" },
+           { label: "Delivered Item", field: "delivered_Items", sort: "asc" },
+            { label: "Total Amount", field: "total_Amount", sort: "asc", thClassName: "text-end", tdClassName: "text-end" },
+            { label: "Delivery Amount", field: "delivery_Amount", sort: "asc", thClassName: "text-end", tdClassName: "text-end" },
+            { label: "Sales Person", field: "salesPersonName", sort: "asc" },
+           { label: "Status", field: "order_Status_Text", sort: "asc" },
+           { label: "Action", field: "action", sort: "disabled" },
+         ],
+         onSort: handleSortChange,
+         activeSortColumn: sortColumn,
+         sortColumnDir,
+       }),
+       rows: rows.map(item => ({
+         order_No: item.order_No || "",
+         customerName: item.customerName || "",
+         order_Date: formatDate(item.order_Date),
+         itemsCount: item.no_Of_Items || 0,
+         delivered_Items: item.delivered_Items || 0,
+         total_Amount: item.total_Amount ?? 0,
+         delivery_Amount: item.delivery_Amount !== undefined && item.delivery_Amount !== null ? item.delivery_Amount : 
+                        item.deliveryAmount !== undefined && item.deliveryAmount !== null ? item.deliveryAmount : 
+                        item.delivery_amount !== undefined && item.delivery_amount !== null ? item.delivery_amount : 
+                        item.DeliveryAmount !== undefined && item.DeliveryAmount !== null ? item.DeliveryAmount : 
+                        item.delivery_Amt !== undefined && item.delivery_Amt !== null ? item.delivery_Amt : 0,
+         salesPersonName: item.salesPersonName || "",
+         order_Status_Text: getStatusBadge(item.order_Status),
+         action: (
+           <div className="d-flex gap-2 justify-content-center">
+             {item.order_Status === "1" ? (
+               <>
+                 <Button
+                   color="link"
+                   className="p-0 text-primary"
+                   title="Edit"
+                   type="button"
+                   onClick={() => handleEdit(item.id)}
+                 >
+                   <i className="mdi mdi-pencil font-size-18" />
+                 </Button>
+                 <Button
+                   color="link"
+                   className="p-0 text-danger"
+                   title="Delete"
+                   type="button"
+                   disabled={deletingId === item.id}
+                   onClick={() => handleDelete(item.id)}
+                 >
+                   {deletingId === item.id ? (
+                     <Spinner size="sm" />
+                   ) : (
+                     <i className="mdi mdi-trash-can-outline font-size-18" />
+                   )}
+                 </Button>
+                 <Button
+                   color="success"
+                   size="sm"
+                   title="Deliver"
+                   type="button"
+                   onClick={() => handleDeliver(item.id)}
+                   style={{ fontWeight: 500 }}
+                 >
+                   <i className="mdi mdi-truck-delivery me-1" />
+                   Deliver
+                 </Button>
+                 <Button
+                   color="warning"
+                   size="sm"
+                   title="Cancel Order"
+                   type="button"
+                   onClick={() => handleCancelOrder(item.id)}
+                   style={{ fontWeight: 500 }}
+                 >
+                   <i className="mdi mdi-close-circle me-1" />
+                   Cancel
+                 </Button>
+               </>
+             ) : null}
+             <Button
+               color="info"
+               size="sm"
+               title="View"
+               type="button"
+               onClick={() => navigate(`/Order/layout/${item.id}/${item.order_Status}`)}
+               style={{ fontWeight: 500 }}
+             >
+               <i className="mdi mdi-eye me-1" />
+               View Order
+             </Button>
+             {(item.order_Status === "2" || item.order_Status === "4") && (
+               <Button
+                 color="success"
+                 size="sm"
+                 title="View Delivery"
+                 type="button"
+                 onClick={() => navigate(`/Order/delivery-layout/${item.id}`)}
+                 style={{ fontWeight: 500 }}
+               >
+                 <i className="mdi mdi-truck me-1" />
+                 View Delivery
+               </Button>
+             )}
+           </div>
+         ),
+       })),
+       startIndex: Number(startIndexForPagination)
+     });
+   }, [rows, sortColumn, sortColumnDir, deletingId, startIndexForPagination]);
 
   return (
     <React.Fragment>
@@ -663,22 +688,45 @@ const Order = props => {
                   </Button>
                 </div>
                 {error ? <Alert color="danger">{error}</Alert> : null}
-                {loading ? (
-                  <div className="text-center py-5">
-                    <Spinner color="primary" />
-                  </div>
-                ) : (
-                  <MDBDataTable
-                    striped
-                    bordered
-                    small
-                    noBottomColumns
-                    data={data}
-                    className={rows && rows.length > 0 ? "table-auto-sr" : undefined}
-                    noRecordsFoundLabel={<span style={{display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888'}}>You don't have any record</span>}
-                  />
-                )}
-              </CardBody>
+                 {loading ? (
+                   <div className="text-center py-5">
+                     <Spinner color="primary" />
+                   </div>
+                 ) : (
+                   <div id="order-table-container" style={{ overflowX: 'auto' }}>
+                     <MDBDataTable
+                       striped
+                       bordered
+                       small
+                       noBottomColumns
+                       data={data}
+                       className={rows && rows.length > 0 ? "table-auto-sr" : undefined}
+                       noRecordsFoundLabel={<span style={{display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888'}}>You don't have any record</span>}
+                     />
+                   </div>
+                 )}
+               </CardBody>
+                <style>{`
+                    /* Force right alignment for text-end classes */
+                    #order-table-container .text-end {
+                        text-align: right !important;
+                    }
+                    /* Override RTL-specific text-end */
+                    #order-table-container [dir="rtl"] .text-end {
+                        text-align: right !important;
+                    }
+                    /* Also ensure amount columns are right-aligned by position (as fallback) */
+                    /* Total Amount column is the 6th column */
+                    #order-table-container .table-auto-sr tbody td:nth-child(7),
+                    #order-table-container .table-auto-sr thead th:nth-child(7) {
+                        text-align: right !important;
+                    }
+                    /* Delivery Amount column is the 7th column */
+                    #order-table-container .table-auto-sr tbody td:nth-child(8),
+                    #order-table-container .table-auto-sr thead th:nth-child(8) {
+                        text-align: right !important;
+                    }
+                `}</style>
             </Card>
           )}
         </Col>

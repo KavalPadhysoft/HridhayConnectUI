@@ -15,6 +15,26 @@ import { withTranslation } from "react-i18next"
 
 const SidebarContent = props => {
   const ref = useRef();
+
+  useEffect(() => {
+    const closeSidebarOnMobile = () => {
+      if (window.innerWidth <= 992) {
+        document.body.classList.remove("sidebar-enable");
+      }
+    };
+
+    const sidebarLinks = document.querySelectorAll("#sidebar-menu a");
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", closeSidebarOnMobile);
+    });
+
+    return () => {
+      sidebarLinks.forEach(link => {
+        link.removeEventListener("click", closeSidebarOnMobile);
+      });
+    };
+  }, []);
+
   const activateParentDropdown = useCallback((item) => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -220,10 +240,9 @@ const SidebarContent = props => {
             </li>
             {/* <li className="menu-title">{props.t("Main")} </li> */}
 
-            {dynamicMenu.length > 0 && (
-              <>
-                <li className="menu-title">{props.t("Menu")}</li>
-                {dynamicMenu.map(parent => (
+              {dynamicMenu.length > 0 && (
+                <>
+                  {dynamicMenu.map(parent => (
                   <li key={`dynamic-parent-${parent.id}`}>
                     <Link
                       to={parent.children.length ? "/#" : getDynamicMenuLink(parent)}

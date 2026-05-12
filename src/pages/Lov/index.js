@@ -91,7 +91,7 @@ const normalizeList = payload => {
 
 const LOV_BREADCRUMB_ITEMS = [
   { title: "Lexa", link: "#" },
-  { title: "LOV", link: "#" },
+  { title: "Common Master", link: "#" },
 ]
 
 const LOV_MASTER_SORT_COLUMN = "lov_Column"
@@ -100,7 +100,7 @@ const LOV_DETAIL_SORT_COLUMN = "displayOrder"
 const LOV_DETAIL_SORT_DIR = "asc"
 
 const Lov = props => {
-  document.title = `LOV | ${DASHBOARD_NAME}`
+  document.title = `Common master | ${DASHBOARD_NAME}`
   const { setBreadcrumbItems } = props
 
   const navigate = useNavigate()

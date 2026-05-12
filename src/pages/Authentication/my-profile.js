@@ -489,58 +489,73 @@ const MyProfile = () => {
                     {/* {passwordError ? <Alert color="danger">{passwordError}</Alert> : null}
                     {passwordSuccess ? <Alert color="success">{passwordSuccess}</Alert> : null} */}
 
-                    <div className="mb-3 position-relative">
+                    <div className="mb-3">
                       <Label>Current Password *</Label>
-                      <Input
-                        type={showCurrentPassword ? "text" : "password"}
-                        placeholder="Enter current password"
-                        value={currentPassword}
-                        onChange={(event) => setCurrentPassword(event.target.value)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        className="btn btn-link text-muted p-0 position-absolute"
-                        style={{ right: "14px", top: "38px" }}
-                      >
-                        {/* <i className={showCurrentPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} /> */}
-                      </button>
+                      <div className="position-relative">
+                        <Input
+                          type={showCurrentPassword ? "text" : "password"}
+                          placeholder="Enter current password"
+                          value={currentPassword}
+                          onChange={(event) => setCurrentPassword(event.target.value)}
+                          style={{ paddingRight: "2.75rem" }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                          title={showCurrentPassword ? "Hide password" : "Show password"}
+                          aria-label={showCurrentPassword ? "Hide password" : "Show password"}
+                          onClick={() => setShowCurrentPassword(previous => !previous)}
+                          style={{ zIndex: 5, textDecoration: "none" }}
+                        >
+                          <i className={`mdi ${showCurrentPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="mb-3 position-relative">
+                    <div className="mb-3">
                       <Label>New Password *</Label>
-                      <Input
-                        type={showNewPassword ? "text" : "password"}
-                        placeholder="Enter new password"
-                        value={newPassword}
-                        onChange={(event) => setNewPassword(event.target.value)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="btn btn-link text-muted p-0 position-absolute"
-                        style={{ right: "14px", top: "38px" }}
-                      >
-                        {/* <i className={showNewPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} /> */}
-                      </button>
+                      <div className="position-relative">
+                        <Input
+                          type={showNewPassword ? "text" : "password"}
+                          placeholder="Enter new password"
+                          value={newPassword}
+                          onChange={(event) => setNewPassword(event.target.value)}
+                          style={{ paddingRight: "2.75rem" }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                          title={showNewPassword ? "Hide password" : "Show password"}
+                          aria-label={showNewPassword ? "Hide password" : "Show password"}
+                          onClick={() => setShowNewPassword(previous => !previous)}
+                          style={{ zIndex: 5, textDecoration: "none" }}
+                        >
+                          <i className={`mdi ${showNewPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="mb-3 position-relative">
+                    <div className="mb-3">
                       <Label>Confirm New Password *</Label>
-                      <Input
-                        type={showConfirmPassword ? "text" : "password"}
-                        placeholder="Confirm new password"
-                        value={confirmPassword}
-                        onChange={(event) => setConfirmPassword(event.target.value)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="btn btn-link text-muted p-0 position-absolute"
-                        style={{ right: "14px", top: "38px" }}
-                      >
-                        {/* <i className={showConfirmPassword ? "mdi mdi-eye-off-outline" : "mdi mdi-eye-outline"} /> */}
-                      </button>
+                      <div className="position-relative">
+                        <Input
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Confirm new password"
+                          value={confirmPassword}
+                          onChange={(event) => setConfirmPassword(event.target.value)}
+                          style={{ paddingRight: "2.75rem" }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                          title={showConfirmPassword ? "Hide password" : "Show password"}
+                          aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                          onClick={() => setShowConfirmPassword(previous => !previous)}
+                          style={{ zIndex: 5, textDecoration: "none" }}
+                        >
+                          <i className={`mdi ${showConfirmPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                        </button>
+                      </div>
                     </div>
 
                     <div className="mt-4">

@@ -34,11 +34,15 @@ import PaymentCollections from "../pages/PaymentCollection"
 import Outstanding from "../pages/Outstanding"
 import DeliveryForm from "../pages/Order/DeliveryForm"
 import OrderLayout from "../pages/Order/OrderLayout"
+import DeliveryLayout from "../pages/Order/DeliveryLayout"
 
 //Extra Pages
 import PagesBlank from "../pages/Extra Pages/pages-blank";
 import Pages404 from "../pages/Extra Pages/pages-404";
 import Pages500 from "../pages/Extra Pages/pages-500";
+
+// Customer Ledger
+import CustomerLegder from "../pages/CustomerLegder/index";
 
 const userRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -76,6 +80,11 @@ const userRoutes = [
 
   { path: "/Outstanding", component: <Outstanding /> },
 
+  { path: "/CustomerLedger", component: <CustomerLegder /> },
+  { path: "/CustomerLedger/:id", component: <CustomerLegder /> },
+  { path: "/CustomerLegder", component: <CustomerLegder /> },
+  { path: "/CustomerLegder/:id", component: <CustomerLegder /> },
+
   { path: "/Category", component: <Categories /> },
   { path: "/Category/manage", component: <Categories /> },
   { path: "/Category/manage/:id", component: <Categories /> },
@@ -89,6 +98,7 @@ const userRoutes = [
   { path: "/Order/manage/:id", component: <Orders /> },
   { path: "/Order/deliver/:id", component: <Orders /> },
   { path: "/Order/layout/:id/:status", component: <OrderLayout /> },
+  { path: "/Order/delivery-layout/:id", component: <DeliveryLayout /> },
 
   { path: "/pages-blank", component: <PagesBlank /> },
 

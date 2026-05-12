@@ -16,7 +16,7 @@ const ITEM_LIST_SORT_COLUMN = "itemName"
 const ITEM_LIST_SORT_DIR = "asc"
 
 const Items = props => {
-  document.title = `Items | ${DASHBOARD_NAME}`
+  document.title = `Item | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()
@@ -56,7 +56,7 @@ const Items = props => {
 
   const breadcrumbItems = [
     { title: "Lexa", link: "#" },
-    { title: "Items", link: "#" },
+    { title: "Item", link: "#" },
   ]
 
   const loadItems = async () => {
@@ -85,7 +85,7 @@ const Items = props => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Items")
+    props.setBreadcrumbItems("Item")
   }, [])
 
   useEffect(() => {

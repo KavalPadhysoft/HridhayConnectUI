@@ -64,7 +64,7 @@ const PaymentCollectionForm = ({
         <Form onSubmit={onSubmit}>
           <Row className="g-3">
             <Col md={6}>
-              <Label>Customer<span style={{ color: "red" }}>*</span></Label>
+              <Label>Shop Name<span style={{ color: "red" }}>*</span></Label>
               <Select
                 classNamePrefix="select2-selection"
                 placeholder="Select customer"

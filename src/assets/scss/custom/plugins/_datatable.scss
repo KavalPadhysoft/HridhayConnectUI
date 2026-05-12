@@ -14,11 +14,17 @@ table thead th {
   vertical-align: middle;
 }
 
-/* Center all table row data */
-table tbody td {
-  text-align: center;
-  vertical-align: middle;
-}
+  /* Center all table row data */
+  table tbody td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  /* Right align specific columns */
+  table tbody td.text-end,
+  table thead th.text-end {
+    text-align: right !important;
+  }
 
 div.dataTables_wrapper {
   div.dataTables_filter{

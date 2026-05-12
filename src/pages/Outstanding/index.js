@@ -39,7 +39,7 @@ const OUTSTANDING_SORT_COLUMN = "customerName"
 const OUTSTANDING_SORT_DIR = "asc"
 
 const Outstanding = (props) => {
-  document.title = `Outstanding Payments | ${DASHBOARD_NAME}`
+  document.title = `Outstanding Payment | ${DASHBOARD_NAME}`
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -73,7 +73,7 @@ const Outstanding = (props) => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Outstanding Payments")
+    props.setBreadcrumbItems("Outstanding Payment ")
   }, [])
 
   useEffect(() => {
@@ -90,11 +90,11 @@ const Outstanding = (props) => {
 
   const data = useMemo(() => {
     return withAutoSrColumn({
-      columns: buildServerSortColumns({
-        columns: [
-          { label: "Customer", field: "customerName", sort: "asc" },
-          { label: "Total Amount", field: "total_Amount", sort: "asc" },
-        ],
+         columns: buildServerSortColumns({
+           columns: [
+             { label: "Shop Name", field: "customerName", sort: "asc" },
+             { label: "Total Amount", field: "total_Amount", sort: "asc", thClassName: "text-end", tdClassName: "text-end" },
+           ],
         onSort: handleSortChange,
         activeSortColumn: sortColumn,
         sortColumnDir,
@@ -111,33 +111,64 @@ const Outstanding = (props) => {
     <>
       <style>{widgetStyles}</style>
       <Card>
-        <CardBody>
-          <Row className="mb-3">
-            <Col md={4}>
-              <div className="widget-card" style={{ background: "linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)", padding: "15px" }}>
-                <div className="widget-card-body">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <p className="text-white-50 mb-1" style={{ fontSize: "12px" }}>Total Due</p>
-                      <h4 className="text-white mb-0" style={{ fontSize: "18px", fontWeight: "600" }}>₹ {totalDue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
-                    </div>
-                    <div className="widget-icon" style={{ width: "40px", height: "40px" }}>
-                      <i className="mdi mdi-currency-inr text-white" style={{ fontSize: "22px" }}></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        {error ? <Alert color="danger">{error}</Alert> : null}
-        {loading ? (
-          <div className="text-center py-5">
-            <Spinner color="primary" />
-          </div>
-        ) : (
-          <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
-        )}
-      </CardBody>
+       <CardBody>
+           <Row className="mb-3">
+             <Col md={3}>
+               <div className="widget-card" style={{ background: "linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)", padding: "12px", maxWidth: "220px" }}>
+                 <div className="widget-card-body">
+                   <div className="d-flex justify-content-between align-items-center">
+                     <div>
+                       <p className="text-white-50 mb-1" style={{ fontSize: "11px" }}>Total Due</p>
+                       <h4 className="text-white mb-0" style={{ fontSize: "16px", fontWeight: "600" }}>₹ {totalDue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
+                     </div>
+                     <div className="widget-icon" style={{ width: "35px", height: "35px" }}>
+                       <i className="mdi mdi-currency-inr text-white" style={{ fontSize: "20px" }}></i>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </Col>
+           </Row>
+         {error ? <Alert color="danger">{error}</Alert> : null}
+         {loading ? (
+           <div className="text-center py-5">
+             <Spinner color="primary" />
+           </div>
+         ) : (
+           <div id="outstanding-table-wrapper" style={{ width: '100%', overflowX: 'auto' }}>
+             <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
+           </div>
+         )}
+       </CardBody>
+       <style>{`
+           /* Force right alignment for Total Amount column in Outstanding */
+           #layout-wrapper > div.main-content > div > div > div.card > div > div.dataTables_wrapper.dt-bootstrap4.table-auto-sr > div:nth-child(2) > div > div > table > thead > tr > th:nth-child(3),
+           #layout-wrapper > div.main-content > div > div > div.card > div > div.dataTables_wrapper.dt-bootstrap4.table-auto-sr > div:nth-child(2) > div > div > table > tbody > tr > td:nth-child(3) {
+               text-align: right !important;
+           }
+           
+           /* Override RTL-specific alignment */
+           #layout-wrapper[dir="rtl"] > div.main-content > div > div > div.card > div > div.dataTables_wrapper.dt-bootstrap4.table-auto-sr > div:nth-child(2) > div > div > table > thead > tr > th:nth-child(3),
+           #layout-wrapper[dir="rtl"] > div.main-content > div > div > div.card > div > div.dataTables_wrapper.dt-bootstrap4.table-auto-sr > div:nth-child(2) > div > div > table > tbody > tr > td:nth-child(3) {
+               text-align: right !important;
+           }
+           
+           /* Also target by class for robustness */
+           #outstanding-table-wrapper .table-auto-sr tbody td.text-end,
+           #outstanding-table-wrapper .table-auto-sr thead th.text-end {
+               text-align: right !important;
+           }
+           #outstanding-table-wrapper [dir="rtl"] .table-auto-sr tbody td.text-end,
+           #outstanding-table-wrapper [dir="rtl"] .table-auto-sr thead th.text-end {
+               text-align: right !important;
+           }
+           
+           /* Fallback: target specific column position */
+           #outstanding-table-wrapper .table-auto-sr tbody td:nth-child(3),
+           #outstanding-table-wrapper .table-auto-sr thead th:nth-child(3) {
+               text-align: right !important;
+           }
+       `}</style>
     </Card>
     </>
   )

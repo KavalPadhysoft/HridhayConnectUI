@@ -77,20 +77,20 @@ File: Main Css File
 @import "custom/pages/kanbanboard";
 
 .table-auto-sr tbody {
-	counter-reset: rowNumber;
+	// counter-reset: rowNumber;
 }
 
 .table-auto-sr tbody tr td:first-child {
-	color: transparent;
-	position: relative;
+	// color: transparent;
+	// position: relative;
 	min-width: 60px;
 }
 
 .table-auto-sr tbody tr td:first-child::before {
-	counter-increment: rowNumber;
-	content: counter(rowNumber);
-	color: #212529;
-	font-weight: 500;
+	// counter-increment: rowNumber;
+	// content: counter(rowNumber);
+	// color: #212529;
+	// font-weight: 500;
 }
 
 .table-auto-sr tbody td,
@@ -114,3 +114,6 @@ table tbody tr td[colspan] {
 	padding: 1rem !important;
 }
 
+table tbody tr td.order-items-total-label[colspan] {
+	text-align: right !important;
+}

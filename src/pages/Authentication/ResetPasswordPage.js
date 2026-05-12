@@ -1,5 +1,5 @@
 import { DASHBOARD_NAME } from "../../config";
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardBody, Col, Container, FormFeedback, Input, Label, Row } from 'reactstrap';
 import logoDark from "../../assets/images/logo-dark.png";
@@ -14,6 +14,8 @@ import { post } from "../../helpers/api_helper";
 const ResetPasswordPage = () => {
   document.title = `Reset Password | ${DASHBOARD_NAME}`;
   const navigate = useNavigate();
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   // Remove local error/success state, use toast instead
   const email = localStorage.getItem("reset_email") || "";
 
@@ -74,36 +76,62 @@ const ResetPasswordPage = () => {
                       }}>
                       <div className="mb-3">
                         <Label htmlFor="newPassword">New Password</Label>
-                        <Input
-                          name="newPassword"
-                          className="form-control"
-                          placeholder="Enter new password"
-                          type="password"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.newPassword || ""}
-                          invalid={
-                            validation.touched.newPassword && validation.errors.newPassword ? true : false
-                          }
-                        />
+                        <div className="position-relative">
+                          <Input
+                            name="newPassword"
+                            className="form-control"
+                            placeholder="Enter new password"
+                            type={showNewPassword ? "text" : "password"}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.newPassword || ""}
+                            invalid={
+                              validation.touched.newPassword && validation.errors.newPassword ? true : false
+                            }
+                            style={{ paddingRight: "2.75rem" }}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                            title={showNewPassword ? "Hide password" : "Show password"}
+                            aria-label={showNewPassword ? "Hide password" : "Show password"}
+                            onClick={() => setShowNewPassword(previous => !previous)}
+                            style={{ zIndex: 5, textDecoration: "none" }}
+                          >
+                            <i className={`mdi ${showNewPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                          </button>
+                        </div>
                         {validation.touched.newPassword && validation.errors.newPassword ? (
                           <FormFeedback type="invalid">{validation.errors.newPassword}</FormFeedback>
                         ) : null}
                       </div>
                       <div className="mb-3">
                         <Label htmlFor="confirmPassword">Confirm Password</Label>
-                        <Input
-                          name="confirmPassword"
-                          className="form-control"
-                          placeholder="Confirm new password"
-                          type="password"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.confirmPassword || ""}
-                          invalid={
-                            validation.touched.confirmPassword && validation.errors.confirmPassword ? true : false
-                          }
-                        />
+                        <div className="position-relative">
+                          <Input
+                            name="confirmPassword"
+                            className="form-control"
+                            placeholder="Confirm new password"
+                            type={showConfirmPassword ? "text" : "password"}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.confirmPassword || ""}
+                            invalid={
+                              validation.touched.confirmPassword && validation.errors.confirmPassword ? true : false
+                            }
+                            style={{ paddingRight: "2.75rem" }}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                            title={showConfirmPassword ? "Hide password" : "Show password"}
+                            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                            onClick={() => setShowConfirmPassword(previous => !previous)}
+                            style={{ zIndex: 5, textDecoration: "none" }}
+                          >
+                            <i className={`mdi ${showConfirmPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                          </button>
+                        </div>
                         {validation.touched.confirmPassword && validation.errors.confirmPassword ? (
                           <FormFeedback type="invalid">{validation.errors.confirmPassword}</FormFeedback>
                         ) : null}

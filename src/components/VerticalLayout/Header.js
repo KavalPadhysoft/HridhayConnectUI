@@ -60,9 +60,17 @@ const Header = props => {
   }
 
   function tToggle() {
-    var body = document.body;
-    body.classList.toggle("vertical-collpsed");
-    body.classList.toggle("sidebar-enable");
+    const body = document.body
+    const isMobile = window.innerWidth <= 992
+
+    if (isMobile) {
+      body.classList.remove("vertical-collpsed")
+      body.classList.toggle("sidebar-enable")
+      return
+    }
+
+    body.classList.toggle("vertical-collpsed")
+    body.classList.toggle("sidebar-enable")
   }
   return (
     <React.Fragment>
@@ -70,34 +78,32 @@ const Header = props => {
         <div className="navbar-header">
           <div className="d-flex">
             <div className="navbar-brand-box">
-               <Link to="/dashboard" className="logo logo-dark">
-                 <span className="logo-sm">
-                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
-                 </span>
-                 <span className="logo-lg">
-                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
-                 </span>
-               </Link>
+              <Link to="/dashboard" className="logo logo-dark">
+                <span className="logo-sm">
+                  <img src={hridhayConnectLogo} alt="Logo" />
+                </span>
+                <span className="logo-lg">
+                  <img src={hridhayConnectLogo} alt="Logo" />
+                </span>
+              </Link>
 
-               <Link to="/dashboard" className="logo logo-light">
-                 <span className="logo-sm">
-                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
-                 </span>
-                 <span className="logo-lg">
-                   <img src={hridhayConnectLogo} alt="Logo" height="150" style={{ objectFit: 'contain' }} />
-                 </span>
-               </Link>
+              <Link to="/dashboard" className="logo logo-light">
+                <span className="logo-sm">
+                  <img src={hridhayConnectLogo} alt="Logo" />
+                </span>
+                <span className="logo-lg">
+                  <img src={hridhayConnectLogo} alt="Logo" />
+                </span>
+              </Link>
             </div>
 
             <button
               type="button"
-              onClick={() => {
-                tToggle()
-              }}
-              className="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn"
+              onClick={tToggle}
+              className="btn header-item waves-effect vertical-menu-btn"
               id="vertical-menu-btn"
             >
-              <i className="mdi mdi-menu"></i>
+              <i className="mdi mdi-menu font-size-24"></i>
             </button>
             <div className="d-none d-sm-block">
               <Dropdown

@@ -48,7 +48,7 @@ const Dashboard = props => {
     try {
       // Fetch pending orders
       const ordersResponse = await get(
-        `https://localhost:7218/api/Dashboard/GetDashboardDataForPendingOrders?start=0&length=10&sortColumn=${pendingOrdersSortColumn}&sortColumnDir=${pendingOrdersSortColumnDir}`
+        `https://hridhayconnect.bsite.net/api/Dashboard/GetDashboardDataForPendingOrders?start=0&length=10&sortColumn=${pendingOrdersSortColumn}&sortColumnDir=${pendingOrdersSortColumnDir}`
       )
 
       if (!(ordersResponse?.isSuccess && ordersResponse?.statusCode === 1)) {
@@ -60,7 +60,7 @@ const Dashboard = props => {
 
       // Fetch pending order items
       const itemsResponse = await get(
-        `https://localhost:7218/api/Dashboard/GetDashboardDataForPendingItemWise?start=0&length=10&sortColumn=${pendingItemsSortColumn}&sortColumnDir=${pendingItemsSortColumnDir}`
+        `https://hridhayconnect.bsite.net/api/Dashboard/GetDashboardDataForPendingItemWise?start=0&length=10&sortColumn=${pendingItemsSortColumn}&sortColumnDir=${pendingItemsSortColumnDir}`
       )
 
       if (!(itemsResponse?.isSuccess && itemsResponse?.statusCode === 1)) {
@@ -105,7 +105,7 @@ const Dashboard = props => {
           { label: "Order No", field: "order_No", sort: "asc" },
           { label: "Order Date", field: "order_Date", sort: "asc" },
           { label: "Delivery Date", field: "delivery_Date", sort: "asc" },
-          { label: "Customer Name", field: "customerName", sort: "asc" },
+          { label: "Shop", field: "customerName", sort: "asc" },
           { label: "Salesperson Name", field: "salesPersonName", sort: "asc" },
           { label: "Total Amount", field: "total_Amount", sort: "asc" },
           { label: "Status", field: "order_Status_Text", sort: "asc" },

@@ -1,5 +1,5 @@
 import { DASHBOARD_NAME } from "../../config";
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Container, Row,Col, Card, CardBody, Label, Form, Alert, Input, FormFeedback } from 'reactstrap';
 import hridhayConnectLogo from "../../assets/images/ChamperOfimg/HridhayConnect-Logo.png";
@@ -22,6 +22,7 @@ const Login = props => {
   document.title = `Login | ${DASHBOARD_NAME}`;
 
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const validation = useFormik({
     // enableReinitialize : use this  flag when initial values needs to be changed
@@ -117,17 +118,30 @@ const Login = props => {
                                         </div>
                                         <div className="mb-3">
                                             <Label htmlFor="userpassword">Password</Label> 
-                                            <Input
-                                              name="password"
-                                              value={validation.values.password || ""}
-                                              type="password"
-                                              placeholder="Enter Password"
-                                              onChange={validation.handleChange}
-                                              onBlur={validation.handleBlur}
-                                              invalid={
-                                                validation.touched.password && validation.errors.password ? true : false
-                                              }
-                                            />
+                                            <div className="position-relative">
+                                              <Input
+                                                name="password"
+                                                value={validation.values.password || ""}
+                                                type={showPassword ? "text" : "password"}
+                                                placeholder="Enter Password"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                invalid={
+                                                  validation.touched.password && validation.errors.password ? true : false
+                                                }
+                                                style={{ paddingRight: "2.75rem" }}
+                                              />
+                                              <button
+                                                type="button"
+                                                className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                                                title={showPassword ? "Hide password" : "Show password"}
+                                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                                onClick={() => setShowPassword(previous => !previous)}
+                                                style={{ zIndex: 5, textDecoration: "none" }}
+                                              >
+                                                <i className={`mdi ${showPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
+                                              </button>
+                                            </div>
                                             {validation.touched.password && validation.errors.password ? (
                                               <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
                                             ) : null}

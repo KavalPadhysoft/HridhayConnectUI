@@ -854,6 +854,20 @@ const getOrderLayoutData = async (id, status) => {
   }
 }
 
+const getDeliveryLayoutData = async (id) => {
+  try {
+    return await get("/Order/GetDeliveryLayoutdata", {
+      params: { id },
+    });
+  } catch (error) {
+    throw (
+      error?.response?.data?.message ||
+      error?.message ||
+      "Get delivery layout data failed"
+    );
+  }
+}
+
 const getCustomerList = async () => {
   try {
     const response = await get("/Dropdown/CustomerList")
@@ -1033,12 +1047,13 @@ export {
    deleteOrderById,
    getOrderNo,
    getItemList,
-   getCustomerList,
+    getCustomerList,
 getDeliveryById,
-     saveDelivery,
-     cancelOrder,
-     getOrderLayoutData,
-     getPackagingTypeList,
+      saveDelivery,
+      cancelOrder,
+      getOrderLayoutData,
+      getDeliveryLayoutData,
+      getPackagingTypeList,
      getPaymentModeList,
      getPaymentCollectionsPages,
      getPaymentCollectionById,

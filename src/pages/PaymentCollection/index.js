@@ -54,7 +54,7 @@ const formatDateDDMMMYYYY = (dateStr) => {
 }
 
 const PaymentCollections = (props) => {
-  document.title = `Payment Collections | ${DASHBOARD_NAME}`
+  document.title = `Payment Collection | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()
@@ -110,7 +110,7 @@ const PaymentCollections = (props) => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Payment Collections")
+    props.setBreadcrumbItems("Payment Collection")
   }, [])
 
   useEffect(() => {
@@ -239,8 +239,9 @@ const PaymentCollections = (props) => {
     return withAutoSrColumn({
       columns: buildServerSortColumns({
         columns: [
+          { label: "Receipt No", field: "Payment_Receipt_No", sort: "asc" },
           { label: "Date", field: "paymentDate", sort: "asc" },
-          { label: "Customer", field: "customerName", sort: "asc" },
+          { label: "Shop Name", field: "customerName", sort: "asc" },
           { label: "Mode", field: "paymentMode_Text", sort: "asc" },
           { label: "Reference", field: "referenceNo", sort: "asc" },
           { label: "Collected By", field: "collected_By_Text", sort: "asc" },
@@ -253,6 +254,7 @@ const PaymentCollections = (props) => {
       }),
       rows: rows.map((item) => ({
         id: item.id,
+        Payment_Receipt_No: item.payment_Receipt_No || "",
         paymentDate: formatDateDDMMMYYYY(item.paymentDate),
         customerName: item.customerName || "",
         paymentMode_Text: item.paymentMode_Text || "",

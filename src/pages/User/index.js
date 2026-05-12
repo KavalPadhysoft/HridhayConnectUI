@@ -18,7 +18,7 @@ const USER_LIST_SORT_COLUMN = "userName"
 const USER_LIST_SORT_DIR = "asc"
 
 const Users = props => {
-  document.title = `Users | ${DASHBOARD_NAME}`
+  document.title = `User | ${DASHBOARD_NAME}`
   const navigate = useNavigate()
   const location = useLocation()
   const params = useParams()
@@ -48,7 +48,7 @@ const Users = props => {
 
   const breadcrumbItems = [
     { title: "Lexa", link: "#" },
-    { title: "Users", link: "#" },
+    { title: "User", link: "#" },
   ]
 
   const loadUsers = async () => {
@@ -129,7 +129,7 @@ const handleExportPdf = async () => {
 
 
   useEffect(() => {
-    props.setBreadcrumbItems("Users")
+    props.setBreadcrumbItems("User")
   }, [])
 
   useEffect(() => {

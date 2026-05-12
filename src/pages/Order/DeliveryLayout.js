@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Spinner } from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { getOrderLayoutData } from "../../helpers/fakebackend_helper";
+import { getDeliveryLayoutData } from "../../helpers/fakebackend_helper";
 import { showError } from "../../Pop_show/alertService";
 import logo from "../../assets/images/ChamperOfimg/HridhayConnect-Logo.png";
 import html2pdf from "html2pdf.js";
@@ -9,9 +9,9 @@ import { DASHBOARD_NAME } from "../../config";
 import { connect } from "react-redux";
 import { setBreadcrumbItems } from "../../store/actions";
 
-const OrderLayout = props => {
+const DeliveryLayout = props => {
   const navigate = useNavigate();
-  const { id, status } = useParams();
+  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [orderData, setOrderData] = useState(null);
@@ -20,28 +20,28 @@ const OrderLayout = props => {
   const logoColor = '#5a318c';
 
   useEffect(() => {
-    document.title = `Order Preview | ${DASHBOARD_NAME}`;
+    document.title = `Delivery Preview | ${DASHBOARD_NAME}`;
     props.setBreadcrumbItems("");
   }, []);
 
   useEffect(() => {
-    loadOrderLayout();
-  }, [id, status]);
+    loadDeliveryLayout();
+  }, [id]);
 
-  const loadOrderLayout = async () => {
+  const loadDeliveryLayout = async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await getOrderLayoutData(id, status);
+      const response = await getDeliveryLayoutData(id);
       if (response?.isSuccess && response?.data) {
         setOrderData(response.data.order || null);
         setOrderItems(response.data.orderItems || []);
       } else {
-        setError(response?.message || "Failed to load order layout");
+        setError(response?.message || "Failed to load delivery layout");
       }
     } catch (err) {
-      setError(err?.message || "Error loading order layout");
-      showError(err?.message || "Error loading order layout");
+      setError(err?.message || "Error loading delivery layout");
+      showError(err?.message || "Error loading delivery layout");
     }
     setLoading(false);
   };
@@ -55,7 +55,7 @@ const handleDownloadPDF = () => {
 
   const options = {
     margin: 0,
-    filename: `Order-${orderData?.order_No || "layout"}.pdf`,
+    filename: `Delivery-${orderData?.delivery_Challan_No || "layout"}.pdf`,
     image: { type: "jpeg", quality: 1 },
 
     html2canvas: {
@@ -132,7 +132,7 @@ const handleDownloadPDF = () => {
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', display: 'inline-block', borderBottom: '2px solid #5a318c', paddingBottom: '5px', color: '#333' }}>Order Information</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', display: 'inline-block', borderBottom: '2px solid #5a318c', paddingBottom: '5px', color: '#333' }}>Delivery Information</h2>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
@@ -145,15 +145,15 @@ const handleDownloadPDF = () => {
                  {orderData?.gsT_NO && <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '35px', display: 'inline-block' }}>GST :</span> {orderData.gsT_NO}</div>}
             </div>
             <div style={{ width: '48%' }}>
-              <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #5a318c', paddingBottom: '4px' }}>Order Details</div>
-              <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Order No :</strong></span> {orderData?.order_No}</div>
-              <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Order Date :</strong></span> {formatDate(orderData?.order_Date)}</div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '1px solid #5a318c', paddingBottom: '4px' }}>Delivery Details</div>
+              <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Delivery Challan No :</strong></span> {orderData?.delivery_Challan_No}</div>
+              <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Delivery Date :</strong></span> {formatDate(orderData?.delivery_Date)}</div>
               <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Status :</strong></span>{' '}
                 <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold', backgroundColor: getStatusColor(orderData?.order_Status), color: 'white' }}>
                   {orderData?.order_Status_Text}
                 </span>
               </div>
-              <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Sales Person :</strong></span> {orderData?.salesPersonName}</div>
+              <div style={{ marginBottom: '4px', display: 'flex' }}><span style={{ minWidth: '80px', display: 'inline-block' }}><strong>Salesperson :</strong></span> {orderData?.salesPersonName}</div>
             </div>
         </div>
 
@@ -213,4 +213,4 @@ const handleDownloadPDF = () => {
   );
 };
 
-export default connect(null, { setBreadcrumbItems })(OrderLayout);
+export default connect(null, { setBreadcrumbItems })(DeliveryLayout);

@@ -58,7 +58,7 @@ const Menus = props => {
 
   const breadcrumbItems = [
     { title: "Lexa", link: "#" },
-    { title: "Menus", link: "#" },
+    { title: "Menu", link: "#" },
   ]
 
   const loadMenus = async () => {
@@ -87,7 +87,7 @@ const Menus = props => {
   }
 
   useEffect(() => {
-    props.setBreadcrumbItems("Menus")
+    props.setBreadcrumbItems("Menu")
   }, [])
 
   useEffect(() => {
