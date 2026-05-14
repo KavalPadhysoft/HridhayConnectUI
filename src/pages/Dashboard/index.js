@@ -171,17 +171,17 @@ const Dashboard = props => {
                   <Alert color="danger">{pendingOrdersError}</Alert>
                 ) : (
                   <>
-                    {pendingOrdersLoading ? (
-                      <div className="text-center py-5">
-                        <Spinner color="primary" />
-                      </div>
-                    ) : (
-                      pendingOrders.length > 0 ? (
-                        <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={pendingOrdersData} />
+                 {pendingOrdersLoading ? (
+                        <div className="text-center py-5">
+                          <Spinner color="primary" />
+                        </div>
                       ) : (
-                        <p className="text-center text-muted">No pending orders found.</p>
-                      )
-                    )}
+                        pendingOrders.length > 0 ? (
+                          <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={pendingOrdersData} />
+                        ) : (
+                          <p className="text-center text-muted">No pending orders found.</p>
+                        )
+                      )}
                   </>
                 )}
               </div>
@@ -201,17 +201,17 @@ const Dashboard = props => {
                   <Alert color="danger">{pendingItemsError}</Alert>
                 ) : (
                   <>
-                    {pendingItemsLoading ? (
-                      <div className="text-center py-5">
-                        <Spinner color="primary" />
-                      </div>
-                    ) : (
-                      pendingItems.length > 0 ? (
-                        <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={pendingItemsData} />
+                 {pendingItemsLoading ? (
+                        <div className="text-center py-5">
+                          <Spinner color="primary" />
+                        </div>
                       ) : (
-                        <p className="text-center text-muted">No pending order items found.</p>
-                      )
-                    )}
+                        pendingItems.length > 0 ? (
+                          <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={pendingItemsData} />
+                        ) : (
+                          <p className="text-center text-muted">No pending order items found.</p>
+                        )
+                      )}
                   </>
                 )}
               </div>

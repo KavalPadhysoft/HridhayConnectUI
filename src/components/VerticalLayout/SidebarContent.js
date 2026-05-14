@@ -16,19 +16,47 @@ import { withTranslation } from "react-i18next"
 const SidebarContent = props => {
   const ref = useRef();
 
+  // Close sidebar on mobile when navigating to dashboard
   useEffect(() => {
-    const closeSidebarOnMobile = () => {
-      if (window.innerWidth <= 992) {
-        document.body.classList.remove("sidebar-enable");
+    const path = props.router.location.pathname;
+    if (path === "/dashboard" && window.innerWidth <= 992) {
+      document.body.classList.remove("sidebar-enable");
+    }
+  }, [props.router.location.pathname]);
+
+  useEffect(() => {
+    const closeSidebarOnMobile = (e) => {
+      const link = e.currentTarget;
+      const hasSubmenu = link.classList.contains("has-arrow");
+      const parentLi = link.parentElement;
+      const hasChildren = parentLi && parentLi.querySelector(".sub-menu");
+
+      if (!hasSubmenu && !hasChildren) {
+        if (window.innerWidth <= 992) {
+          document.body.classList.remove("sidebar-enable");
+        }
       }
     };
 
-    const sidebarLinks = document.querySelectorAll("#sidebar-menu a");
-    sidebarLinks.forEach(link => {
-      link.addEventListener("click", closeSidebarOnMobile);
-    });
+    const attachListeners = () => {
+      const sidebarLinks = document.querySelectorAll("#sidebar-menu a");
+      sidebarLinks.forEach(link => {
+        link.addEventListener("click", closeSidebarOnMobile);
+      });
+    };
+
+    attachListeners();
+
+    const interval = setInterval(() => {
+      if (document.querySelectorAll("#sidebar-menu a").length > 0) {
+        attachListeners();
+        clearInterval(interval);
+      }
+    }, 100);
 
     return () => {
+      clearInterval(interval);
+      const sidebarLinks = document.querySelectorAll("#sidebar-menu a");
       sidebarLinks.forEach(link => {
         link.removeEventListener("click", closeSidebarOnMobile);
       });
@@ -233,7 +261,15 @@ const SidebarContent = props => {
           <ul className="metismenu list-unstyled" id="side-menu">
             {/* Dashboard static menu item */}
             <li>
-              <Link to="/dashboard" className="waves-effect">
+              <Link 
+                to="/dashboard" 
+                className="waves-effect"
+                onClick={() => {
+                  if (window.innerWidth <= 992) {
+                    document.body.classList.remove("sidebar-enable");
+                  }
+                }}
+              >
                 <i className="mdi mdi-view-dashboard"></i>
                 <span>{props.t("Dashboard")}</span>
               </Link>
@@ -272,7 +308,15 @@ const SidebarContent = props => {
             {dynamicMenu.length === 0 && (
               <>
                 <li>
-                  <Link to="/dashboard" className="waves-effect">
+                  <Link 
+                    to="/dashboard" 
+                    className="waves-effect"
+                    onClick={() => {
+                      if (window.innerWidth <= 992) {
+                        document.body.classList.remove("sidebar-enable");
+                      }
+                    }}
+                  >
                     <i className="mdi mdi-view-dashboard"></i>
                     <span className="badge rounded-pill bg-primary float-end">2</span>
                     <span>{props.t("Dashboard")}</span>

@@ -135,9 +135,9 @@ const Outstanding = (props) => {
              <Spinner color="primary" />
            </div>
          ) : (
-           <div id="outstanding-table-wrapper" style={{ width: '100%', overflowX: 'auto' }}>
+           <>
              <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
-           </div>
+           </>
          )}
        </CardBody>
        <style>{`

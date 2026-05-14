@@ -113,12 +113,12 @@ const Login = props => {
                                               }
                                             />
                                             {validation.touched.userName && validation.errors.userName ? (
-                                              <FormFeedback type="invalid">{validation.errors.userName}</FormFeedback>
+                                              <FormFeedback type="invalid" className="d-block">{validation.errors.userName}</FormFeedback>
                                             ) : null}
                                         </div>
                                         <div className="mb-3">
                                             <Label htmlFor="userpassword">Password</Label> 
-                                            <div className="position-relative">
+                                            <div className="password-wrapper">
                                               <Input
                                                 name="password"
                                                 value={validation.values.password || ""}
@@ -129,21 +129,20 @@ const Login = props => {
                                                 invalid={
                                                   validation.touched.password && validation.errors.password ? true : false
                                                 }
-                                                style={{ paddingRight: "2.75rem" }}
+                                                className="form-control password-input"
                                               />
                                               <button
                                                 type="button"
-                                                className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                                                className="password-toggle-btn"
                                                 title={showPassword ? "Hide password" : "Show password"}
                                                 aria-label={showPassword ? "Hide password" : "Show password"}
                                                 onClick={() => setShowPassword(previous => !previous)}
-                                                style={{ zIndex: 5, textDecoration: "none" }}
                                               >
                                                 <i className={`mdi ${showPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
                                               </button>
                                             </div>
                                             {validation.touched.password && validation.errors.password ? (
-                                              <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                                              <FormFeedback type="invalid" className="d-block">{validation.errors.password}</FormFeedback>
                                             ) : null}
                                         </div>
                                         <Row className="mb-3 mt-4">

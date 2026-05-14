@@ -428,13 +428,15 @@ const Items = props => {
           </Button>
         </div>
         {error ? <Alert color="danger">{error}</Alert> : null}
-        {loading ? (
-          <div className="text-center py-5">
-            <Spinner color="primary" />
-          </div>
-        ) : (
-          <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
-        )}
+         {loading ? (
+           <div className="text-center py-5">
+             <Spinner color="primary" />
+           </div>
+         ) : (
+           <>
+             <MDBDataTable className="table-auto-sr" striped bordered small noBottomColumns data={data} />
+           </>
+         )}
       </CardBody>
     </Card>
   )

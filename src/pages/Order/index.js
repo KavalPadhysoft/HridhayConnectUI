@@ -688,23 +688,21 @@ const Order = props => {
                   </Button>
                 </div>
                 {error ? <Alert color="danger">{error}</Alert> : null}
-                 {loading ? (
-                   <div className="text-center py-5">
-                     <Spinner color="primary" />
-                   </div>
-                 ) : (
-                   <div id="order-table-container" style={{ overflowX: 'auto' }}>
-                     <MDBDataTable
-                       striped
-                       bordered
-                       small
-                       noBottomColumns
-                       data={data}
-                       className={rows && rows.length > 0 ? "table-auto-sr" : undefined}
-                       noRecordsFoundLabel={<span style={{display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888'}}>You don't have any record</span>}
-                     />
-                   </div>
-                 )}
+                  {loading ? (
+                    <div className="text-center py-5">
+                      <Spinner color="primary" />
+                    </div>
+                  ) : (
+                       <MDBDataTable
+                         striped
+                         bordered
+                         small
+                         noBottomColumns
+                         data={data}
+                         className={rows && rows.length > 0 ? "table-auto-sr" : undefined}
+                         noRecordsFoundLabel={<span style={{display: 'block', textAlign: 'center', fontWeight: 'bold', color: '#888'}}>You don't have any record</span>}
+                       />
+                  )}
                </CardBody>
                 <style>{`
                     /* Force right alignment for text-end classes */

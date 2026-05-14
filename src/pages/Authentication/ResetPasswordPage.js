@@ -76,10 +76,10 @@ const ResetPasswordPage = () => {
                       }}>
                       <div className="mb-3">
                         <Label htmlFor="newPassword">New Password</Label>
-                        <div className="position-relative">
+                        <div className="password-wrapper">
                           <Input
                             name="newPassword"
-                            className="form-control"
+                            className="form-control password-input"
                             placeholder="Enter new password"
                             type={showNewPassword ? "text" : "password"}
                             onChange={validation.handleChange}
@@ -88,29 +88,27 @@ const ResetPasswordPage = () => {
                             invalid={
                               validation.touched.newPassword && validation.errors.newPassword ? true : false
                             }
-                            style={{ paddingRight: "2.75rem" }}
                           />
                           <button
                             type="button"
-                            className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                            className="password-toggle-btn"
                             title={showNewPassword ? "Hide password" : "Show password"}
                             aria-label={showNewPassword ? "Hide password" : "Show password"}
                             onClick={() => setShowNewPassword(previous => !previous)}
-                            style={{ zIndex: 5, textDecoration: "none" }}
                           >
                             <i className={`mdi ${showNewPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
                           </button>
                         </div>
                         {validation.touched.newPassword && validation.errors.newPassword ? (
-                          <FormFeedback type="invalid">{validation.errors.newPassword}</FormFeedback>
+                          <FormFeedback type="invalid" className="d-block">{validation.errors.newPassword}</FormFeedback>
                         ) : null}
                       </div>
                       <div className="mb-3">
                         <Label htmlFor="confirmPassword">Confirm Password</Label>
-                        <div className="position-relative">
+                        <div className="password-wrapper">
                           <Input
                             name="confirmPassword"
-                            className="form-control"
+                            className="form-control password-input"
                             placeholder="Confirm new password"
                             type={showConfirmPassword ? "text" : "password"}
                             onChange={validation.handleChange}
@@ -119,21 +117,19 @@ const ResetPasswordPage = () => {
                             invalid={
                               validation.touched.confirmPassword && validation.errors.confirmPassword ? true : false
                             }
-                            style={{ paddingRight: "2.75rem" }}
                           />
                           <button
                             type="button"
-                            className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted"
+                            className="password-toggle-btn"
                             title={showConfirmPassword ? "Hide password" : "Show password"}
                             aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                             onClick={() => setShowConfirmPassword(previous => !previous)}
-                            style={{ zIndex: 5, textDecoration: "none" }}
                           >
                             <i className={`mdi ${showConfirmPassword ? "mdi-eye-off-outline" : "mdi-eye-outline"} font-size-18`} />
                           </button>
                         </div>
                         {validation.touched.confirmPassword && validation.errors.confirmPassword ? (
-                          <FormFeedback type="invalid">{validation.errors.confirmPassword}</FormFeedback>
+                          <FormFeedback type="invalid" className="d-block">{validation.errors.confirmPassword}</FormFeedback>
                         ) : null}
                       </div>
                       <Row className="mb-3">
