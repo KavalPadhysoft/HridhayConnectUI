@@ -36,7 +36,21 @@ const widgetStyles = `
     justify-content: center;
     background: rgba(255, 255, 255, 0.2);
   }
-`
+  .widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    .widget-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .table-auto-sr {
+      padding-top: 50px;
+    }
+  }
+`;
 
 const PAYMENT_COLLECTION_SORT_COLUMN = "paymentDate"
 const PAYMENT_COLLECTION_SORT_DIR = "desc"
@@ -380,105 +394,91 @@ const handleSubmit = async (event) => {
       <style>{widgetStyles}</style>
       <Card>
         <CardBody>
-        <div className="d-flex justify-content-end mb-3">
-          <Button color="primary" type="button" onClick={() => navigate("/PaymentCollection/manage")}>
-            <i className="mdi mdi-plus me-1" />Add New
-          </Button>
-        </div>
-        <Row className="mb-3">
-          <Col md={3}>
-            <div className="widget-card" style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
-              <div className="widget-card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>Total Collected</p>
-                    <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {totalCollected.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
-                  </div>
-                  <div className="widget-icon">
-                    <i className="mdi mdi-currency-inr text-white" style={{ fontSize: "28px" }}></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md={3}>
-            <div className="widget-card" style={{ background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" }}>
-              <div className="widget-card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>Receipts</p>
-                    <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>{totalReceipts}</h4>
-                  </div>
-                  <div className="widget-icon">
-                    <i className="mdi mdi-receipt text-white" style={{ fontSize: "28px" }}></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md={3}>
-            <div className="widget-card" style={{ background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" }}>
-              <div className="widget-card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>Cash</p>
-                    <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["Cash"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
-                  </div>
-                  <div className="widget-icon">
-                    <i className="mdi mdi-cash text-white" style={{ fontSize: "28px" }}></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md={3}>
-            <div className="widget-card" style={{ background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" }}>
-              <div className="widget-card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>UPI</p>
-                    <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["UPI"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
-                  </div>
-                  <div className="widget-icon">
-                    <i className="mdi mdi-contactless-payment text-white" style={{ fontSize: "28px" }}></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <Row className="mb-3">
-          <Col md={3}>
-            <div className="widget-card" style={{ background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" }}>
-              <div className="widget-card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="text-dark-50 mb-1" style={{ fontSize: "13px" }}>Cheque</p>
-                    <h4 className="text-dark mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["Cheque"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
-                  </div>
-                  <div className="widget-icon">
-                    <i className="mdi mdi-file-document-outline text-dark" style={{ fontSize: "28px" }}></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md={3}>
-            <div className="widget-card" style={{ background: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)" }}>
-              <div className="widget-card-body">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="text-dark-50 mb-1" style={{ fontSize: "13px" }}>Bank Transfer</p>
-                    <h4 className="text-dark mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["Bank Transfer"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
-                  </div>
-                  <div className="widget-icon">
-                    <i className="mdi mdi-bank text-dark" style={{ fontSize: "28px" }}></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
+           <div className="d-flex justify-content-end mb-3 mb-md-4">
+             <Button color="primary" type="button" onClick={() => navigate("/PaymentCollection/manage")}>
+               <i className="mdi mdi-plus me-1" />Add New
+             </Button>
+           </div>
+           <div className="widget-grid">
+             <div className="widget-card" style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
+               <div className="widget-card-body">
+                 <div className="d-flex justify-content-between align-items-center">
+                   <div>
+                     <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>Total Collected</p>
+                     <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {totalCollected.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
+                   </div>
+                   <div className="widget-icon">
+                     <i className="mdi mdi-currency-inr text-white" style={{ fontSize: "28px" }}></i>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div className="widget-card" style={{ background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" }}>
+               <div className="widget-card-body">
+                 <div className="d-flex justify-content-between align-items-center">
+                   <div>
+                     <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>Receipts</p>
+                     <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>{totalReceipts}</h4>
+                   </div>
+                   <div className="widget-icon">
+                     <i className="mdi mdi-receipt text-white" style={{ fontSize: "28px" }}></i>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div className="widget-card" style={{ background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" }}>
+               <div className="widget-card-body">
+                 <div className="d-flex justify-content-between align-items-center">
+                   <div>
+                     <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>Cash</p>
+                     <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["Cash"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
+                   </div>
+                   <div className="widget-icon">
+                     <i className="mdi mdi-cash text-white" style={{ fontSize: "28px" }}></i>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div className="widget-card" style={{ background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" }}>
+               <div className="widget-card-body">
+                 <div className="d-flex justify-content-between align-items-center">
+                   <div>
+                     <p className="text-white-50 mb-1" style={{ fontSize: "13px" }}>UPI</p>
+                     <h4 className="text-white mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["UPI"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
+                   </div>
+                   <div className="widget-icon">
+                     <i className="mdi mdi-contactless-payment text-white" style={{ fontSize: "28px" }}></i>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div className="widget-card" style={{ background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" }}>
+               <div className="widget-card-body">
+                 <div className="d-flex justify-content-between align-items-center">
+                   <div>
+                     <p className="text-dark-50 mb-1" style={{ fontSize: "13px" }}>Cheque</p>
+                     <h4 className="text-dark mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["Cheque"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
+                   </div>
+                   <div className="widget-icon">
+                     <i className="mdi mdi-file-document-outline text-dark" style={{ fontSize: "28px" }}></i>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div className="widget-card" style={{ background: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)" }}>
+               <div className="widget-card-body">
+                 <div className="d-flex justify-content-between align-items-center">
+                   <div>
+                     <p className="text-dark-50 mb-1" style={{ fontSize: "13px" }}>Bank Transfer</p>
+                     <h4 className="text-dark mb-0" style={{ fontSize: "22px", fontWeight: "600" }}>₹ {(paymentModeSums["Bank Transfer"] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</h4>
+                   </div>
+                   <div className="widget-icon">
+                     <i className="mdi mdi-bank text-dark" style={{ fontSize: "28px" }}></i>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
         {error ? <Alert color="danger">{error}</Alert> : null}
          {loading ? (
            <div className="text-center py-5">
